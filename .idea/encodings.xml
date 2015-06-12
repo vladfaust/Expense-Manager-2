@@ -2,6 +2,8 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/app/expencemanager/ui/activities/BaseActivity.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/app/expencemanager/ui/activities/onFAB.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/app/expencemanager/ui/uiHelper/FlexibleSpace.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/app/expencemanager/ui/uiHelper/ListViewAdapter.java" charset="UTF-8" />
   </component>
 </project>
