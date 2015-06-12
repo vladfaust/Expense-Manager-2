@@ -11,9 +11,19 @@
         android:id="@+id/MyText"
         android:layout_gravity="center_horizontal" />
 
-    <ProgressBar
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
-        android:layout_gravity="center_horizontal" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="asdasd"
+        android:id="@+id/textView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="qweqweqwe"
+        android:id="@+id/textView2" />
+
+
 </LinearLayout>

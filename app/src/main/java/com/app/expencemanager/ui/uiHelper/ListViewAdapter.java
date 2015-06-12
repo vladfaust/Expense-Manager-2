@@ -1,4 +1,4 @@
-package bll;
+package com.app.expencemanager.ui.uiHelper;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Жамбыл on 11.06.2015.
+ * Created by Жамбыл on 12.06.2015.
  */
 public class ListViewAdapter extends SimpleAdapter {
     Context context;
