@@ -37,7 +37,6 @@ public class FlexibleSpace implements ObservableScrollViewCallbacks {
     private static final float MAX_TEXT_SCALE_DELTA = 0.3f;
 
     private Toolbar mToolbarView;
-    private View mImageView;
     private View mOverlayView;
     private View mListBackgroundView;
     private TextView mTitleView;
@@ -65,7 +64,6 @@ public class FlexibleSpace implements ObservableScrollViewCallbacks {
 
         mFlexibleSpaceImageHeight = activity.getResources().getDimensionPixelSize(R.dimen.flexible_space_image_height);
         mActionBarSize = getActionBarSize();
-        mImageView = activity.findViewById(R.id.image);
         mOverlayView = activity.findViewById(R.id.overlay);
         ObservableListView listView = (ObservableListView) activity.findViewById(R.id.list);
         listView.setScrollViewCallbacks(this);
