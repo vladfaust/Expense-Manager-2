@@ -1,6 +1,6 @@
-
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -23,15 +23,18 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white" />
 
-    <com.github.ksoichiro.android.observablescrollview.ObservableListView
+    <ExpandableListView
         android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/flexible_space_image_height"
         android:orientation="vertical"
+        android:indicatorLeft="250dp"
+        android:indicatorRight="300dp"
         android:paddingEnd="@dimen/margin_standard"
         android:paddingLeft="@dimen/margin_standard"
         android:paddingStart="@dimen/margin_standard">
@@ -63,11 +66,30 @@
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:layout_marginLeft="50dp"/>
-
-    <com.melnykov.fab.FloatingActionButton
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="16dp"/>
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        fab:menu_labels_style="@style/MenuLabelsStyle"
+        fab:menu_labels_showAnimation="@anim/jump_from_down"
+        fab:menu_labels_hideAnimation="@anim/jump_to_down"
+        fab:menu_animationDelayPerItem="0"
+        fab:menu_shadowColor="#444"
+        fab:menu_colorNormal="#FFB805"
+        fab:menu_colorPressed="#F2AB00"
+        fab:menu_colorRipple="#D99200">
+
+
+
+    </com.github.clans.fab.FloatingActionMenu>
+    </RelativeLayout>
 </FrameLayout>

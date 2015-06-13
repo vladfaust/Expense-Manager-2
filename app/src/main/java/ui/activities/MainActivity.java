@@ -1,17 +1,18 @@
 package ui.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 
 import com.cheesehole.expencemanager.R;
+
+import ui.helpers.ExpListAdapter;
 import ui.helpers.FlexibleSpace;
-import ui.helpers.ListViewAdapter;
-import com.melnykov.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
@@ -19,17 +20,10 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-
 
 public class MainActivity extends BaseActivity {
 
-    private static final String ATTRIBUTE_NAME_TEXT_NAME = "Text";
     private Toolbar toolbar;
-    ListView listView;
     Drawer drawer;
 
     @Override
@@ -43,53 +37,21 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void startUI() {
-        // Create Flexible Toolbar
         initToolbar();
-        new FlexibleSpace(this,this).create();
 
+        // Create Flexible Toolbar
+        new FlexibleSpace(this,this).create();
         initDrawer();
         initListView();
-    }
-
-    private void initListView() {
-        listView = (ListView)findViewById(R.id.list);
-
-        List<String> Texts =  new ArrayList<String>();
-        ArrayList<Map<String, Object>> data = new ArrayList<>();
-        Map<String, Object> m;
-
-
-        String[] from = {ATTRIBUTE_NAME_TEXT_NAME };
-        int[] to = { R.id.MyText };
-
-        for(int i = 0; i<10;i++) {
-            Texts.add("asdsad");
-        }
-        for(int i=0;i<10; i++) {
-            m = new HashMap<>();
-            m.put(ATTRIBUTE_NAME_TEXT_NAME,Texts.get(i));
-            data.add(m);
-        }
-
-        ListViewAdapter listViewAdapter = new ListViewAdapter(this, data, R.layout.elements,
-                from, to);
-        listView.setAdapter(listViewAdapter);
-
         initFAB();
     }
 
-    private void initFAB() {
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.attachToListView(listView);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,onFAB.class));
-            }
-        });
+    // Add Toolbar
+    private void initToolbar() {
+        toolbar = (Toolbar)findViewById(R.id.toolbar);
     }
 
-
+    // Add Drawer
     private void initDrawer() {
         drawer = new DrawerBuilder()
                 .withActivity(this)
@@ -105,9 +67,53 @@ public class MainActivity extends BaseActivity {
                 .build();
     }
 
-    private void initToolbar() {
-        toolbar = (Toolbar)findViewById(R.id.toolbar);
+    // Add ExpandableListView
+    private void initListView() {
+        ExpandableListView listView = (ExpandableListView)findViewById(R.id.list);
+
+        ArrayList<ArrayList<String>> groups = new ArrayList<ArrayList<String>>();
+        ArrayList<String> children1 = new ArrayList<String>();
+        ArrayList<String> children2 = new ArrayList<String>();
+        children1.add("Child_1");
+        children1.add("Child_2");
+        groups.add(children1);
+        children2.add("Child_1");
+        children2.add("Child_2");
+        children2.add("Child_3");
+        groups.add(children2);
+
+        ExpListAdapter adapter = new ExpListAdapter(getApplicationContext(), groups);
+        listView.setAdapter(adapter);
+        int right = listView.getRight();
+        int width = listView.getWidth();
+        listView.setIndicatorBounds(right - 40, width);
+
     }
+
+    // Add Floating Action Bar
+    private void initFAB() {
+        final FloatingActionMenu fab = (FloatingActionMenu) findViewById(R.id.fab);
+
+        FloatingActionButton incomeFab = new FloatingActionButton(this);
+        incomeFab.setButtonSize(FloatingActionButton.SIZE_MINI);
+        incomeFab.setLabelText(getResources().getString(R.string.addIncome));
+        incomeFab.setColorNormal(getResources().getColor(R.color.FabColor));
+
+        FloatingActionButton expenseFab = new FloatingActionButton(this);
+        expenseFab.setButtonSize(FloatingActionButton.SIZE_MINI);
+        expenseFab.setLabelText(getResources().getString(R.string.addExpence));
+        expenseFab.setColorNormal(getResources().getColor(R.color.FabColor));
+
+        fab.addMenuButton(incomeFab);
+        fab.addMenuButton(expenseFab);
+
+        fab.setMenuButtonColorNormal(getResources().getColor(R.color.FabColor));
+        fab.showMenuButton(true);
+    }
+
+
+
+
 
     /*
        BackPressed Button Handler
