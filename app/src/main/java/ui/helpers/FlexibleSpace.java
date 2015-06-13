@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.cheesehole.expencemanager.R;
@@ -59,8 +60,8 @@ public class FlexibleSpace implements ObservableScrollViewCallbacks {
         mFlexibleSpaceImageHeight = activity.getResources().getDimensionPixelSize(R.dimen.flexible_space_image_height);
         mActionBarSize = getActionBarSize();
         mOverlayView = activity.findViewById(R.id.overlay);
-        ObservableListView listView = (ObservableListView) activity.findViewById(R.id.list);
-        listView.setScrollViewCallbacks(this);
+        ExpandableListView listView = (ExpandableListView) activity.findViewById(R.id.list);
+        //listView.setScrollViewCallbacks(this);
 
         // Set padding view for ListView. This is the flexible space.
         View paddingView = new View(context);
