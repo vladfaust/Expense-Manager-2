@@ -4,14 +4,19 @@ package com.app.expencemanager.ui.Model;
  * Created by romanismagilov on 13.06.15.
  */
 public class Transaction {
+
     int id;
     String comment;
     int amount;
     String category;
     String subCategory;
-
+    String date;
     public int getId() {
         return id;
+    }
+
+    public String getDate() {
+        return date;
     }
 
     public String getCategory() {
@@ -48,5 +53,9 @@ public class Transaction {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }
