@@ -1,4 +1,4 @@
-package com.app.expencemanager.ui.activities;
+package ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,9 +8,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
-import com.app.expencemanager.R;
-import com.app.expencemanager.ui.uiHelper.FlexibleSpace;
-import com.app.expencemanager.ui.uiHelper.ListViewAdapter;
+import com.cheesehole.expencemanager.R;
+import ui.helpers.FlexibleSpace;
+import ui.helpers.ListViewAdapter;
 import com.melnykov.fab.FloatingActionButton;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;

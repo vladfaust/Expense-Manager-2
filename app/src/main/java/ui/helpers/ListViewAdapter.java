@@ -1,4 +1,4 @@
-package com.app.expencemanager.ui.uiHelper;
+package ui.helpers;
 
 import android.content.Context;
 import android.graphics.Color;

@@ -1,4 +1,4 @@
-package com.app.expencemanager.ui.activities;
+package ui.activities;
 
 import android.support.v7.app.ActionBarActivity;
 

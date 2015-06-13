@@ -1,9 +1,9 @@
-package com.app.expencemanager.ui.activities;
+package ui.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.app.expencemanager.R;
+import com.cheesehole.expencemanager.R;
 
 /**
  * Created by Жамбыл on 12.06.2015.

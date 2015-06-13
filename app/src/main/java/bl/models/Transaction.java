@@ -1,4 +1,4 @@
-package com.app.expencemanager.ui.Model;
+package bl.models;
 
 /**
  * Created by romanismagilov on 13.06.15.

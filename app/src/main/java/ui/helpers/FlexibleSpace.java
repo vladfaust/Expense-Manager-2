@@ -1,30 +1,24 @@
-package com.app.expencemanager.ui.uiHelper;
+package ui.helpers;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.app.expencemanager.R;
-import com.app.expencemanager.ui.activities.BaseActivity;
+import com.cheesehole.expencemanager.R;
+import ui.activities.BaseActivity;
 import com.github.ksoichiro.android.observablescrollview.ObservableListView;
-import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
 import com.nineoldandroids.view.ViewHelper;
-import com.nineoldandroids.view.ViewPropertyAnimator;
 
 
 /**
