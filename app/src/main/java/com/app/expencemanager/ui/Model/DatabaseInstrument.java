@@ -17,6 +17,7 @@ public class DatabaseInstrument {
     // Constructor
     public DatabaseInstrument(Context context){
         dbHelper = new DBHelper(context);
+        createDB();
     }
 
     // Create DB table if not exists
@@ -32,26 +33,50 @@ public class DatabaseInstrument {
                 ")");
     }
 
-    // Adding new transaction
+    // Adding new transaction (by values)
     public void addTransaction(String comment, int amount, String category, String subCategory){
         DB.execSQL("INSERT INTO Transactions (Amount,Comment,Category,SubCategory)\n" +
                 "VALUES( "+amount+","+comment+","+category+","+subCategory+")");
     }
 
-    // Full editing of existing transaction
-    public void editTransaction(int id, String comment, int amount, String category, String subCategoty){
-        DB.execSQL("UPDATE Transactions SET Amount="+amount+", Comment="+comment+", Category="+category+", SubCategoty="+subCategoty+")"+
+    // Adding new transaction (by object)
+    public void addTransaction(Transaction transaction){
+        DB.execSQL("INSERT INTO Transactions (Amount,Comment,Category,SubCategory)\n" +
+                "VALUES( "+transaction.getAmount()+","+transaction.getComment()+","+
+                transaction.getCategory()+","+transaction.getSubCategory()+")");
+    }
+
+    // Full editing of existing transaction (by id)
+    public void editTransaction(int id, String comment, int amount, String category, String subCategory){
+        DB.execSQL("UPDATE Transactions SET Amount="+amount+", Comment="+comment+", Category="+category+", SubCategory="+subCategory+")"+
         "WHERE ID="+id+";");
     }
 
-    // Part editing of existing transaction
-    public void editTransaction(int id,String comment, int amount){
+    // Full editing of existing transaction (by object)
+    public void editTransaction(Transaction transaction, String comment, int amount, String category, String subCategory){
+        DB.execSQL("UPDATE Transactions SET Amount="+amount+", Comment="+comment+", Category="+category+", SubCategory="+subCategory+")"+
+                "WHERE ID="+transaction.getId()+";");
+    }
+
+    // Part editing of existing transaction (by id)
+    public void editTransaction(int id, String comment, int amount){
         DB.execSQL("UPDATE Transactions SET Amount="+amount+", Comment="+comment+")"+
                 "WHERE ID="+id+";");
     }
-    
+    // Part editing of existing transaction (by object)
+    public void editTransaction(Transaction transaction, String comment, int amount){
+        DB.execSQL("UPDATE Transactions SET Amount="+amount+", Comment="+comment+")"+
+                "WHERE ID="+transaction.getId()+";");
+    }
+
+    // Deleting Transaction (by id)
     public void deleteTransaction(int id){
         DB.execSQL("DELETE * FROM Transactions WHERE ID="+id+";");
+    }
+
+    // Deleting Transaction (by object)
+    public void deleteTransaction(Transaction transaction){
+        DB.execSQL("DELETE * FROM Transactions WHERE ID="+transaction.getId()+";");
     }
 
 
