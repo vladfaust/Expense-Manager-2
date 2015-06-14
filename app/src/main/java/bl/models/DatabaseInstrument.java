@@ -24,97 +24,117 @@ public class DatabaseInstrument {
 
     // Create DB table if not exists
     public void createDB(){
+        // Transactions table
         DB.execSQL("CREATE TABLE IF NOT EXISTS Transactions" +
                 "(" +
-                "ID int NOT NULL AUTO_INCREMENT," +
+                "TID int NOT NULL AUTO_INCREMENT," +
                 "Amount int NOT NULL," +
                 "Comment varchar(255)," +
-                "Category varchar(255)," +
                 "SubCategory varchar(255)," +
-                "Date datetime"+
-                "PRIMARY KEY (ID)" +
+                "Date datetime,"+
+                "PRIMARY KEY (TID)" +
+                ")");
+        // Category table
+        DB.execSQL("CREATE TABLE IF NOT EXISTS Category" +
+                "(" +
+                "CID int NOT NULL AUTO_INCREMENT," +
+                "Name varchar(255)," +
+                "Type varchar(10)," +
+                "PRIMARY KEY (CID)" +
+                ")");
+        // Intermediate table to connect Categories and Transactions
+        DB.execSQL("CREATE TABLE IF NOT EXISTS TransactionsCategory" +
+                "(" +
+                "CID int NOT NULL," +
+                "TID int NOT NULL" +
                 ")");
     }
 
     // Adding new transaction (by values)
     public void addTransaction(String comment, int amount, String category, String subCategory, String date){
-        DB.execSQL("INSERT INTO Transactions (Amount,Comment,Category,SubCategory,Date)\n" +
-                "VALUES( "+amount+","+comment+","+category+","+subCategory+","+date+")");
+        DB.execSQL("INSERT INTO Transactions (Amount,Comment,SubCategory,Date)\n" +
+                "VALUES( "+amount+","+comment+","+subCategory+","+date+")");
+        DB.execSQL("insert into TransactionCategory (CID,TID) " +
+                "values((select CID from Category where Name='"+category+"'), " +
+                "(select MAX(TID) from Transaction))");
     }
 
     // Adding new transaction (by object)
     public void addTransaction(Transaction transaction){
-        DB.execSQL("INSERT INTO Transactions (Amount,Comment,Category,SubCategory,Date)\n" +
+        DB.execSQL("INSERT INTO Transactions (Amount,Comment,SubCategory,Date)\n" +
                 "VALUES( "+transaction.getAmount()+","+transaction.getComment()+","+
-                transaction.getCategory()+","+transaction.getSubCategory()+", "+transaction.getDate()+")");
+                transaction.getSubCategory()+","+transaction.getDate()+")");
+        DB.execSQL("insert into TransactionCategory (CID,TID) " +
+                "values((select CID from Category where Name='"+transaction.getCategory()+"'), " +
+                "(select MAX(TID) from Transaction))");
     }
 
-    // Full editing of existing transaction (by id)
-    public void editTransaction(int id, String comment, int amount, String category, String subCategory){
-        DB.execSQL("UPDATE Transactions SET Amount="+amount+", Comment="+comment+", Category="+category+", SubCategory="+subCategory+")"+
-        "WHERE ID="+id+";");
-    }
-
-    // Full editing of existing transaction (by object)
-    public void editTransaction(Transaction transaction, String comment, int amount, String category, String subCategory){
-        DB.execSQL("UPDATE Transactions SET Amount="+amount+", Comment="+comment+", Category="+category+", SubCategory="+subCategory+")"+
-                "WHERE ID="+transaction.getId()+";");
-    }
-
-    // Part editing of existing transaction (by id)
-    public void editTransaction(int id, String comment, int amount){
-        DB.execSQL("UPDATE Transactions SET Amount="+amount+", Comment="+comment+")"+
-                "WHERE ID="+id+";");
-    }
-    // Part editing of existing transaction (by object)
-    public void editTransaction(Transaction transaction, String comment, int amount){
-        DB.execSQL("UPDATE Transactions SET Amount="+amount+", Comment="+comment+")"+
-                "WHERE ID="+transaction.getId()+";");
-    }
-
-    // Deleting Transaction (by id)
-    public void deleteTransaction(int id){
-        DB.execSQL("DELETE * FROM Transactions WHERE ID="+id+";");
-    }
-
-    // Deleting Transaction (by object)
-    public void deleteTransaction(Transaction transaction){
-        DB.execSQL("DELETE * FROM Transactions WHERE ID="+transaction.getId()+";");
-    }
-
-    // Load all transactions from database to array list
-    public ArrayList<Transaction> loadAllTransactions(){
-        ArrayList<Transaction> list = new ArrayList<Transaction>();
-
-
-        String query = String.format("SELECT * FROM Transactions");
-        Cursor cursor  = dbHelper.getReadableDatabase().rawQuery(query, null);
-
-        while (cursor.moveToNext()) {
-            Transaction transaction = new Transaction();
-            transaction.setAmount(cursor.getInt(1));
-            transaction.setComment(cursor.getString(2));
-            transaction.setCategory(cursor.getString(3));
-            transaction.setSubCategory(cursor.getString(4));
-            transaction.setDate(cursor.getString(5));
-            list.add(transaction);
-        }
-        return list;
-    }
-
-    // Load all categories from database to string array list
-    public ArrayList<String> loadAllCategories(){
-        ArrayList<String> list = new ArrayList<String>();
-
-
-        String query = String.format("SELECT Category FROM Transactions");
-        Cursor cursor  = dbHelper.getReadableDatabase().rawQuery(query, null);
-
-        while (cursor.moveToNext()) {
-            list.add(cursor.getString(0));
-        }
-        return list;
-    }
+//    // Full editing of existing transaction (by id)
+//    public void editTransaction(int id, String comment, int amount, String category, String subCategory){
+//        DB.execSQL("UPDATE Transactions SET Amount="+amount+", Comment="+comment+", Category="+category+", SubCategory="+subCategory+")"+
+//        "WHERE TID="+id+";");
+//    }
+//
+//    // Full editing of existing transaction (by object)
+//    public void editTransaction(Transaction transaction, String comment, int amount, String category, String subCategory){
+//        DB.execSQL("UPDATE Transactions SET Amount="+amount+", Comment="+comment+", Category="+category+", SubCategory="+subCategory+")"+
+//                "WHERE TID="+transaction.getId()+";");
+//    }
+//
+//    // Part editing of existing transaction (by id)
+//    public void editTransaction(int id, String comment, int amount){
+//        DB.execSQL("UPDATE Transactions SET Amount="+amount+", Comment="+comment+")"+
+//                "WHERE TID="+id+";");
+//    }
+//    // Part editing of existing transaction (by object)
+//    public void editTransaction(Transaction transaction, String comment, int amount){
+//        DB.execSQL("UPDATE Transactions SET Amount="+amount+", Comment="+comment+")"+
+//                "WHERE TID="+transaction.getId()+";");
+//    }
+//
+//    // Deleting Transaction (by id)
+//    public void deleteTransaction(int id){
+//        DB.execSQL("DELETE * FROM Transactions WHERE TID="+id+";");
+//    }
+//
+//    // Deleting Transaction (by object)
+//    public void deleteTransaction(Transaction transaction){
+//        DB.execSQL("DELETE * FROM Transactions WHERE TID="+transaction.getId()+";");
+//    }
+//
+//    // Load all transactions from database to array list
+//    public ArrayList<Transaction> loadAllTransactions(){
+//        ArrayList<Transaction> list = new ArrayList<Transaction>();
+//
+//
+//        String query = String.format("SELECT * FROM Transactions");
+//        Cursor cursor  = dbHelper.getReadableDatabase().rawQuery(query, null);
+//
+//        while (cursor.moveToNext()) {
+//            Transaction transaction = new Transaction();
+//            transaction.setAmount(cursor.getInt(1));
+//            transaction.setComment(cursor.getString(2));
+//            transaction.setCategory(cursor.getString(3));
+//            transaction.setSubCategory(cursor.getString(4));
+//            transaction.setDate(cursor.getString(5));
+//            list.add(transaction);
+//        }
+//        return list;
+//    }
+//
+//    // Load all categories from database to string array list
+//    public ArrayList<String> loadAllCategories(){
+//        ArrayList<String> list = new ArrayList<String>();
+//
+//
+//        String query = String.format("SELECT Category FROM Transactions");
+//        Cursor cursor  = dbHelper.getReadableDatabase().rawQuery(query, null);
+//
+//        while (cursor.moveToNext()) {
+//            list.add(cursor.getString(0));
+//        }
+//        return list;
+//    }
 
 
     
