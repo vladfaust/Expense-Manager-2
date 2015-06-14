@@ -1,16 +1,19 @@
 package ui.activities;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.cheesehole.expencemanager.R;
 
 import ui.helpers.ExpListAdapter;
-import ui.helpers.FlexibleSpace;
+
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.mikepenz.materialdrawer.Drawer;
@@ -23,32 +26,65 @@ import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity {
 
+    // Views
     private Toolbar toolbar;
     Drawer drawer;
+    TextView money,balance,percentage,budget;
+    RelativeLayout spaceBelowToolbar;
+    ExpandableListView listView;
+    RelativeLayout toolbarOverlay;
+
+    // Fonts
+    public static Typeface robotoLight;
+    public static Typeface robotoRegular;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-
         startUI();
     }
 
 
     @Override
     protected void startUI() {
+        // UI blocks
+        getFonts();
         initToolbar();
-
-        // Create Flexible Toolbar
-        new FlexibleSpace(this,this).create();
         initDrawer();
         initListView();
         initFAB();
     }
 
+    // Getting Fonts
+    private void getFonts() {
+        robotoLight = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
+        robotoRegular = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Regular.ttf");
+    }
+
     // Add Toolbar
     private void initToolbar() {
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        setTitle(null);
         toolbar = (Toolbar)findViewById(R.id.toolbar);
+
+        // TextViews of Toolbar
+        money = (TextView)findViewById(R.id.Money);
+        balance = (TextView)findViewById(R.id.Balance);
+        percentage = (TextView)findViewById(R.id.Percentage);
+        budget = (TextView)findViewById(R.id.Budget);
+
+        // Setting fonts
+        money.setTypeface(robotoLight);
+        balance.setTypeface(robotoRegular);
+        percentage.setTypeface(robotoLight);
+        budget.setTypeface(robotoRegular);
+
     }
 
     // Add Drawer
@@ -69,7 +105,7 @@ public class MainActivity extends BaseActivity {
 
     // Add ExpandableListView
     private void initListView() {
-        ExpandableListView listView = (ExpandableListView)findViewById(R.id.list);
+        listView = (ExpandableListView)findViewById(R.id.list);
 
         ArrayList<ArrayList<String>> groups = new ArrayList<ArrayList<String>>();
         ArrayList<String> children1 = new ArrayList<String>();
@@ -90,29 +126,102 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    // Add Floating Action Bar
+    // Add floating action bar
     private void initFAB() {
-        final FloatingActionMenu fab = (FloatingActionMenu) findViewById(R.id.fab);
-
+        // Fab-menu
+        final FloatingActionMenu fabMenu = (FloatingActionMenu) findViewById(R.id.fab);
+        // Income FAB
         FloatingActionButton incomeFab = new FloatingActionButton(this);
         incomeFab.setButtonSize(FloatingActionButton.SIZE_MINI);
         incomeFab.setLabelText(getResources().getString(R.string.addIncome));
         incomeFab.setColorNormal(getResources().getColor(R.color.FabColor));
 
+        // Expense FAB
         FloatingActionButton expenseFab = new FloatingActionButton(this);
         expenseFab.setButtonSize(FloatingActionButton.SIZE_MINI);
-        expenseFab.setLabelText(getResources().getString(R.string.addExpence));
+        expenseFab.setLabelText(getResources().getString(R.string.addExpense));
         expenseFab.setColorNormal(getResources().getColor(R.color.FabColor));
 
-        fab.addMenuButton(incomeFab);
-        fab.addMenuButton(expenseFab);
+        // Adding to Fab-menu
+        fabMenu.addMenuButton(incomeFab);
+        fabMenu.addMenuButton(expenseFab);
 
-        fab.setMenuButtonColorNormal(getResources().getColor(R.color.FabColor));
-        fab.showMenuButton(true);
+        fabMenu.setMenuButtonColorNormal(getResources().getColor(R.color.FabColor));
+        fabMenu.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
+            @Override
+            public void onMenuToggle(boolean b) {
+                setInvisibility(!fabMenu.isOpened());
+            }
+        });
+
+        // Showing Fab-menu
+        fabMenu.showMenuButton(true);
     }
 
+    private void setInvisibility(boolean Invisible) {
+        spaceBelowToolbar = (RelativeLayout)findViewById(R.id.spaceBelowToolbar);
 
+        if(!Invisible) {
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    boolean sleeping = false;
+                    int animationDuration = 150;
+                    int currentTime = 0;
+                    float alphaWhite = 0.3f;
+                    while(currentTime<animationDuration) {
+                        setAlphaToViews(alphaWhite);
+                        while (!sleeping) {
+                            try {
+                                Thread.sleep(50);
+                                sleeping = true;
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        sleeping = false;
+                        currentTime += 50;
+                        alphaWhite -= 0.1f;
+                    }
+                }
+            });
+            thread.start();
+        }
+        else {
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    boolean sleeping = false;
+                    int animationDuration = 300;
+                    int currentTime = 0;
+                    float alphaNormal = 0.1f;
+                    while(currentTime < animationDuration) {
+                        setAlphaToViews(alphaNormal);
+                        while (!sleeping) {
+                            try {
+                                Thread.sleep(50);
+                                sleeping = true;
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        sleeping = false;
+                        currentTime += 50;
+                        alphaNormal += 0.3f;
+                        if(currentTime == animationDuration)
+                            setAlphaToViews(100);
+                    }
+                }
+            });
+            thread.start();
+        }
+    }
 
+    private void setAlphaToViews(float alpha) {
+        toolbar.setAlpha(alpha);
+        spaceBelowToolbar.setAlpha(alpha);
+        listView.setAlpha(alpha);
+    }
 
 
     /*

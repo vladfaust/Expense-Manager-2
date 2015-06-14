@@ -3,6 +3,11 @@
     <color name="ColorPrimary">#58a2bd</color>
     <color name="ColorPrimaryDark">#468297</color>
     <color name="FabColor">#f5537d</color>
+    <color name="ChildBG">#fcfcfc</color>
+    <color name="MainBG">#ffffff</color>
+    <color name="Cafes">#ff7daa</color>
+    <color name="ChildMoneyColor">#f56d53</color>
+    <color name="Grocery">#5ac5cc</color>
     <color name="accent">#eeff41</color>
     <color name="accentLight">#F4FF81</color>
 </resources>

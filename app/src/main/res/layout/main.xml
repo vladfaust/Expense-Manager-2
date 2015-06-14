@@ -1,74 +1,88 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fab="http://schemas.android.com/tools"
+<RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/mainBody"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/MainBG">
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/flexible_space_image_height"
-        android:scaleType="centerCrop"
-        />
-
-    <View
-        android:id="@+id/overlay"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/flexible_space_image_height"
-        android:background="?attr/colorPrimary" />
-
-    <View
-        android:id="@+id/list_background"
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/white" />
+        android:id="@+id/ToolbarOverlay">
 
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:background="@color/ColorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        </android.support.v7.widget.Toolbar>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:id="@+id/spaceBelowToolbar"
+        android:background="@color/ColorPrimary"
+        android:orientation="vertical"
+        android:elevation="4dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="42dp"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/Money"
+            android:textColor="@color/md_white_1000"
+            android:textSize="45sp"
+            android:text="$850"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/Money"
+            android:id="@+id/Balance"
+            android:layout_marginLeft="42dp"
+            android:textSize="25sp"
+            android:textColor="@color/md_grey_300"
+            android:text="BALANCE"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="180dp"
+            android:id="@+id/Percentage"
+            android:textColor="@color/md_white_1000"
+            android:textSize="45sp"
+            android:text="93%"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/Percentage"
+            android:textColor="@color/md_grey_300"
+            android:id="@+id/Budget"
+            android:layout_marginLeft="180dp"
+            android:textSize="25sp"
+            android:text="BUDGET"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
     <ExpandableListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/flexible_space_image_height"
-        android:orientation="vertical"
-        android:indicatorLeft="250dp"
-        android:indicatorRight="300dp"
-        android:paddingEnd="@dimen/margin_standard"
-        android:paddingLeft="@dimen/margin_standard"
-        android:paddingStart="@dimen/margin_standard">
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/flexible_space_image_height"
-            android:background="@android:color/transparent" />
-    </LinearLayout>
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        app:popupTheme="@style/Theme.AppCompat.Light.DarkActionBar"
-        />
-
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:gravity="center_vertical"
-        android:maxLines="1"
-        android:minHeight="?attr/actionBarSize"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-        android:layout_marginLeft="50dp"/>
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -88,8 +102,8 @@
         fab:menu_colorPressed="#F2AB00"
         fab:menu_colorRipple="#D99200">
 
-
-
     </com.github.clans.fab.FloatingActionMenu>
     </RelativeLayout>
-</FrameLayout>
+
+</LinearLayout>
+</RelativeLayout>

@@ -59,7 +59,7 @@ public class FlexibleSpace implements ObservableScrollViewCallbacks {
 
         mFlexibleSpaceImageHeight = activity.getResources().getDimensionPixelSize(R.dimen.flexible_space_image_height);
         mActionBarSize = getActionBarSize();
-        mOverlayView = activity.findViewById(R.id.overlay);
+        //mOverlayView = activity.findViewById(R.id.overlay);
         ExpandableListView listView = (ExpandableListView) activity.findViewById(R.id.list);
         //listView.setScrollViewCallbacks(this);
 
@@ -78,7 +78,7 @@ public class FlexibleSpace implements ObservableScrollViewCallbacks {
         activity.setTitle(null);
 
         // mListBackgroundView makes ListView's background except header view.
-        mListBackgroundView = activity.findViewById(R.id.list_background);
+        //mListBackgroundView = activity.findViewById(R.id.list_background);
     }
 
     @Override
