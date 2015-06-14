@@ -60,20 +60,30 @@ public class DatabaseInstrument {
     }
 
     // Adding new transaction (by object)
-    public void addTransaction(Transaction transaction){
+    public void addTransaction(Transaction transaction, Category category){
         DB.execSQL("INSERT INTO Transactions (Amount,Comment,SubCategory,Date)\n" +
                 "VALUES( "+transaction.getAmount()+","+transaction.getComment()+","+
                 transaction.getSubCategory()+","+transaction.getDate()+")");
         DB.execSQL("insert into TransactionCategory (CID,TID) " +
-                "values((select CID from Category where Name='"+transaction.getCategory()+"'), " +
+                "values((select CID from Category where Name='"+category.getName()+"'), " +
                 "(select MAX(TID) from Transaction))");
     }
 
-//    // Full editing of existing transaction (by id)
-//    public void editTransaction(int id, String comment, int amount, String category, String subCategory){
-//        DB.execSQL("UPDATE Transactions SET Amount="+amount+", Comment="+comment+", Category="+category+", SubCategory="+subCategory+")"+
-//        "WHERE TID="+id+";");
-//    }
+    // Editing of existing transaction without changing category (by id)
+    public void editTransaction(int id, String comment, int amount, String subCategory){
+        DB.execSQL("UPDATE Transactions SET Amount="+amount+", Comment="+comment+", SubCategory="+subCategory+")"+
+        "WHERE TID="+id+";");
+    }
+
+    // Changing of transact category (by object)
+    public void changeTransactionCategory(Transaction transaction, Category category){
+        DB.execSQL("update TransactionCategory set CID="+category.getCid()+" where TID="+transaction.getId()+"");
+    }
+
+    // Changing of transact category (by id)
+    public void changeTransactionCategory(int cid, int tid){
+        DB.execSQL("update TransactionCategory set CID="+cid+" where TID="+tid+"");
+    }
 //
 //    // Full editing of existing transaction (by object)
 //    public void editTransaction(Transaction transaction, String comment, int amount, String category, String subCategory){
