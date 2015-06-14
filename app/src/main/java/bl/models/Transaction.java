@@ -8,7 +8,7 @@ public class Transaction {
     int id;
     String comment;
     int amount;
-    String category;
+    int cid;
     String subCategory;
     String date;
     public int getId() {
@@ -19,9 +19,6 @@ public class Transaction {
         return date;
     }
 
-    public String getCategory() {
-        return category;
-    }
 
     public int getAmount() {
         return amount;
@@ -37,10 +34,6 @@ public class Transaction {
 
     public void setAmount(int amount) {
         this.amount = amount;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
     }
 
     public void setComment(String comment) {
