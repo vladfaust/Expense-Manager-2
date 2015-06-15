@@ -1,6 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbarExpense"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="@color/FinancesColorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        >
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/ic_close_white_24dp"
+            android:layout_marginTop="16dp"
+            android:clickable="true"
+            android:id="@+id/finances_back"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Expense"
+            android:layout_marginLeft="28dp"
+            android:layout_marginBottom="14dp"
+            android:textColor="@color/md_white_1000"
+            android:textSize="22sp"
+            android:id="@+id/finances_label"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/ic_check_white_24dp"
+            android:clickable="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="186dp"
+            android:id="@+id/finances_ok"/>
+    </android.support.v7.widget.Toolbar>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/headerLayout"
+        android:background="@color/md_grey_300">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1.Category"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="60dp"
+            android:textColor="@color/md_grey_500"
+            android:id="@+id/categoryText"/>
+    </RelativeLayout>
+    <ExpandableListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/finances_list" >
+    </ExpandableListView>
 
+</LinearLayout>
 </LinearLayout>

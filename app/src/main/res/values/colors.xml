@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ColorPrimary">#58a2bd</color>
-    <color name="ColorPrimaryDark">#468297</color>
+    <color name="HomeColorPrimary">#58a2bd</color>
+    <color name="HomeColorPrimaryDark">#468297</color>
+    <color name="FinancesColorPrimary">#f5537d</color>
+    <color name="FinancesColorPrimaryDark">#c44264</color>
     <color name="FabColor">#f5537d</color>
     <color name="ChildBG">#fcfcfc</color>
     <color name="MainBG">#ffffff</color>

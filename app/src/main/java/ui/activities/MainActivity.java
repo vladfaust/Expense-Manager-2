@@ -1,18 +1,20 @@
 package ui.activities;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cheesehole.expencemanager.R;
 
-import ui.helpers.ExpListAdapter;
+import ui.helpers.HomeExpListAdapter;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -33,10 +35,14 @@ public class MainActivity extends BaseActivity {
     RelativeLayout spaceBelowToolbar;
     ExpandableListView listView;
     RelativeLayout toolbarOverlay;
+    FloatingActionMenu fabMenu;
 
     // Fonts
     public static Typeface robotoLight;
     public static Typeface robotoRegular;
+
+    // Variables
+    private boolean runInvisibility = true;
 
 
     @Override
@@ -53,7 +59,7 @@ public class MainActivity extends BaseActivity {
         getFonts();
         initToolbar();
         initDrawer();
-        initListView();
+        initExpandableListView();
         initFAB();
     }
 
@@ -72,7 +78,11 @@ public class MainActivity extends BaseActivity {
         }
         setTitle(null);
         toolbar = (Toolbar)findViewById(R.id.toolbar);
+        initToolbarText();
+    }
 
+
+    private void initToolbarText() {
         // TextViews of Toolbar
         money = (TextView)findViewById(R.id.Money);
         balance = (TextView)findViewById(R.id.Balance);
@@ -84,7 +94,6 @@ public class MainActivity extends BaseActivity {
         balance.setTypeface(robotoRegular);
         percentage.setTypeface(robotoLight);
         budget.setTypeface(robotoRegular);
-
     }
 
     // Add Drawer
@@ -104,9 +113,10 @@ public class MainActivity extends BaseActivity {
     }
 
     // Add ExpandableListView
-    private void initListView() {
+    private void initExpandableListView() {
         listView = (ExpandableListView)findViewById(R.id.list);
 
+        // Filling ListView
         ArrayList<ArrayList<String>> groups = new ArrayList<ArrayList<String>>();
         ArrayList<String> children1 = new ArrayList<String>();
         ArrayList<String> children2 = new ArrayList<String>();
@@ -118,18 +128,21 @@ public class MainActivity extends BaseActivity {
         children2.add("Child_3");
         groups.add(children2);
 
-        ExpListAdapter adapter = new ExpListAdapter(getApplicationContext(), groups);
+        // Setting adapter
+        HomeExpListAdapter adapter = new HomeExpListAdapter(getApplicationContext(), groups);
         listView.setAdapter(adapter);
-        int right = listView.getRight();
-        int width = listView.getWidth();
-        listView.setIndicatorBounds(right - 40, width);
+
+        //todo why 0?
+//        int right = listView.getRight();
+//        int width = listView.getWidth();
+//        listView.setIndicatorBounds(right - 40, width);
 
     }
 
     // Add floating action bar
     private void initFAB() {
         // Fab-menu
-        final FloatingActionMenu fabMenu = (FloatingActionMenu) findViewById(R.id.fab);
+        fabMenu = (FloatingActionMenu) findViewById(R.id.fab);
         // Income FAB
         FloatingActionButton incomeFab = new FloatingActionButton(this);
         incomeFab.setButtonSize(FloatingActionButton.SIZE_MINI);
@@ -141,6 +154,15 @@ public class MainActivity extends BaseActivity {
         expenseFab.setButtonSize(FloatingActionButton.SIZE_MINI);
         expenseFab.setLabelText(getResources().getString(R.string.addExpense));
         expenseFab.setColorNormal(getResources().getColor(R.color.FabColor));
+
+        // Setting OnClickListener
+        expenseFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeFab();
+                startActivity(new Intent(MainActivity.this, ExpenseActivity.class));
+            }
+        });
 
         // Adding to Fab-menu
         fabMenu.addMenuButton(incomeFab);
@@ -158,6 +180,11 @@ public class MainActivity extends BaseActivity {
         fabMenu.showMenuButton(true);
     }
 
+    private void closeFab() {
+        runInvisibility = false;
+        fabMenu.close(true);
+    }
+
     private void setInvisibility(boolean Invisible) {
         spaceBelowToolbar = (RelativeLayout)findViewById(R.id.spaceBelowToolbar);
 
@@ -171,7 +198,7 @@ public class MainActivity extends BaseActivity {
                     float alphaWhite = 0.3f;
                     while(currentTime<animationDuration) {
                         setAlphaToViews(alphaWhite);
-                        while (!sleeping) {
+                        while (!sleeping && runInvisibility) {
                             try {
                                 Thread.sleep(50);
                                 sleeping = true;
@@ -197,7 +224,7 @@ public class MainActivity extends BaseActivity {
                     float alphaNormal = 0.1f;
                     while(currentTime < animationDuration) {
                         setAlphaToViews(alphaNormal);
-                        while (!sleeping) {
+                        while (!sleeping && runInvisibility) {
                             try {
                                 Thread.sleep(50);
                                 sleeping = true;
@@ -229,10 +256,15 @@ public class MainActivity extends BaseActivity {
      */
     @Override
     public void onBackPressed() {
-        // close drawer if it's open.
+
         if(drawer!=null && !drawer.isDrawerOpen())
-            super.onBackPressed();
+            if(fabMenu!=null && !fabMenu.isOpened())
+                super.onBackPressed();
+            else
+            // Close fabMenu if it's open.
+                closeFab();
         else
+            // Close drawer if it's open.
             drawer.closeDrawer();
 
     }

@@ -1,8 +1,13 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/ColorPrimary</item>
-        <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
+        <item name="colorPrimary">@color/HomeColorPrimary</item>
+        <item name="colorPrimaryDark">@color/HomeColorPrimaryDark</item>
+        <!-- Customize your theme here. -->
+    </style>
+    <style name="FinancesTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/FinancesColorPrimary</item>
+        <item name="colorPrimaryDark">@color/FinancesColorPrimaryDark</item>
         <!-- Customize your theme here. -->
     </style>
 
