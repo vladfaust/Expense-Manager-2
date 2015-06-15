@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/footerLayout">
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:text="Type to add a category..."
+        android:id="@+id/addCategory"
+        android:textColor="@color/md_grey_500" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/md_grey_300"
+        android:layout_height="50dp"
+        android:id="@+id/dateLayout">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2.Date"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="60dp"
+            android:textColor="@color/md_grey_500"
+            android:id="@+id/dateText"/>
+    </RelativeLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dateLayout"
+        android:layout_marginLeft="60dp"
+        android:id="@+id/datePicker"
+        android:text="button"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/md_grey_300"
+        android:layout_height="50dp"
+        android:id="@+id/commentLayout"
+        android:layout_below="@+id/datePicker">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3.Comment"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="60dp"
+            android:textColor="@color/md_grey_500"
+            android:id="@+id/commentText"/>
+    </RelativeLayout>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:text="Type to add a comment..."
+        android:layout_below="@+id/commentLayout"
+        android:textColor="@color/md_grey_500"
+        android:id="@+id/addComment"
+        />
+</LinearLayout>
