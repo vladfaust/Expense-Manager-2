@@ -15,11 +15,13 @@ public class DatabaseInstrument {
     // Private fields
     DBHelper dbHelper;
     SQLiteDatabase DB = dbHelper.getWritableDatabase();
-
     // Constructor
     public DatabaseInstrument(Context context){
         dbHelper = new DBHelper(context);
         createDB();
+        Category.List = loadAllCategories();
+        User.balance=currentBalance(loadAllTransactions());
+
     }
 
     // Create DB table if not exists
@@ -57,6 +59,7 @@ public class DatabaseInstrument {
         DB.execSQL("insert into TransactionCategory (CID,TID) " +
                 "values((select CID from Category where Name='"+category+"'), " +
                 "(select MAX(TID) from Transaction))");
+        User.balance=currentBalance(loadAllTransactions());
     }
 
     // Adding new transaction (by object)
@@ -67,6 +70,7 @@ public class DatabaseInstrument {
         DB.execSQL("insert into TransactionCategory (CID,TID) " +
                 "values((select CID from Category where Name='"+category.getName()+"'), " +
                 "(select MAX(TID) from Transaction))");
+        User.balance=currentBalance(loadAllTransactions());
     }
 
     // Editing of existing transaction without changing category (by id)
@@ -83,6 +87,58 @@ public class DatabaseInstrument {
     // Changing of transact category (by id)
     public void changeTransactionCategory(int cid, int tid){
         DB.execSQL("update TransactionCategory set CID="+cid+" where TID="+tid+"");
+    }
+
+    //Load all categories from database to string array list
+    public ArrayList<Category> loadAllCategories(){
+        ArrayList<Category> list = new ArrayList<Category>();
+
+
+        String query = String.format("SELECT * FROM Category");
+        Cursor cursor  = dbHelper.getReadableDatabase().rawQuery(query, null);
+
+        while (cursor.moveToNext()) {
+            Category category = new Category();
+            category.setCid(cursor.getInt(0));
+            category.setName(cursor.getString(1));
+            category.setType(cursor.getString(2));
+            list.add(category);
+        }
+        return list;
+    }
+
+
+    // Load all transactions from database to array list
+    public ArrayList<Transaction> loadAllTransactions(){
+        ArrayList<Transaction> list = new ArrayList<Transaction>();
+
+
+        String query = String.format("SELECT * FROM Transactions");
+        Cursor cursor  = dbHelper.getReadableDatabase().rawQuery(query, null);
+
+        while (cursor.moveToNext()) {
+            Transaction transaction = new Transaction();
+            transaction.setId(cursor.getInt(0));
+            transaction.setAmount(cursor.getInt(1));
+            transaction.setComment(cursor.getString(2));
+            transaction.setCategory(Category.getCategoryByID(cursor.getInt(5)));
+            transaction.setSubCategory(cursor.getString(3));
+            transaction.setDate(cursor.getString(4));
+            list.add(transaction);
+        }
+        return list;
+    }
+
+    // Get current balance
+    public int currentBalance(ArrayList<Transaction> list){
+        int balance=0;
+        for (Transaction transaction: list){
+            if (transaction.category.getType()=="income")
+                balance+=transaction.getAmount();
+            else
+                balance-=transaction.getAmount();
+        }
+        return balance;
     }
 //
 //    // Full editing of existing transaction (by object)
@@ -112,39 +168,8 @@ public class DatabaseInstrument {
 //        DB.execSQL("DELETE * FROM Transactions WHERE TID="+transaction.getId()+";");
 //    }
 //
-//    // Load all transactions from database to array list
-//    public ArrayList<Transaction> loadAllTransactions(){
-//        ArrayList<Transaction> list = new ArrayList<Transaction>();
+
 //
-//
-//        String query = String.format("SELECT * FROM Transactions");
-//        Cursor cursor  = dbHelper.getReadableDatabase().rawQuery(query, null);
-//
-//        while (cursor.moveToNext()) {
-//            Transaction transaction = new Transaction();
-//            transaction.setAmount(cursor.getInt(1));
-//            transaction.setComment(cursor.getString(2));
-//            transaction.setCategory(cursor.getString(3));
-//            transaction.setSubCategory(cursor.getString(4));
-//            transaction.setDate(cursor.getString(5));
-//            list.add(transaction);
-//        }
-//        return list;
-//    }
-//
-//    // Load all categories from database to string array list
-//    public ArrayList<String> loadAllCategories(){
-//        ArrayList<String> list = new ArrayList<String>();
-//
-//
-//        String query = String.format("SELECT Category FROM Transactions");
-//        Cursor cursor  = dbHelper.getReadableDatabase().rawQuery(query, null);
-//
-//        while (cursor.moveToNext()) {
-//            list.add(cursor.getString(0));
-//        }
-//        return list;
-//    }
 
 
     
