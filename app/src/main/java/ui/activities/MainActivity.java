@@ -1,7 +1,9 @@
 package ui.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -15,16 +17,16 @@ import android.widget.TextView;
 import com.cheesehole.expencemanager.R;
 
 import bl.models.DatabaseInstrument;
-import bl.models.Transaction;
 import ui.helpers.HomeExpListAdapter;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
+import com.mikepenz.materialdrawer.accountswitcher.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import java.util.ArrayList;
 
@@ -39,6 +41,9 @@ public class MainActivity extends BaseActivity {
     RelativeLayout toolbarOverlay;
     FloatingActionMenu fabMenu;
 
+    // Main color
+    int primaryColor;
+
     // Fonts
     public static Typeface robotoLight;
     public static Typeface robotoRegular;
@@ -52,6 +57,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         startUI();
+
         // transact test
         DatabaseInstrument dbi = new DatabaseInstrument(this);
 
@@ -62,16 +68,22 @@ public class MainActivity extends BaseActivity {
     protected void startUI() {
         // UI blocks
         getFonts();
+        getColors();
         initToolbar();
         initDrawer();
         initExpandableListView();
         initFAB();
     }
 
-    // Getting Fonts
+
+    // Setting Fonts
     private void getFonts() {
         robotoLight = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Light.ttf");
         robotoRegular = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Regular.ttf");
+    }
+    // Setting Fonts
+    private void getColors() {
+        primaryColor = getResources().getColor(R.color.HomeColorPrimary);
     }
 
     // Add Toolbar
@@ -89,9 +101,9 @@ public class MainActivity extends BaseActivity {
 
     private void initToolbarText() {
         // TextViews of Toolbar
-        money = (TextView)findViewById(R.id.Money);
+        money = (TextView)findViewById(R.id.MoneyValue);
         balance = (TextView)findViewById(R.id.Balance);
-        percentage = (TextView)findViewById(R.id.Percentage);
+        percentage = (TextView)findViewById(R.id.PercentageValue);
         budget = (TextView)findViewById(R.id.Budget);
 
         // Setting fonts
@@ -99,20 +111,45 @@ public class MainActivity extends BaseActivity {
         balance.setTypeface(robotoRegular);
         percentage.setTypeface(robotoLight);
         budget.setTypeface(robotoRegular);
+
+        money.setText("asd");
+        percentage.setText("789");
     }
 
     // Add Drawer
     private void initDrawer() {
+        ColorDrawable drawable = new ColorDrawable(primaryColor);
+        // Create the AccountHeader
+        AccountHeader headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withTextColor(Color.BLACK)
+                .withHeaderBackground(drawable)
+
+                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
+                    @Override
+                    public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
+                        return false;
+                    }
+                })
+                .build();
+
         drawer = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
+                .withAccountHeader(headerResult)
                 .withActionBarDrawerToggleAnimated(true)
+                .withDisplayBelowStatusBar(true)
+                // Elements
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withName("1"),
-                        new DividerDrawerItem(),
-                        new SecondaryDrawerItem().withName("2"),
-                        new SecondaryDrawerItem().withName("3"),
-                        new SecondaryDrawerItem().withName("4")
+                        new PrimaryDrawerItem().withName("Summary June")
+                                .withIcon(getResources().getDrawable(R.drawable.home))
+                                .withSelectedTextColor(primaryColor),
+                        new PrimaryDrawerItem().withName("History")
+                                .withIcon(getResources().getDrawable(R.drawable.history))
+                                .withSelectedTextColor(primaryColor),
+                        new PrimaryDrawerItem().withName("Statistics")
+                                .withIcon(getResources().getDrawable(R.drawable.statistics))
+                                .withSelectedTextColor(primaryColor)
                 )
                 .build();
     }
@@ -131,6 +168,8 @@ public class MainActivity extends BaseActivity {
         children2.add("Child_1");
         children2.add("Child_2");
         children2.add("Child_3");
+        groups.add(children2);
+        groups.add(children2);
         groups.add(children2);
 
         // Setting adapter
