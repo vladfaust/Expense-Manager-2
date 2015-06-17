@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.cheesehole.expencemanager.R;
 
 import bl.models.DatabaseInstrument;
+import bl.models.User;
 import ui.helpers.HomeExpListAdapter;
 
 import com.github.clans.fab.FloatingActionButton;
@@ -56,11 +57,10 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        startUI();
 
         // transact test
         DatabaseInstrument dbi = new DatabaseInstrument(this);
-
+        startUI();
     }
 
 
@@ -100,7 +100,6 @@ public class MainActivity extends BaseActivity {
 
 
     private void initToolbarText() {
-        //asd
         // TextViews of Toolbar
         money = (TextView)findViewById(R.id.MoneyValue);
         balance = (TextView)findViewById(R.id.Balance);
@@ -113,8 +112,8 @@ public class MainActivity extends BaseActivity {
         percentage.setTypeface(robotoLight);
         budget.setTypeface(robotoRegular);
 
-        money.setText("asd");
-        percentage.setText("789");
+        money.setText("$" + String.valueOf(User.balance));
+//        balance.setText(String.valueOf(User.));
     }
 
     // Add Drawer
