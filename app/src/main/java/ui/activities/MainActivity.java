@@ -112,8 +112,8 @@ public class MainActivity extends BaseActivity {
         percentage.setTypeface(robotoLight);
         budget.setTypeface(robotoRegular);
 
-        money.setText("$" + String.valueOf(User.balance));
-//        balance.setText(String.valueOf(User.));
+        money.setText("$850");
+//        money.setText("$" + String.valueOf(User.balance));
     }
 
     // Add Drawer

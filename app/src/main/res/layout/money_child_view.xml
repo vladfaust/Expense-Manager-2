@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/md_white_1000"
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="64dp"
+
         android:orientation="horizontal">
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/money_1"
                 android:text="1"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
@@ -21,9 +25,10 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/money_2"
                 android:text="2"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
@@ -32,9 +37,10 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/money_3"
                 android:text="3"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
@@ -43,25 +49,29 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/money_plus"
                 android:text="+"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
         </RelativeLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="64dp"
+
         android:orientation="horizontal">
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/money_4"
                 android:text="4"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
@@ -70,9 +80,10 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/money_5"
                 android:text="5"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
@@ -81,9 +92,10 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/money_6"
                 android:text="6"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
@@ -92,25 +104,29 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/money_minus"
                 android:text="-"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
         </RelativeLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="64dp"
+
         android:orientation="horizontal">
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/money_7"
                 android:text="7"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
@@ -119,9 +135,10 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/money_8"
                 android:text="8"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
@@ -130,9 +147,10 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/money_9"
                 android:text="9"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
@@ -141,25 +159,29 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/money_multiply"
                 android:text="X"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
         </RelativeLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="64dp"
+
         android:orientation="horizontal">
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/money_dot"
                 android:text="."
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
@@ -168,9 +190,10 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/money_0"
                 android:text="0"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
@@ -179,9 +202,10 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/money_equals"
                 android:text="="
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
@@ -190,9 +214,10 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/money_division"
                 android:text="/"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>

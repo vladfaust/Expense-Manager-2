@@ -45,7 +45,6 @@ public class ExpenseActivity extends Activity {
         ArrayList<ArrayList<String>> groups = new ArrayList<ArrayList<String>>();
         ArrayList<String> children1 = new ArrayList<String>();
         children1.add("Child_1");
-        children1.add("Child_2");
         groups.add(children1);
 
         ExpandableListView moneyList = (ExpandableListView)findViewById(R.id.moneyList);
