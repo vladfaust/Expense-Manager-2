@@ -59,9 +59,9 @@ public class FlexibleSpace implements ObservableScrollViewCallbacks {
 
         mFlexibleSpaceImageHeight = activity.getResources().getDimensionPixelSize(R.dimen.flexible_space_image_height);
         mActionBarSize = getActionBarSize();
-        //mOverlayView = activity.findViewById(R.id.overlay);
+        // mOverlayView = activity.findViewById(R.id.overlay);
         ExpandableListView listView = (ExpandableListView) activity.findViewById(R.id.list);
-        //listView.setScrollViewCallbacks(this);
+        // listView.setScrollViewCallbacks(this);
 
         // Set padding view for ListView. This is the flexible space.
         View paddingView = new View(context);

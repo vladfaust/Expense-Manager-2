@@ -5,4 +5,6 @@
     <string name="action_settings">Settings</string>
     <string name="addIncome">Add income</string>
     <string name="addExpense">Add expense</string>
+    <string name="addCategory">Type to add a category...</string>
+    <string name="addComment">Type to add a comment...</string>
 </resources>

@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="@dimen/marginLeftToList"
+            android:layout_marginLeft="@dimen/marginLeftToListHome"
             android:text="asd"
             android:textColor="@android:color/black"
             />
@@ -31,7 +31,7 @@
             android:layout_height="40dp"
             android:text="asd"
             android:layout_below="@+id/home_childName"
-            android:layout_marginLeft="@dimen/marginLeftToList"
+            android:layout_marginLeft="@dimen/marginLeftToListHome"
             />
     </RelativeLayout>
 
@@ -42,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:text="asd"
-        android:layout_marginRight="@dimen/marginLeftToList"
+        android:layout_marginRight="@dimen/marginLeftToListHome"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />

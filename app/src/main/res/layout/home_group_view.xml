@@ -10,7 +10,7 @@
         android:id="@+id/home_textGroup"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_marginLeft="@dimen/marginLeftToList"
+        android:layout_marginLeft="@dimen/marginLeftToListHome"
         android:layout_marginTop="32dp"
         android:textColor="@android:color/black"
         android:textStyle="bold"
@@ -22,7 +22,7 @@
         android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:id="@+id/progressBar"
-        android:layout_marginLeft="@dimen/marginLeftToList"
+        android:layout_marginLeft="@dimen/marginLeftToListHome"
         android:indeterminate="false"
         android:layout_alignParentBottom="true"/>
 </RelativeLayout>

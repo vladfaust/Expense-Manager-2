@@ -2,6 +2,7 @@ package ui.helpers;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -20,16 +21,15 @@ import java.util.ArrayList;
 import ui.activities.MainActivity;
 
 /**
- * Created by Жамбыл on 15.06.2015.
+ * Created by Жамбыл on 17.06.2015.
  */
-public class FinancesExpListViewAdapter extends BaseExpandableListAdapter {
-
+public class MoneyExpListAdapter extends BaseExpandableListAdapter {
     private ArrayList<ArrayList<String>> mGroups;
     private Context mContext;
     int lastExpandedGroupPosition;
     ExpandableListView listView;
 
-    public FinancesExpListViewAdapter(Context context, ArrayList<ArrayList<String>> groups) {
+    public MoneyExpListAdapter(Context context, ArrayList<ArrayList<String>> groups){
         mContext = context;
         mGroups = groups;
     }
@@ -77,7 +77,7 @@ public class FinancesExpListViewAdapter extends BaseExpandableListAdapter {
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.finances_group_view, null);
+            convertView = inflater.inflate(R.layout.money_group_view, null);
         }
 
         if (isExpanded){
@@ -86,41 +86,36 @@ public class FinancesExpListViewAdapter extends BaseExpandableListAdapter {
         else{
             //
         }
-
         // Parent's TextView
-        TextView group = (TextView) convertView.findViewById(R.id.finances_textGroup);
+        TextView group = (TextView) convertView.findViewById(R.id.moneyText);
         group.setTextSize(24);
-        group.setPadding(58,0,0,0);
 
         // Setting font
         group.setTypeface(MainActivity.robotoRegular);
 
         // Setting Parent' view height
+        group.getRootView().setBackgroundColor(Color.WHITE);
         group.getRootView().setMinimumHeight(280);
 
 
+        // Parent's ProgressBar
 
-        switch (groupPosition){
-            case 0:
-                group.setText("Cafes");
-                group.setTextColor(convertView.getResources().getColor(R.color.Cafes));
-                break;
-            case 1:
-                group.setText("Grocery");
-                group.setTextColor(convertView.getResources().getColor(R.color.Grocery));
-                break;
-        }
+        group.setText("$2.35");
+        group.setTextColor(convertView.getResources().getColor(R.color.Cafes));
 
         return convertView;
     }
 
     @Override
     public void onGroupExpanded(int groupPosition){
-        // collapse the old expanded group, if not the same
-        // as new group to expand
+        //collapse the old expanded group, if not the same
+        //as new group to expand
         if(groupPosition != lastExpandedGroupPosition) {
             listView.collapseGroup(lastExpandedGroupPosition);
         }
+        listView.setSelection(groupPosition);
+
+//        listView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, 800));
 
         super.onGroupExpanded(groupPosition);
         lastExpandedGroupPosition = groupPosition;
@@ -130,32 +125,7 @@ public class FinancesExpListViewAdapter extends BaseExpandableListAdapter {
                              View convertView, ViewGroup parent) {
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.finances_child_view, null);
-        }
-
-        // Child's TextView
-        TextView childName = (TextView) convertView.findViewById(R.id.finances_childName);
-
-        // Setting fonts
-        childName.setTypeface(MainActivity.robotoRegular);
-
-        childName.setTextSize(16);
-
-        // Setting Child's view height
-        childName.getRootView().setMinimumHeight(250);
-        childName.setPadding(58,0,0,0);
-
-
-        switch (childPosition) {
-            case 0:
-                childName.setText("Auchan");
-                break;
-            case 1:
-                childName.setText("Picnic");
-                break;
-            case 2:
-                childName.setText("A lot of cheese");
-                break;
+            convertView = inflater.inflate(R.layout.money_child_view, null);
         }
 
         return convertView;
@@ -166,3 +136,4 @@ public class FinancesExpListViewAdapter extends BaseExpandableListAdapter {
         return true;
     }
 }
+

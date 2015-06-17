@@ -124,7 +124,7 @@ public class HomeExpListAdapter extends BaseExpandableListAdapter {
         if(groupPosition != lastExpandedGroupPosition) {
             listView.collapseGroup(lastExpandedGroupPosition);
         }
-
+        listView.setSelection(groupPosition);
         super.onGroupExpanded(groupPosition);
         lastExpandedGroupPosition = groupPosition;
     }

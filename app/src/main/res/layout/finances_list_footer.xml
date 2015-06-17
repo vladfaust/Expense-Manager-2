@@ -3,13 +3,22 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/footerLayout">
-    <EditText
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="60dp"
-        android:text="Type to add a category..."
-        android:id="@+id/addCategory"
-        android:textColor="@color/md_grey_500" />
+        android:layout_height="50dp"
+        >
+
+        <EditText
+            android:layout_centerVertical="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/marginLeftToListFinances"
+            android:id="@+id/addCategory"
+            android:hint="@string/addCategory"
+            android:background="#00000000"
+            android:textColor="@color/md_grey_500" />
+    </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:background="@color/md_grey_300"
@@ -20,7 +29,7 @@
             android:layout_height="wrap_content"
             android:text="2.Date"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="60dp"
+            android:layout_marginLeft="@dimen/marginLeftToListFinances"
             android:textColor="@color/md_grey_500"
             android:id="@+id/dateText"/>
     </RelativeLayout>
@@ -28,10 +37,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/dateLayout"
-        android:layout_marginLeft="60dp"
+        android:layout_marginLeft="@dimen/marginLeftToListFinances"
         android:id="@+id/datePicker"
         android:text="button"/>
-    <RelativeLayout
+        <RelativeLayout
         android:layout_width="match_parent"
         android:background="@color/md_grey_300"
         android:layout_height="50dp"
@@ -42,17 +51,23 @@
             android:layout_height="wrap_content"
             android:text="3.Comment"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="60dp"
+            android:layout_marginLeft="@dimen/marginLeftToListFinances"
             android:textColor="@color/md_grey_500"
             android:id="@+id/commentText"/>
     </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        >
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="60dp"
-        android:text="Type to add a comment..."
-        android:layout_below="@+id/commentLayout"
+        android:layout_marginLeft="@dimen/marginLeftToListFinances"
+        android:hint="@string/addComment"
+        android:layout_centerVertical="true"
         android:textColor="@color/md_grey_500"
         android:id="@+id/addComment"
+        android:background="#00000000"
         />
+    </RelativeLayout>
 </LinearLayout>

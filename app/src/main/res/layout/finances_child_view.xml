@@ -16,35 +16,16 @@
         <TextView
             android:id="@+id/finances_childName"
             android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="@dimen/marginLeftToList"
+            android:layout_marginLeft="@dimen/marginLeftToListHome"
             android:text="asd"
             android:textColor="@android:color/black"
             />
 
-        <TextView
-            android:id="@+id/finances_childDate"
-            android:textColor="@color/md_grey_600"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_height="40dp"
-            android:text="asd"
-            android:layout_below="@+id/finances_childName"
-            android:layout_marginLeft="@dimen/marginLeftToList"
-            />
+
     </RelativeLayout>
 
-
-    <TextView
-        android:id="@+id/finances_childPrice"
-        android:textColor="@color/md_grey_600"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:text="asd"
-        android:layout_marginRight="@dimen/marginLeftToList"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
