@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.cheesehole.expencemanager.R;
 
+import bl.models.DatabaseInstrument;
+import bl.models.Transaction;
 import ui.helpers.HomeExpListAdapter;
 
 import com.github.clans.fab.FloatingActionButton;
@@ -50,6 +52,9 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         startUI();
+        // transact test
+        DatabaseInstrument dbi = new DatabaseInstrument(this);
+
     }
 
 
