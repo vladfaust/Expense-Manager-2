@@ -14,13 +14,16 @@ public class DatabaseInstrument {
 
     // Private fields
     DBHelper dbHelper;
-    SQLiteDatabase DB = dbHelper.getWritableDatabase();
+    SQLiteDatabase DB;
     // Constructor
     public DatabaseInstrument(Context context){
         dbHelper = new DBHelper(context);
+        DB = dbHelper.getWritableDatabase();
         createDB();
-        Category.List = loadAllCategories();
-        User.balance=currentBalance(loadAllTransactions());
+
+        User.balance=readBalanceFromDB();
+        changeBalanceBy(+193);
+        changeBalanceBy(-32);
 
     }
 
@@ -29,37 +32,63 @@ public class DatabaseInstrument {
         // Transactions table
         DB.execSQL("CREATE TABLE IF NOT EXISTS Transactions" +
                 "(" +
-                "TID int NOT NULL AUTO_INCREMENT," +
-                "Amount int NOT NULL," +
+                "TID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                "Amount INTEGER NOT NULL," +
                 "Comment varchar(255)," +
                 "SubCategory varchar(255)," +
-                "Date datetime,"+
-                "PRIMARY KEY (TID)" +
+                "Date datetime"+
                 ")");
         // Category table
         DB.execSQL("CREATE TABLE IF NOT EXISTS Category" +
                 "(" +
-                "CID int NOT NULL AUTO_INCREMENT," +
+                "CID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                 "Name varchar(255)," +
                 "Type varchar(10)," +
-                "PRIMARY KEY (CID)" +
+                "ColorID INTEGER"+
                 ")");
+
+        // User data
+        DB.execSQL("CREATE TABLE IF NOT EXISTS User" +
+                "(" +
+                "UID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                "Balance INTEGER"+
+                ")");
+
+        // Base categories
+        DB.execSQL("INSERT INTO Category(Name, Type, ColorID) VALUES ('Grocery', 'spends', 1)");
+        DB.execSQL("INSERT INTO Category(Name, Type, ColorID) VALUES ('Cafes', 'spends', 2)");
+        DB.execSQL("INSERT INTO Category(Name, Type, ColorID) VALUES ('Transport', 'spends', 1)");
+        DB.execSQL("INSERT INTO Category(Name, Type, ColorID) VALUES ('Salary', 'income', 1)");
+        DB.execSQL("INSERT INTO User(Balance) VALUES (0)");
+
+        Category.List = loadAllCategories();
+
         // Intermediate table to connect Categories and Transactions
         DB.execSQL("CREATE TABLE IF NOT EXISTS TransactionsCategory" +
                 "(" +
-                "CID int NOT NULL," +
-                "TID int NOT NULL" +
+                "CID INTEGER NOT NULL," +
+                "TID INTEGER NOT NULL" +
                 ")");
+
+        // Testing transactions
+        addTransaction("'test1'",1,"'Grocery'","'gift fo my ex'","'2015-06-11'");
+        addTransaction("'test2'",350,"'Transport'","'subway'","'2015-06-10'");
+        addTransaction("'test3'",10000,"'Salary'","'subway'","'2015-06-10'");
+
     }
 
     // Adding new transaction (by values)
     public void addTransaction(String comment, int amount, String category, String subCategory, String date){
         DB.execSQL("INSERT INTO Transactions (Amount,Comment,SubCategory,Date)\n" +
                 "VALUES( "+amount+","+comment+","+subCategory+","+date+")");
-        DB.execSQL("insert into TransactionCategory (CID,TID) " +
-                "values((select CID from Category where Name='"+category+"'), " +
-                "(select MAX(TID) from Transaction))");
-        User.balance=currentBalance(loadAllTransactions());
+        DB.execSQL("insert into TransactionsCategory (CID,TID) " +
+                "values((select CID from Category where Name="+category+"), " +
+                "(select MAX(TID) from Transactions))");
+        Category test = Category.getCategoryByString(category);
+        if (Category.getCategoryByString(category).getType().equals("income"))
+            changeBalanceBy(amount);
+        else
+            changeBalanceBy(-1 * amount);
     }
 
     // Adding new transaction (by object)
@@ -67,10 +96,13 @@ public class DatabaseInstrument {
         DB.execSQL("INSERT INTO Transactions (Amount,Comment,SubCategory,Date)\n" +
                 "VALUES( "+transaction.getAmount()+","+transaction.getComment()+","+
                 transaction.getSubCategory()+","+transaction.getDate()+")");
-        DB.execSQL("insert into TransactionCategory (CID,TID) " +
-                "values((select CID from Category where Name='"+category.getName()+"'), " +
-                "(select MAX(TID) from Transaction))");
-        User.balance=currentBalance(loadAllTransactions());
+        DB.execSQL("insert into TransactionsCategory (CID,TID) " +
+                "values((select CID from Category where Name="+category.getName()+"), " +
+                "(select MAX(TID) from Transactions))");
+        if (category.getType().equals("income"))
+            changeBalanceBy(transaction.getAmount());
+        else
+            changeBalanceBy(-1 * transaction.getAmount());
     }
 
     // Editing of existing transaction without changing category (by id)
@@ -81,12 +113,12 @@ public class DatabaseInstrument {
 
     // Changing of transact category (by object)
     public void changeTransactionCategory(Transaction transaction, Category category){
-        DB.execSQL("update TransactionCategory set CID="+category.getCid()+" where TID="+transaction.getId()+"");
+        DB.execSQL("update TransactionsCategory set CID="+category.getCid()+" where TID="+transaction.getId()+"");
     }
 
     // Changing of transact category (by id)
     public void changeTransactionCategory(int cid, int tid){
-        DB.execSQL("update TransactionCategory set CID="+cid+" where TID="+tid+"");
+        DB.execSQL("update TransactionsCategory set CID="+cid+" where TID="+tid+"");
     }
 
     //Load all categories from database to string array list
@@ -102,6 +134,7 @@ public class DatabaseInstrument {
             category.setCid(cursor.getInt(0));
             category.setName(cursor.getString(1));
             category.setType(cursor.getString(2));
+            category.setColorID(cursor.getInt(3));
             list.add(category);
         }
         return list;
@@ -113,9 +146,8 @@ public class DatabaseInstrument {
         ArrayList<Transaction> list = new ArrayList<Transaction>();
 
 
-        String query = String.format("SELECT * FROM Transactions");
+        String query = String.format("SELECT * FROM Transactions inner join TransactionsCategory on Transactions.TID = TransactionsCategory.TID");
         Cursor cursor  = dbHelper.getReadableDatabase().rawQuery(query, null);
-
         while (cursor.moveToNext()) {
             Transaction transaction = new Transaction();
             transaction.setId(cursor.getInt(0));
@@ -129,17 +161,34 @@ public class DatabaseInstrument {
         return list;
     }
 
-    // Get current balance
-    public int currentBalance(ArrayList<Transaction> list){
-        int balance=0;
-        for (Transaction transaction: list){
-            if (transaction.category.getType()=="income")
-                balance+=transaction.getAmount();
-            else
-                balance-=transaction.getAmount();
-        }
-        return balance;
+    // Get current balance (using all transactions)
+//    public int currentBalance(ArrayList<Transaction> list){
+//        int balance=0;
+//        for (Transaction transaction: list){
+//            if (transaction.category.getType().equals("income"))
+//                balance+=transaction.getAmount();
+//            else
+//                balance-=transaction.getAmount();
+//        }
+//        return balance;
+//    }
+
+    public int readBalanceFromDB(){
+        Cursor cursor = dbHelper.getReadableDatabase().rawQuery("SELECT Balance FROM User where User.UID=1", null);
+        cursor.moveToFirst();
+        return cursor.getInt(0);
     }
+
+    public void changeBalanceBy(int amount){
+        User.balance=User.balance+amount;
+        DB.execSQL("UPDATE User SET Balance="+User.balance+" where User.UID=1");
+    }
+
+    public void changeBalanceTo(int amount){
+        User.balance=amount;
+        DB.execSQL("UPDATE User SET Balance="+User.balance+" where User.UID=1");
+    }
+
 //
 //    // Full editing of existing transaction (by object)
 //    public void editTransaction(Transaction transaction, String comment, int amount, String category, String subCategory){

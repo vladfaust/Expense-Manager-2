@@ -9,6 +9,7 @@ public class Category {
     int cid;
     String name;
     String type;
+    int colorID;
 
     public int getCid() {
         return cid;
@@ -34,6 +35,14 @@ public class Category {
         this.cid = cid;
     }
 
+    public void setColorID(int colorID) {
+        this.colorID = colorID;
+    }
+
+    public int getColorID() {
+        return colorID;
+    }
+
     // List of all categories
     public static ArrayList<Category> List = new ArrayList<Category>();
 
@@ -41,6 +50,15 @@ public class Category {
     public static Category getCategoryByID(int _cid){
         for (int i=0; i<List.size()-1; i++){
             if (List.get(i).getCid() == _cid){
+                return List.get(i);
+            }
+        }
+        return null;
+    }
+
+    public static Category getCategoryByString(String _cat){
+        for (int i=0; i<List.size()-1; i++){
+            if (("'"+List.get(i).getName()+"'").equals(_cat)){
                 return List.get(i);
             }
         }
