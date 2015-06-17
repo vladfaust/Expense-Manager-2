@@ -100,6 +100,7 @@ public class MainActivity extends BaseActivity {
 
 
     private void initToolbarText() {
+        //asd
         // TextViews of Toolbar
         money = (TextView)findViewById(R.id.MoneyValue);
         balance = (TextView)findViewById(R.id.Balance);
