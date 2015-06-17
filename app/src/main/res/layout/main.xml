@@ -41,14 +41,14 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="42dp"
             android:layout_alignParentLeft="true"
-            android:id="@+id/Money"
+            android:id="@+id/MoneyValue"
             android:textColor="@color/md_white_1000"
             android:textSize="45sp"
             android:text="$850"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/Money"
+            android:layout_below="@+id/MoneyValue"
             android:id="@+id/Balance"
             android:layout_marginLeft="42dp"
             android:textSize="25sp"
@@ -58,14 +58,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="180dp"
-            android:id="@+id/Percentage"
+            android:id="@+id/PercentageValue"
             android:textColor="@color/md_white_1000"
             android:textSize="45sp"
             android:text="93%"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/Percentage"
+            android:layout_below="@+id/PercentageValue"
             android:textColor="@color/md_grey_300"
             android:id="@+id/Budget"
             android:layout_marginLeft="180dp"
