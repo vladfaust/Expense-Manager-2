@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -58,7 +61,6 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        // transact test
         DatabaseInstrument dbi = new DatabaseInstrument(this);
         startUI();
     }
@@ -74,7 +76,6 @@ public class MainActivity extends BaseActivity {
         initExpandableListView();
         initFAB();
     }
-
 
     // Setting Fonts
     private void getFonts() {

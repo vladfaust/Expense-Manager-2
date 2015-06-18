@@ -93,7 +93,7 @@ public class HomeExpListAdapter extends BaseExpandableListAdapter {
         group.setTypeface(MainActivity.robotoRegular);
 
         // Setting Parent' view height
-        group.getRootView().setMinimumHeight(280);
+        //group.getRootView().setMinimumHeight(280);
 
 
         // Parent's ProgressBar
@@ -151,7 +151,7 @@ public class HomeExpListAdapter extends BaseExpandableListAdapter {
         childPrice.setTextSize(16);
 
         // Setting Child's view height
-        childName.getRootView().setMinimumHeight(250);
+        //childName.getRootView().setMinimumHeight(250);
 
         childPrice.setTextColor(convertView.getResources().getColor(R.color.ChildMoneyColor));
         childPrice.setTextSize(22);

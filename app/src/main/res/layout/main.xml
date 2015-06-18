@@ -4,7 +4,7 @@
     android:id="@+id/mainBody"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fab="http://schemas.android.com/tools"
     android:orientation="vertical"
@@ -12,23 +12,19 @@
     android:layout_height="match_parent"
     android:background="@color/MainBG">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_height="wrap_content"
-        android:id="@+id/ToolbarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:background="@color/HomeColorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-        </android.support.v7.widget.Toolbar>
-    </RelativeLayout>
+        android:layout_width="match_parent"
+        android:background="@color/HomeColorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+    </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
+        android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:id="@+id/spaceBelowToolbar"
@@ -73,15 +69,18 @@
             android:text="BUDGET"/>
 
     </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
     <ExpandableListView
+        android:layout_below="@+id/spaceBelowToolbar"
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
+
 
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/fab"
@@ -89,7 +88,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="15dp"
         android:layout_marginBottom="30dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
@@ -105,5 +104,5 @@
     </com.github.clans.fab.FloatingActionMenu>
     </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>
 </RelativeLayout>

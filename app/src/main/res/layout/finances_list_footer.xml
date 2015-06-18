@@ -3,21 +3,6 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/footerLayout">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        >
-
-        <EditText
-            android:layout_centerVertical="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/marginLeftToListFinances"
-            android:id="@+id/addCategory"
-            android:hint="@string/addCategory"
-            android:background="#00000000"
-            android:textColor="@color/md_grey_500" />
-    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

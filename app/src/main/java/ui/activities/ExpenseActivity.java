@@ -1,9 +1,13 @@
 package ui.activities;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
@@ -39,6 +43,16 @@ public class ExpenseActivity extends Activity {
         initExpandableListView();
         initEditTexts(footer);
         initMoneyView();
+        setStatusBarColor();
+    }
+
+    private void setStatusBarColor() {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(getResources().getColor(R.color.FinancesColorPrimaryDark));
+        }
     }
 
     private void initMoneyView() {
@@ -96,11 +110,11 @@ public class ExpenseActivity extends Activity {
 
     private void initEditTexts(LinearLayout footer) {
         // EditTexts
-        final EditText addCategory = (EditText)footer.findViewById(R.id.addCategory);
+//        final EditText addCategory = (EditText)footer.findViewById(R.id.addCategory);
         final EditText addComment = (EditText)footer.findViewById(R.id.addComment);
 
         // Setting auto-hint
-        initEditTextHint(addCategory, getResources().getString(R.string.addCategory));
+//        initEditTextHint(addCategory, getResources().getString(R.string.addCategory));
         initEditTextHint(addComment, getResources().getString(R.string.addComment));
     }
 

@@ -1,11 +1,17 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="windowActionBar">false</item>
         <item name="colorPrimary">@color/HomeColorPrimary</item>
         <item name="colorPrimaryDark">@color/HomeColorPrimaryDark</item>
         <!-- Customize your theme here. -->
     </style>
+
+
     <style name="FinancesTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="windowActionBar">false</item>
         <item name="colorPrimary">@color/FinancesColorPrimary</item>
         <item name="colorPrimaryDark">@color/FinancesColorPrimaryDark</item>
         <!-- Customize your theme here. -->
