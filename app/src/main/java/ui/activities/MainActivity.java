@@ -268,7 +268,6 @@ public class MainActivity extends BaseActivity {
         }
         else {
             alpha = new AlphaAnimation(0.1F, 1F);
-
         }
 
         alpha.setDuration(durationOfAnimation); // 250ms

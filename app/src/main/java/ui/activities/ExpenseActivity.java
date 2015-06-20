@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
@@ -14,8 +15,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.cheesehole.expencemanager.R;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import ui.helpers.FinancesExpListViewAdapter;
 import ui.helpers.MoneyExpListAdapter;
@@ -23,7 +26,7 @@ import ui.helpers.MoneyExpListAdapter;
 /**
  * Created by Жамбыл on 13.06.2015.
  */
-public class ExpenseActivity extends Activity {
+public class ExpenseActivity extends Activity implements DatePickerDialog.OnDateSetListener {
 
     // Views
     Toolbar toolbar;
@@ -31,6 +34,7 @@ public class ExpenseActivity extends Activity {
     ExpandableListView listView;
     MoneyExpListAdapter moneyAdapter;
     EditText addComment;
+    Button datePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +48,12 @@ public class ExpenseActivity extends Activity {
         initToolbar();
         initFooter();
         initEditText();
+        initDatePicker();
         initMoneyView();
         initExpandableListView();
         setStatusBarColor();
     }
+
 
     private void setStatusBarColor() {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -160,5 +166,31 @@ public class ExpenseActivity extends Activity {
                 moneyAdapter.close();
             }
         });
+    }
+
+
+    private void initDatePicker() {
+        datePicker = (Button)footer.findViewById(R.id.datePicker);
+        datePicker.setText("Today");
+        datePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar now = Calendar.getInstance();
+                DatePickerDialog dpd = DatePickerDialog.newInstance(
+                        ExpenseActivity.this,
+                        now.get(Calendar.YEAR),
+                        now.get(Calendar.MONTH),
+                        now.get(Calendar.DAY_OF_MONTH)
+                );
+                dpd.show(getFragmentManager(), "Datepickerdialog");
+            }
+        });
+    }
+    /*
+        OnDateSetListener method
+     */
+    @Override
+    public void onDateSet(DatePickerDialog datePickerDialog, int i, int i1, int i2) {
+
     }
 }
