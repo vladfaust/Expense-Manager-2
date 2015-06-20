@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -28,10 +29,12 @@ public class FinancesExpListViewAdapter extends BaseExpandableListAdapter {
     private Context mContext;
     int lastExpandedGroupPosition;
     ExpandableListView listView;
+    MoneyExpListAdapter moneyAdapter;
 
-    public FinancesExpListViewAdapter(Context context, ArrayList<ArrayList<String>> groups) {
+    public FinancesExpListViewAdapter(Context context, ArrayList<ArrayList<String>> groups, MoneyExpListAdapter moneyAdapter) {
         mContext = context;
         mGroups = groups;
+        this.moneyAdapter = moneyAdapter;
     }
 
     @Override
@@ -121,6 +124,7 @@ public class FinancesExpListViewAdapter extends BaseExpandableListAdapter {
         if(groupPosition != lastExpandedGroupPosition) {
             listView.collapseGroup(lastExpandedGroupPosition);
         }
+        moneyAdapter.close();
 
         super.onGroupExpanded(groupPosition);
         lastExpandedGroupPosition = groupPosition;

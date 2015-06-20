@@ -1,7 +1,6 @@
 package ui.activities;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -29,6 +28,9 @@ public class ExpenseActivity extends Activity {
     // Views
     Toolbar toolbar;
     LinearLayout footer;
+    ExpandableListView listView;
+    MoneyExpListAdapter moneyAdapter;
+    EditText addComment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +42,10 @@ public class ExpenseActivity extends Activity {
 
     private void startUI() {
         initToolbar();
-        initExpandableListView();
-        initEditTexts(footer);
+        initFooter();
+        initEditText();
         initMoneyView();
+        initExpandableListView();
         setStatusBarColor();
     }
 
@@ -62,8 +65,8 @@ public class ExpenseActivity extends Activity {
         groups.add(children1);
 
         ExpandableListView moneyList = (ExpandableListView)findViewById(R.id.moneyList);
-        MoneyExpListAdapter adapter = new MoneyExpListAdapter(getApplicationContext(), groups);
-        moneyList.setAdapter(adapter);
+        moneyAdapter = new MoneyExpListAdapter(getApplicationContext(), groups,addComment);
+        moneyList.setAdapter(moneyAdapter);
     }
 
     private void initToolbar() {
@@ -84,7 +87,7 @@ public class ExpenseActivity extends Activity {
 
     }
     private void initExpandableListView() {
-        ExpandableListView listView = (ExpandableListView)findViewById(R.id.finances_list);
+        listView = (ExpandableListView)findViewById(R.id.finances_list);
 
         // Filling listView
         ArrayList<ArrayList<String>> groups = new ArrayList<ArrayList<String>>();
@@ -99,37 +102,63 @@ public class ExpenseActivity extends Activity {
         groups.add(children2);
 
         // Adding Views below ExpandedListView
-        footer = (LinearLayout) getLayoutInflater().inflate(R.layout.finances_list_footer, null);
         listView.addFooterView(footer);
 
+        footer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                moneyAdapter.close();
+            }
+        });
+
         // Setting adapter. It's important to set adapter AFTER adding header/footer
-        FinancesExpListViewAdapter adapter = new FinancesExpListViewAdapter(getApplicationContext(), groups);
+        FinancesExpListViewAdapter adapter = new FinancesExpListViewAdapter(getApplicationContext(), groups, moneyAdapter);
         listView.setAdapter(adapter);
 
     }
 
-    private void initEditTexts(LinearLayout footer) {
-        // EditTexts
-//        final EditText addCategory = (EditText)footer.findViewById(R.id.addCategory);
-        final EditText addComment = (EditText)footer.findViewById(R.id.addComment);
-
-        // Setting auto-hint
-//        initEditTextHint(addCategory, getResources().getString(R.string.addCategory));
-        initEditTextHint(addComment, getResources().getString(R.string.addComment));
+    private void initFooter() {
+        footer = (LinearLayout) getLayoutInflater().inflate(R.layout.finances_list_footer, null);
     }
 
-    private void initEditTextHint(final EditText editText, final String hint) {
-        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+    @Override
+    public void onBackPressed() {
+        // Close calc if it's open
+        if(MoneyExpListAdapter.isListExpanded){
+            moneyAdapter.close();
+        }
+        else {
+            super.onBackPressed();
+        }
+    }
+
+    private void initEditText() {
+        // EditText
+        addComment = (EditText)footer.findViewById(R.id.addComment);
+
+        // Setting auto-hint
+        addComment.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus)
-                    editText.setHint("");
+                if (hasFocus) {
+                    addComment.setHint("");
+                    addComment.setFocusableInTouchMode(true);
+                    // Close calc if it's open
+                    moneyAdapter.close();
+                }
 
-                if(!hasFocus)
-                    if(editText.getHint().equals(""))
-                    editText.setHint(hint);
+                if (!hasFocus) {
+                    if (addComment.getHint().equals(""))
+                        addComment.setHint(getResources().getString(R.string.addComment));
+                }
+            }
+        });
+        addComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addComment.setFocusableInTouchMode(true);
+                moneyAdapter.close();
             }
         });
     }
-
 }

@@ -7,8 +7,10 @@ import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
@@ -32,12 +34,15 @@ public class MoneyExpListAdapter extends BaseExpandableListAdapter {
     private Button [] mathButtons;
     private Button delete;
     String currentText;
+    public static boolean isListExpanded = false;
+    EditText mAddComment;
 
     // Values
 
-    public MoneyExpListAdapter(Context context, ArrayList<ArrayList<String>> groups) {
+    public MoneyExpListAdapter(Context context, ArrayList<ArrayList<String>> groups, EditText addComment) {
         mContext = context;
         mGroups = groups;
+        mAddComment = addComment;
     }
 
     private void initButtons(View convertView) {
@@ -113,11 +118,9 @@ public class MoneyExpListAdapter extends BaseExpandableListAdapter {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.money_group_view, null);
         }
-
+        isListExpanded = isExpanded;
         if (isExpanded) {
-            //
         } else {
-            //
         }
 
         delete = (Button)convertView.findViewById(R.id.money_delete);
@@ -148,6 +151,10 @@ public class MoneyExpListAdapter extends BaseExpandableListAdapter {
 
         return convertView;
     }
+    // Close calc
+    public void close(){
+        listView.collapseGroup(0);
+    }
     private void refreshMoneyText(){
         moneyText.setText(currentText);
     }
@@ -159,6 +166,7 @@ public class MoneyExpListAdapter extends BaseExpandableListAdapter {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.money_child_view, null);
         }
+
 
         initButtons(convertView);
 
@@ -193,14 +201,31 @@ public class MoneyExpListAdapter extends BaseExpandableListAdapter {
         }
     };
 
+    @Override
+    public void onGroupExpanded(int groupPosition) {
+        InputMethodManager imm = (InputMethodManager)mContext.getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mAddComment.getWindowToken(), 0);
+        mAddComment.setFocusableInTouchMode(false);
+//        mAddComment.setFocusable(false);
+        super.onGroupExpanded(groupPosition);
+    }
+
+    @Override
+    public void onGroupCollapsed(int groupPosition) {
+        mAddComment.setFocusableInTouchMode(true);
+        super.onGroupCollapsed(groupPosition);
+    }
 
     private boolean checkValue(String currentText, String[] dangValues, String value){
         boolean isDangValue = false;
 
         // Checking is the value is dangerous
         for(String notStart : dangValues) {
-            if(value.equals(notStart))
+            if(value.equals(notStart)) {
                 isDangValue = true;
+                break;
+            }
         }
 
         // Preventing type too much

@@ -4,15 +4,18 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.os.Build;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cheesehole.expencemanager.R;
+import com.github.clans.fab.FloatingActionMenu;
 
 import java.util.ArrayList;
 
@@ -27,10 +30,17 @@ public class HomeExpListAdapter extends BaseExpandableListAdapter {
     private Context mContext;
     int lastExpandedGroupPosition;
     ExpandableListView listView;
+    Toolbar mToolbar;
+    RelativeLayout mSpaceBelowToolbar;
+    FloatingActionMenu mFabMenu;
 
-    public HomeExpListAdapter(Context context, ArrayList<ArrayList<String>> groups){
+    public HomeExpListAdapter(Context context, ArrayList<ArrayList<String>> groups,
+                              Toolbar toolbar, RelativeLayout spaceBelowToolbar, FloatingActionMenu fabMenu){
         mContext = context;
         mGroups = groups;
+        mToolbar = toolbar;
+        mSpaceBelowToolbar = spaceBelowToolbar;
+        mFabMenu = fabMenu;
     }
 
     @Override
@@ -73,7 +83,10 @@ public class HomeExpListAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
                              ViewGroup parent) {
         listView = (ExpandableListView) parent;
-
+        if(mFabMenu!=null && mFabMenu.isOpened())
+        {
+            mFabMenu.close(false);
+        }
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.home_group_view, null);
@@ -131,6 +144,11 @@ public class HomeExpListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
                              View convertView, ViewGroup parent) {
+        if(mFabMenu!=null && mFabMenu.isOpened())
+        {
+            mFabMenu.close(false);
+        }
+
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.home_child_view, null);

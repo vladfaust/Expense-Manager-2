@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -71,10 +73,10 @@ public class MainActivity extends BaseActivity {
         // UI blocks
         getFonts();
         getColors();
+        initFAB();
         initToolbar();
         initDrawer();
         initExpandableListView();
-        initFAB();
     }
 
     // Setting Fonts
@@ -95,8 +97,15 @@ public class MainActivity extends BaseActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         setTitle(null);
+        // Toolbar
         toolbar = (Toolbar)findViewById(R.id.toolbar);
+        // SpaceBelowToolbar
+        spaceBelowToolbar = (RelativeLayout)findViewById(R.id.spaceBelowToolbar);
         initToolbarText();
+
+        // SettingOnclickListener to close fab is it's open
+        toolbar.setOnClickListener(closeFabWithoutAnim);
+        spaceBelowToolbar.setOnClickListener(closeFabWithoutAnim);
     }
 
 
@@ -125,7 +134,6 @@ public class MainActivity extends BaseActivity {
                 .withActivity(this)
                 .withTextColor(Color.BLACK)
                 .withHeaderBackground(drawable)
-
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
                     public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
@@ -140,6 +148,24 @@ public class MainActivity extends BaseActivity {
                 .withAccountHeader(headerResult)
                 .withActionBarDrawerToggleAnimated(true)
                 .withDisplayBelowStatusBar(true)
+                .withOnDrawerListener(new Drawer.OnDrawerListener() {
+                    @Override
+                    public void onDrawerOpened(View view) {
+                        if (fabMenu != null && fabMenu.isOpened()) {
+                            fabMenu.close(false);
+                        }
+                    }
+
+                    @Override
+                    public void onDrawerClosed(View view) {
+
+                    }
+
+                    @Override
+                    public void onDrawerSlide(View view, float v) {
+
+                    }
+                })
                 // Elements
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName("Summary June")
@@ -173,8 +199,9 @@ public class MainActivity extends BaseActivity {
         groups.add(children2);
         groups.add(children2);
 
+
         // Setting adapter
-        HomeExpListAdapter adapter = new HomeExpListAdapter(getApplicationContext(), groups);
+        HomeExpListAdapter adapter = new HomeExpListAdapter(getApplicationContext(), groups, toolbar,spaceBelowToolbar,fabMenu);
         listView.setAdapter(adapter);
 
         //todo why 0?
@@ -214,110 +241,75 @@ public class MainActivity extends BaseActivity {
         fabMenu.addMenuButton(expenseFab);
 
         fabMenu.setMenuButtonColorNormal(getResources().getColor(R.color.FabColor));
+
         fabMenu.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
             @Override
             public void onMenuToggle(boolean b) {
-                setInvisibility(!fabMenu.isOpened());
+                setInvisibility(fabMenu.isOpened());
             }
         });
 
+        fabMenu.setClosedOnTouchOutside(true);
         // Showing Fab-menu
         fabMenu.showMenuButton(true);
     }
 
     private void closeFab() {
-        runInvisibility = false;
+        setInvisibility(true);
         fabMenu.close(true);
     }
 
-    private void setInvisibility(boolean Invisible) {
-        spaceBelowToolbar = (RelativeLayout)findViewById(R.id.spaceBelowToolbar);
+    public void setInvisibility(boolean isFabOpened) {
+        AlphaAnimation alpha;
+        final int durationOfAnimation = 250;
 
-        if(!Invisible) {
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    boolean sleeping = false;
-                    int animationDuration = 150;
-                    int currentTime = 0;
-                    float alphaWhite = 0.3f;
-                    while(currentTime<animationDuration) {
-                        setAlphaToViews(alphaWhite);
-                        while (!sleeping && runInvisibility) {
-                            try {
-                                Thread.sleep(50);
-                                sleeping = true;
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        sleeping = false;
-                        currentTime += 50;
-                        alphaWhite -= 0.1f;
-                    }
-                }
-            });
-            thread.start();
+        if(isFabOpened) {
+            alpha = new AlphaAnimation(1F, 0.1F);
         }
         else {
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    boolean sleeping = false;
-                    int animationDuration = 300;
-                    int currentTime = 0;
-                    float alphaNormal = 0.1f;
-                    while(currentTime < animationDuration) {
-                        setAlphaToViews(alphaNormal);
-                        while (!sleeping && runInvisibility) {
-                            try {
-                                Thread.sleep(50);
-                                sleeping = true;
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        sleeping = false;
-                        currentTime += 50;
-                        alphaNormal += 0.3f;
-                        if(currentTime == animationDuration)
-                            setAlphaToViews(100);
-                    }
-                }
-            });
-            thread.start();
+            alpha = new AlphaAnimation(0.1F, 1F);
+
         }
-    }
 
-    private void setAlphaToViews(float alpha) {
-        toolbar.setAlpha(alpha);
-        spaceBelowToolbar.setAlpha(alpha);
-        listView.setAlpha(alpha);
-    }
+        alpha.setDuration(durationOfAnimation); // 250ms
+        alpha.setFillAfter(true); // Tell it to persist after the animation ends
 
+        RelativeLayout listViewLayout = (RelativeLayout)findViewById(R.id.listViewLayout);
+
+        // And then on your layout
+        toolbar.startAnimation(alpha);
+        spaceBelowToolbar.startAnimation(alpha);
+        listViewLayout.startAnimation(alpha);
+    }
 
     /*
        BackPressed Button Handler
      */
     @Override
     public void onBackPressed() {
-
-        if(drawer!=null && !drawer.isDrawerOpen())
-            if(fabMenu!=null && !fabMenu.isOpened())
+        if(drawer!=null && !drawer.isDrawerOpen()) {
+            if (fabMenu != null && !fabMenu.isOpened()) {
                 super.onBackPressed();
-            else
+            }
             // Close fabMenu if it's open.
+            else {
                 closeFab();
-        else
-            // Close drawer if it's open.
+            }
+        }
+        // Close drawer if it's open.
+        else {
             drawer.closeDrawer();
-
+        }
     }
-    /*
-       Menu methods
-     */
 
-    @Override
+    View.OnClickListener closeFabWithoutAnim = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (fabMenu != null && fabMenu.isOpened()) {
+                fabMenu.close(false);
+            }
+        }
+    };
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);

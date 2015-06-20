@@ -69,12 +69,19 @@
             android:text="BUDGET"/>
 
     </RelativeLayout>
-    <ExpandableListView
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listViewLayout"
         android:layout_below="@+id/spaceBelowToolbar"
-        android:id="@+id/list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        >
+        <ExpandableListView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </RelativeLayout>
+
 
     <RelativeLayout
         android:layout_width="wrap_content"
