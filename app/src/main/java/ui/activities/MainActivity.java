@@ -1,20 +1,14 @@
 package ui.activities;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,17 +16,11 @@ import android.widget.TextView;
 import com.cheesehole.expencemanager.R;
 
 import bl.models.DatabaseInstrument;
-import bl.models.User;
 import ui.helpers.HomeExpListAdapter;
+import ui.helpers.MyDrawer;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
-import com.mikepenz.materialdrawer.accountswitcher.AccountHeaderBuilder;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import java.util.ArrayList;
 
@@ -40,12 +28,12 @@ public class MainActivity extends BaseActivity {
 
     // Views
     private Toolbar toolbar;
-    Drawer drawer;
-    TextView money,balance,percentage,budget;
-    RelativeLayout spaceBelowToolbar;
-    ExpandableListView listView;
-    RelativeLayout toolbarOverlay;
-    FloatingActionMenu fabMenu;
+    private TextView money,balance,percentage,budget;
+    private RelativeLayout spaceBelowToolbar;
+    private ExpandableListView listView;
+    private RelativeLayout toolbarOverlay;
+    private FloatingActionMenu fabMenu;
+    private MyDrawer draweBuilder;
 
     // Main color
     int primaryColor;
@@ -128,57 +116,9 @@ public class MainActivity extends BaseActivity {
 
     // Add Drawer
     private void initDrawer() {
-        ColorDrawable drawable = new ColorDrawable(primaryColor);
-        // Create the AccountHeader
-        AccountHeader headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withTextColor(Color.BLACK)
-                .withHeaderBackground(drawable)
-                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
-                    @Override
-                    public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
-                        return false;
-                    }
-                })
-                .build();
-
-        drawer = new DrawerBuilder()
-                .withActivity(this)
-                .withToolbar(toolbar)
-                .withAccountHeader(headerResult)
-                .withActionBarDrawerToggleAnimated(true)
-                .withDisplayBelowStatusBar(true)
-                .withOnDrawerListener(new Drawer.OnDrawerListener() {
-                    @Override
-                    public void onDrawerOpened(View view) {
-                        if (fabMenu != null && fabMenu.isOpened()) {
-                            fabMenu.close(false);
-                        }
-                    }
-
-                    @Override
-                    public void onDrawerClosed(View view) {
-
-                    }
-
-                    @Override
-                    public void onDrawerSlide(View view, float v) {
-
-                    }
-                })
-                // Elements
-                .addDrawerItems(
-                        new PrimaryDrawerItem().withName("Summary June")
-                                .withIcon(getResources().getDrawable(R.drawable.home))
-                                .withSelectedTextColor(primaryColor),
-                        new PrimaryDrawerItem().withName("History")
-                                .withIcon(getResources().getDrawable(R.drawable.history))
-                                .withSelectedTextColor(primaryColor),
-                        new PrimaryDrawerItem().withName("Statistics")
-                                .withIcon(getResources().getDrawable(R.drawable.statistics))
-                                .withSelectedTextColor(primaryColor)
-                )
-                .build();
+        draweBuilder = new MyDrawer(this, toolbar,primaryColor);
+        draweBuilder.setFabMenu(fabMenu);
+        draweBuilder.create();
     }
 
     // Add ExpandableListView
@@ -195,8 +135,6 @@ public class MainActivity extends BaseActivity {
         children2.add("Child_1");
         children2.add("Child_2");
         children2.add("Child_3");
-        groups.add(children2);
-        groups.add(children2);
         groups.add(children2);
 
 
@@ -215,6 +153,7 @@ public class MainActivity extends BaseActivity {
     private void initFAB() {
         // Fab-menu
         fabMenu = (FloatingActionMenu) findViewById(R.id.fab);
+
         // Income FAB
         FloatingActionButton incomeFab = new FloatingActionButton(this);
         incomeFab.setButtonSize(FloatingActionButton.SIZE_MINI);
@@ -286,7 +225,7 @@ public class MainActivity extends BaseActivity {
      */
     @Override
     public void onBackPressed() {
-        if(drawer!=null && !drawer.isDrawerOpen()) {
+        if(draweBuilder.getDrawer() !=null && !draweBuilder.getDrawer().isDrawerOpen()) {
             if (fabMenu != null && !fabMenu.isOpened()) {
                 super.onBackPressed();
             }
@@ -297,7 +236,7 @@ public class MainActivity extends BaseActivity {
         }
         // Close drawer if it's open.
         else {
-            drawer.closeDrawer();
+            draweBuilder.getDrawer().closeDrawer();
         }
     }
 

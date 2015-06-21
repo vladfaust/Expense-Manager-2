@@ -9,6 +9,7 @@
         android:layout_height="64dp"
 
         android:orientation="horizontal">
+
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -16,8 +17,9 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/money_1"
-                android:text="1"
+                android:id="@+id/money_7"
+                android:background="@color/numbers"
+                android:text="7"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
         </RelativeLayout>
@@ -28,8 +30,10 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/money_2"
-                android:text="2"
+                android:id="@+id/money_8"
+                android:background="@color/numbers"
+
+                android:text="8"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
         </RelativeLayout>
@@ -40,8 +44,9 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/money_3"
-                android:text="3"
+                android:id="@+id/money_9"
+                android:background="@color/numbers"
+                android:text="9"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
         </RelativeLayout>
@@ -53,6 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/money_plus"
+                android:background="@color/operations"
                 android:text="+"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
@@ -72,6 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/money_4"
+                android:background="@color/numbers"
                 android:text="4"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
@@ -84,6 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/money_5"
+                android:background="@color/numbers"
                 android:text="5"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
@@ -96,6 +104,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/money_6"
+                android:background="@color/numbers"
                 android:text="6"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
@@ -108,6 +117,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/money_minus"
+                android:background="@color/operations"
+
                 android:text="-"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
@@ -126,8 +137,9 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/money_7"
-                android:text="7"
+                android:id="@+id/money_1"
+                android:background="@color/numbers"
+                android:text="1"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
         </RelativeLayout>
@@ -138,8 +150,9 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/money_8"
-                android:text="8"
+                android:id="@+id/money_2"
+                android:background="@color/numbers"
+                android:text="2"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
         </RelativeLayout>
@@ -150,8 +163,9 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/money_9"
-                android:text="9"
+                android:id="@+id/money_3"
+                android:background="@color/numbers"
+                android:text="3"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
         </RelativeLayout>
@@ -163,6 +177,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/money_multiply"
+                android:background="@color/operations"
+
                 android:text="X"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
@@ -183,6 +199,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/money_dot"
                 android:text="."
+                android:background="@color/numbers"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
         </RelativeLayout>
@@ -194,6 +211,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/money_0"
+                android:background="@color/numbers"
                 android:text="0"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
@@ -206,6 +224,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/money_equals"
+                android:background="@color/numbers"
                 android:text="="
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>
@@ -218,6 +237,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/money_division"
+                android:background="@color/operations"
                 android:text="/"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>

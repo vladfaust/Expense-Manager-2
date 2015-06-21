@@ -135,19 +135,24 @@ public class MoneyExpListAdapter extends BaseExpandableListAdapter {
                 }
             }
         });
+        delete.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                currentText = "";
+                refreshMoneyText();
+                return false;
+            }
+        });
         // Parent's TextView
         moneyText = (TextView) convertView.findViewById(R.id.moneyText);
         moneyText.setTextSize(24);
         refreshMoneyText();
         // Setting font
         moneyText.setTypeface(MainActivity.robotoRegular);
-
-        // Setting Parent' view height
         moneyText.getRootView().setBackgroundColor(Color.WHITE);
-        moneyText.getRootView().setMinimumHeight(280);
-
-
         moneyText.setTextColor(convertView.getResources().getColor(R.color.Cafes));
+
+
 
         return convertView;
     }
@@ -167,8 +172,13 @@ public class MoneyExpListAdapter extends BaseExpandableListAdapter {
             convertView = inflater.inflate(R.layout.money_child_view, null);
         }
 
-
         initButtons(convertView);
+
+        for(Button button : mathButtons) {
+            button.setTypeface(MainActivity.robotoLight);
+            button.setTextSize(32);
+        }
+
 
         return convertView;
     }
@@ -178,6 +188,7 @@ public class MoneyExpListAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
+
     View.OnClickListener onMathButtonListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -186,7 +197,7 @@ public class MoneyExpListAdapter extends BaseExpandableListAdapter {
             String[] dangValues = new String[6];
             dangValues[0] = "+";
             dangValues[1] = "-";
-            dangValues[2] = "X";
+            dangValues[2] = "x";
             dangValues[3] = "/";
             dangValues[4] = ".";
             dangValues[5] = "=";

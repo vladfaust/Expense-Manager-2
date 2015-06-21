@@ -26,15 +26,15 @@ import ui.helpers.MoneyExpListAdapter;
 /**
  * Created by Жамбыл on 13.06.2015.
  */
-public class ExpenseActivity extends Activity implements DatePickerDialog.OnDateSetListener {
+public class ExpenseActivity extends BaseActivity implements DatePickerDialog.OnDateSetListener {
 
     // Views
-    Toolbar toolbar;
-    LinearLayout footer;
-    ExpandableListView listView;
-    MoneyExpListAdapter moneyAdapter;
-    EditText addComment;
-    Button datePicker;
+    private Toolbar toolbar;
+    private LinearLayout footer;
+    private ExpandableListView listView;
+    private MoneyExpListAdapter moneyAdapter;
+    private EditText addComment;
+    private Button datePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,7 @@ public class ExpenseActivity extends Activity implements DatePickerDialog.OnDate
         startUI();
     }
 
-    private void startUI() {
+    protected void startUI() {
         initToolbar();
         initFooter();
         initEditText();
@@ -191,6 +191,6 @@ public class ExpenseActivity extends Activity implements DatePickerDialog.OnDate
      */
     @Override
     public void onDateSet(DatePickerDialog datePickerDialog, int i, int i1, int i2) {
-
+        // todo Handle
     }
 }
