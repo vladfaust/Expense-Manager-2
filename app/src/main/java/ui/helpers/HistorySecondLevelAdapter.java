@@ -11,27 +11,25 @@ import android.widget.TextView;
 
 import com.cheesehole.expencemanager.R;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 /**
  * Created by Жамбыл on 21.06.2015.
  */
 public class HistorySecondLevelAdapter extends BaseExpandableListAdapter {
 
     Context context;
+    ArrayList<ArrayList<Map<String, Object>>> daysData;
+    ArrayList<ArrayList<ArrayList<Map<String, Object>>>> dayData;
+    int baseGroupPosition;
 
-    public HistorySecondLevelAdapter(Context context) {
+    public HistorySecondLevelAdapter(Context context, ArrayList<ArrayList<Map<String, Object>>> daysData, ArrayList<ArrayList<ArrayList<Map<String, Object>>>> dayData, int groupPosition) {
         this.context = context;
+        this.daysData = daysData;
+        this.dayData = dayData;
+        this.baseGroupPosition = groupPosition;
     }
-
-    @Override
-    public Object getChild(int groupPosition, int childPosition) {
-        return childPosition;
-    }
-
-    @Override
-    public long getChildId(int groupPosition, int childPosition) {
-        return childPosition;
-    }
-
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
@@ -55,9 +53,21 @@ public class HistorySecondLevelAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
+
+    @Override
+    public Object getChild(int groupPosition, int childPosition) {
+        return dayData.get(baseGroupPosition).get(groupPosition).get(childPosition);
+    }
+
+    @Override
+    public long getChildId(int groupPosition, int childPosition) {
+        return childPosition;
+    }
+
+
     @Override
     public int getChildrenCount(int groupPosition) {
-        return 5;
+        return dayData.size();
     }
 
     @Override
@@ -67,7 +77,7 @@ public class HistorySecondLevelAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getGroupCount() {
-        return 1;
+        return daysData.size();
     }
 
     @Override
