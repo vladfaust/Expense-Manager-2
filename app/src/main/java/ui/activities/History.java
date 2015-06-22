@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ui.helpers.HistoryFirstLevel;
+import ui.helpers.HistorySecondLevel;
+import ui.helpers.HistoryThirdLevel;
 import ui.helpers.MyDrawer;
 import ui.helpers.HistoryFirstLevelAdapter;
 
@@ -34,11 +37,6 @@ public class History extends BaseActivity {
 
     public final static String MONTHS_NAME = "MONTHS_NAME";
     public final static String MONTHS_MONEY = "MONTHS_MONEY";
-
-    public final static String DAYS_TAG = "DAYS_TAG";
-    public final static String MONTH_TAG = "MONTH_TAG";
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,8 +105,14 @@ public class History extends BaseActivity {
         listOfAllDays.add(listOfDays2);
 
         listOfDays3.add("09.01.2015");
+        listOfDays3.add("10.01.2015");
+        listOfDays3.add("11.01.2015");
+        listOfDays3.add("12.01.2015");
+        listOfDays3.add("13.01.2015");
+        listOfDays3.add("14.01.2015");
         listOfAllDays.add(listOfDays3);
 
+        // to make triple layer of  day
 
         listOfDay1.add("23");
         listOfDay2.add("23");
@@ -124,49 +128,38 @@ public class History extends BaseActivity {
         listOfAllDay.add(listOfDay1);
         listOfAllDay.add(listOfDay2);
         listOfAllDay.add(listOfDay3);
-        listOfAllDay.add(listOfDay4);
-        listOfAllDay.add(listOfDay5);
-        listOfAllDay.add(listOfDay6);
-        listOfAllDay.add(listOfDay7);
-        listOfAllDay.add(listOfDay8);
-        listOfAllDay.add(listOfDay9);
 
         // endregion
 
+        // Container
+        ArrayList<HistoryFirstLevel> firstLevelList = new ArrayList<>();
 
-        ArrayList<Map<String,Object>> monthsData = new ArrayList<>();
-        ArrayList<ArrayList<Map<String,Object>>> daysData = new ArrayList<>();
-        ArrayList<ArrayList<ArrayList< Map<String,Object>>>> dayData = new ArrayList<>();
 
-        Map<String,Object> monthsInnerData;
-        ArrayList<Map<String,Object>> daysInnerData;
-        ArrayList<ArrayList<Map<String,Object>>> dayInnerData;
 
-        for(int i = 0; i < listOfMoths.size(); i++) {
-            monthsInnerData = new HashMap<>();
-            monthsInnerData.put(MONTHS_NAME, listOfMoths.get(i));
-            monthsInnerData.put(MONTHS_MONEY, "$10");
-            monthsData.add(monthsInnerData);
+        for(int i = 0; i < listOfMoths.size();i++) {
+            HistoryFirstLevel firstLevel = new HistoryFirstLevel();
+            firstLevel.firstLevelHeader.put(MONTHS_NAME,listOfMoths.get(i));
+            firstLevel.firstLevelHeader.put(MONTHS_MONEY,"$8000");
 
-            for(int j = 0; j < listOfAllDays.size();j++) {
-                daysInnerData = new ArrayList<>();
-                Map<String,Object> innerContent = new HashMap<>();
-                listOfAllDays.get(j).get(i);
-                daysInnerData.add(innerContent);
-                daysData.add(daysInnerData);
+            for(int j =0; j < listOfAllDays.get(i).size(); j++) {
+                HistorySecondLevel secondLevel= new HistorySecondLevel();
+                secondLevel.secondLevelHeader.put(DAYS_NAME, listOfAllDays.get(i).get(j) );
+                secondLevel.secondLevelHeader.put(DAYS_MONEY, "$45");
 
-//                for(int k = 0; k < listOfAllDay.size();k++ ) {
-//                    dayInnerData = new ArrayList<>();
-//                    dayInnerData.get(i).get(j).put(DAY_CATEGORY, "asd");
-//                    dayInnerData.get(i).get(j).put(DAY_MONEY, "asd");
-//                    dayInnerData.get(i).get(j).put(DAY_COMMENT,"asd");
-//                    dayData.add(dayInnerData);
-//                }
+                for (int k = 0; k < listOfAllDay.size(); k++) {
+                    HistoryThirdLevel day = new HistoryThirdLevel();
+                    day.thirdLevel.put(DAY_CATEGORY, "Auchan");
+                    day.thirdLevel.put(DAY_COMMENT, "Auchan");
+                    day.thirdLevel.put(DAY_MONEY, listOfAllDay.get(k).get(0));
+
+                    secondLevel.thirdLevelList.add(day);
+                }
+                firstLevel.secondLevelList.add(secondLevel);
             }
+            firstLevelList.add(firstLevel);
         }
 
-
-        HistoryFirstLevelAdapter adapter = new HistoryFirstLevelAdapter(this,monthsData,daysData,dayData);
+        HistoryFirstLevelAdapter adapter = new HistoryFirstLevelAdapter(this,firstLevelList);
         listView.setAdapter(adapter);
     }
 }

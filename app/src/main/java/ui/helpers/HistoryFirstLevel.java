@@ -1,19 +1,20 @@
 package ui.helpers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by ∆‡Ï·˚Î on 21.06.2015.
+ * Created by –ñ–∞–º–±—ã–ª on 21.06.2015.
  */
 public class HistoryFirstLevel {
 
     public Map<String,Object> firstLevelHeader;
 
-    public ArrayList<HistorySecondLevel> firstLevel;
+    public ArrayList<HistorySecondLevel> secondLevelList;
 
-    public HistoryFirstLevel(Map<String, Object> firstLevelHeader, ArrayList<HistorySecondLevel> firstLevel) {
-        this.firstLevelHeader = firstLevelHeader;
-        this.firstLevel = firstLevel;
+    public HistoryFirstLevel() {
+        this.firstLevelHeader = new HashMap<>();
+        this.secondLevelList = new ArrayList<>();
     }
 }

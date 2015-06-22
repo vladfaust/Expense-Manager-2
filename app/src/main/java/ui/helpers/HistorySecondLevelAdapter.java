@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -14,29 +15,34 @@ import com.cheesehole.expencemanager.R;
 import java.util.ArrayList;
 import java.util.Map;
 
+import ui.activities.History;
+
 /**
  * Created by Жамбыл on 21.06.2015.
  */
 public class HistorySecondLevelAdapter extends BaseExpandableListAdapter {
 
     Context context;
-    ArrayList<ArrayList<Map<String, Object>>> daysData;
-    ArrayList<ArrayList<ArrayList<Map<String, Object>>>> dayData;
-    int baseGroupPosition;
+    ArrayList<HistorySecondLevel> secondLevelList;
+    private int lastExpandedGroupPosition;
+    private ExpandableListView listView;
 
-    public HistorySecondLevelAdapter(Context context, ArrayList<ArrayList<Map<String, Object>>> daysData, ArrayList<ArrayList<ArrayList<Map<String, Object>>>> dayData, int groupPosition) {
+    public HistorySecondLevelAdapter(Context context, ArrayList<HistorySecondLevel> secondLevelList) {
         this.context = context;
-        this.daysData = daysData;
-        this.dayData = dayData;
-        this.baseGroupPosition = groupPosition;
+        this.secondLevelList = secondLevelList;
     }
+
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
+        listView = (ExpandableListView)parent;
         if(convertView == null) {
             LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.history_second_layer_group,null);
         }
+
+        TextView group_text = (TextView) convertView.findViewById(R.id.history_second_layer_group_text);
+        group_text.setText((String) secondLevelList.get(groupPosition).secondLevelHeader.get(History.DAYS_NAME));
 
         return convertView;
     }
@@ -53,10 +59,22 @@ public class HistorySecondLevelAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
+    @Override
+    public void onGroupExpanded(int groupPosition){
+        // collapse the old expanded group, if not the same
+        // as new group to expand
+        if(groupPosition != lastExpandedGroupPosition) {
+            listView.collapseGroup(lastExpandedGroupPosition);
+        }
+
+        super.onGroupExpanded(groupPosition);
+        lastExpandedGroupPosition = groupPosition;
+    }
+
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return dayData.get(baseGroupPosition).get(groupPosition).get(childPosition);
+        return secondLevelList.get(groupPosition).thirdLevelList.get(childPosition);
     }
 
     @Override
@@ -67,17 +85,17 @@ public class HistorySecondLevelAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return dayData.size();
+        return secondLevelList.get(groupPosition).thirdLevelList.size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return groupPosition;
+        return secondLevelList.get(groupPosition);
     }
 
     @Override
     public int getGroupCount() {
-        return daysData.size();
+        return secondLevelList.size();
     }
 
     @Override
