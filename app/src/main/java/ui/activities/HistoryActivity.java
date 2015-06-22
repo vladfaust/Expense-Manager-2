@@ -36,6 +36,12 @@ public class HistoryActivity extends BaseActivity {
     public final static String MONTHS_NAME = "MONTHS_NAME";
     public final static String MONTHS_MONEY = "MONTHS_MONEY";
 
+    public final static String DATE = "DATE";
+    public final static String CATEGORY = "CATEGORY";
+    public final static String SUBCATEGORY = "SUBCATEGORY";
+    public final static String COMMENT = "COMMENT";
+    public final static String MONEY = "MONEY";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

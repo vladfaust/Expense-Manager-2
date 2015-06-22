@@ -2,6 +2,7 @@ package ui.helpers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import com.cheesehole.expencemanager.R;
 
 import java.util.ArrayList;
 
+import ui.activities.ExpenseActivity;
 import ui.activities.ExpenseViewActivity;
 import ui.activities.HistoryActivity;
 
@@ -68,7 +70,15 @@ public class HistorySecondLevelAdapter extends BaseExpandableListAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.startActivity(new Intent(context, ExpenseViewActivity.class));
+                Intent intent = new Intent(context, ExpenseViewActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString(HistoryActivity.DATE,"10.06.15");
+                bundle.putString(HistoryActivity.CATEGORY,"Grocery");
+                bundle.putString(HistoryActivity.SUBCATEGORY,"Auchan");
+                bundle.putString(HistoryActivity.COMMENT,"Hi");
+                bundle.putString(HistoryActivity.MONEY,"82.32");
+                intent.putExtras(bundle);
+                context.startActivity(intent);
             }
         });
 

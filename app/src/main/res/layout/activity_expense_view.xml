@@ -48,6 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/expense_view_date_value"
+                android:id="@+id/expense_view_date"
                 android:text="Date"
                 android:layout_marginLeft="50dp"
                 android:textColor="@color/md_grey_500"/>
@@ -67,7 +68,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/expense_view_category_value"
+                android:id="@+id/expense_view_category"
                 android:text="Category"
+                android:layout_marginLeft="50dp"
+                android:textColor="@color/md_grey_500"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/expense_view_subcategory_value"
+                android:layout_marginLeft="50dp"
+                android:textColor="@color/md_black_1000"
+                android:text="Auchan"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/expense_view_subcategory_value"
+                android:id="@+id/expense_view_subcategory"
+                android:text="Subcategory"
                 android:layout_marginLeft="50dp"
                 android:textColor="@color/md_grey_500"/>
         </RelativeLayout>
@@ -87,6 +110,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/expense_view_comment_value"
+                android:id="@+id/expense_view_comment"
                 android:text="Comment"
                 android:layout_marginLeft="50dp"
                 android:textColor="@color/md_grey_500"/>
@@ -107,6 +131,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/expense_view_money_value"
+                android:id="@+id/expense_view_money"
                 android:text="Spent"
                 android:layout_marginLeft="50dp"
                 android:textColor="@color/md_grey_500"/>
