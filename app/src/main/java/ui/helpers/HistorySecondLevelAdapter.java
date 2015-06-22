@@ -21,10 +21,19 @@ import ui.activities.HistoryActivity;
  */
 public class HistorySecondLevelAdapter extends BaseExpandableListAdapter {
 
+    // Context
     Context context;
+
+    // ExpandableListView itself
+    private ExpandableListView listView;
+
+    // Variables
     ArrayList<HistorySecondLevel> secondLevelList;
     private int lastExpandedGroupPosition;
-    private ExpandableListView listView;
+
+    /*
+        Constructor
+     */
 
     public HistorySecondLevelAdapter(Context context, ArrayList<HistorySecondLevel> secondLevelList) {
         this.context = context;
@@ -55,6 +64,7 @@ public class HistorySecondLevelAdapter extends BaseExpandableListAdapter {
             convertView = inflater.inflate(R.layout.history_second_layer_child,null);
         }
 
+        // Showing expense data
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

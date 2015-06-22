@@ -19,11 +19,20 @@ import ui.activities.HistoryActivity;
  */
 
 public class HistoryFirstLevelAdapter extends BaseExpandableListAdapter {
-    Context context;
-    ArrayList<HistoryFirstLevel> firstLevelList;
-    ExpandableListView listView;
-    private int lastExpandedGroupPosition;
 
+    // Context
+    Context context;
+
+    // ExpandableListView itself
+    ExpandableListView listView;
+
+    // Variables
+    private int lastExpandedGroupPosition;
+    ArrayList<HistoryFirstLevel> firstLevelList;
+
+    /*
+        Constructor
+     */
     public HistoryFirstLevelAdapter(Context context, ArrayList<HistoryFirstLevel> firstLevel) {
             this.context = context;
             this.firstLevelList = firstLevel;
@@ -38,10 +47,13 @@ public class HistoryFirstLevelAdapter extends BaseExpandableListAdapter {
             LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.history_first_layer,null);
         }
-
+        // Name of Month
         TextView monthName = (TextView)convertView.findViewById(R.id.history_first_layer_month);
+
+        // Money spent per month
         TextView monthMoney = (TextView)convertView.findViewById(R.id.history_first_layer_money);
 
+        // Getting stored data
         monthName.setText((String) firstLevelList.get(groupPosition).firstLevelHeader.get(HistoryActivity.MONTHS_NAME));
         monthMoney.setText((String) firstLevelList.get(groupPosition).firstLevelHeader.get(HistoryActivity.MONTHS_MONEY));
 
@@ -51,7 +63,10 @@ public class HistoryFirstLevelAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
+        // Inner expandableListView
         CustExpListview SecondLevelexplv = new CustExpListview(context);
+
+        // Passing second level to inner adapter
         SecondLevelexplv.setAdapter(new HistorySecondLevelAdapter(context,
                 firstLevelList.get(groupPosition).secondLevelList));
         SecondLevelexplv.setGroupIndicator(null);
@@ -82,6 +97,7 @@ public class HistoryFirstLevelAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
+        // must always return 1
         return 1;
     }
 

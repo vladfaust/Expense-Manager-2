@@ -55,6 +55,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
+        // For proper display
         drawerBuilder.getDrawer().setSelection(0);
         super.onResume();
     }

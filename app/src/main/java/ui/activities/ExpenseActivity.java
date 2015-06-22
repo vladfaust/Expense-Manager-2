@@ -45,6 +45,7 @@ public class ExpenseActivity extends BaseActivity implements DatePickerDialog.On
     }
 
     protected void startUI() {
+        // UI blocks
         initToolbar();
         initFooter();
         initEditText();

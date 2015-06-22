@@ -26,14 +26,24 @@ import ui.activities.MainActivity;
  */
 public class HomeExpListAdapter extends BaseExpandableListAdapter {
 
-    private ArrayList<ArrayList<String>> mGroups;
-    private Context mContext;
-    int lastExpandedGroupPosition;
+    //Context
+    Context mContext;
+
+    // ExpandableListView itself
     ExpandableListView listView;
+
+    //Views
     Toolbar mToolbar;
     RelativeLayout mSpaceBelowToolbar;
     FloatingActionMenu mFabMenu;
 
+    //Variables
+    ArrayList<ArrayList<String>> mGroups;
+    int lastExpandedGroupPosition;
+
+    /*
+        Constructor
+     */
     public HomeExpListAdapter(Context context, ArrayList<ArrayList<String>> groups,
                               Toolbar toolbar, RelativeLayout spaceBelowToolbar, FloatingActionMenu fabMenu){
         mContext = context;

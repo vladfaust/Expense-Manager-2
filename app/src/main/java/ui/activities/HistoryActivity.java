@@ -46,6 +46,7 @@ public class HistoryActivity extends BaseActivity {
 
     @Override
     protected void startUI() {
+        // UI blocks
         getColors();
         initToolbar();
         initDrawer();
@@ -59,6 +60,7 @@ public class HistoryActivity extends BaseActivity {
     private void initDrawer() {
         drawerBuilder = new MyDrawer(this, toolbar,colorOfDrawer);
         drawerBuilder.create();
+        // for proper display
         drawerBuilder.getDrawer().setSelection(1);
     }
 
@@ -133,32 +135,47 @@ public class HistoryActivity extends BaseActivity {
         // Container
         ArrayList<HistoryFirstLevel> firstLevelList = new ArrayList<>();
 
-
-
         for(int i = 0; i < listOfMoths.size();i++) {
+            // First store month data (first level)
             HistoryFirstLevel firstLevel = new HistoryFirstLevel();
             firstLevel.firstLevelHeader.put(MONTHS_NAME,listOfMoths.get(i));
             firstLevel.firstLevelHeader.put(MONTHS_MONEY,"$8000");
 
             for(int j =0; j < listOfAllDays.get(i).size(); j++) {
+                // Then store days data (second level)
                 HistorySecondLevel secondLevel= new HistorySecondLevel();
                 secondLevel.secondLevelHeader.put(DAYS_NAME, listOfAllDays.get(i).get(j) );
                 secondLevel.secondLevelHeader.put(DAYS_MONEY, "$45");
 
                 for (int k = 0; k < listOfAllDay.size(); k++) {
+                    // Then store day data (third level)
                     HistoryThirdLevel day = new HistoryThirdLevel();
                     day.thirdLevel.put(DAY_CATEGORY, "Auchan");
                     day.thirdLevel.put(DAY_COMMENT, "Auchan");
                     day.thirdLevel.put(DAY_MONEY, listOfAllDay.get(k).get(0));
 
+                    // Add third level to second level
                     secondLevel.thirdLevelList.add(day);
                 }
+                // Add second level to first level
                 firstLevel.secondLevelList.add(secondLevel);
             }
+            // Add first level to container
             firstLevelList.add(firstLevel);
         }
-
+        // Put container to adapter
         HistoryFirstLevelAdapter adapter = new HistoryFirstLevelAdapter(this,firstLevelList);
         listView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Close drawer if it's open
+        if(drawerBuilder.getDrawer()!=null && drawerBuilder.getDrawer().isDrawerOpen()) {
+            drawerBuilder.getDrawer().closeDrawer();
+        }
+        else {
+            super.onBackPressed();
+        }
     }
 }

@@ -25,11 +25,22 @@ import ui.activities.MainActivity;
  */
 public class FinancesExpListViewAdapter extends BaseExpandableListAdapter {
 
-    private ArrayList<ArrayList<String>> mGroups;
-    private Context mContext;
-    int lastExpandedGroupPosition;
+    // Context
+    Context mContext;
+
+    // ExpandableListView itself
     ExpandableListView listView;
+
+    // Adapter of calc
     MoneyExpListAdapter moneyAdapter;
+
+    // Variables
+    ArrayList<ArrayList<String>> mGroups;
+    int lastExpandedGroupPosition;
+
+    /*
+        Constructor
+     */
 
     public FinancesExpListViewAdapter(Context context, ArrayList<ArrayList<String>> groups, MoneyExpListAdapter moneyAdapter) {
         mContext = context;

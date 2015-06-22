@@ -22,6 +22,7 @@ public class ExpenseViewActivity extends BaseActivity {
 
     @Override
     protected void startUI() {
+        // UI blocks
         initToolbar();
     }
 
