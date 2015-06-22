@@ -1,21 +1,17 @@
 package ui.helpers;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
 import com.cheesehole.expencemanager.R;
-import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
 import com.mikepenz.materialdrawer.accountswitcher.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
@@ -24,7 +20,7 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
-import ui.activities.History;
+import ui.activities.HistoryActivity;
 
 /**
  * Created by Жамбыл on 21.06.2015.
@@ -112,7 +108,7 @@ public class MyDrawer {
 
                             // History
                             case 1:
-                                activity.startActivity(new Intent(activity.getApplicationContext(), History.class));
+                                activity.startActivity(new Intent(activity.getApplicationContext(), HistoryActivity.class));
                                 break;
 
                             // Budget

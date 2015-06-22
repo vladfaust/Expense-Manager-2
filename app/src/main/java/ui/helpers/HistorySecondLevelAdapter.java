@@ -1,21 +1,20 @@
 package ui.helpers;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cheesehole.expencemanager.R;
 
 import java.util.ArrayList;
-import java.util.Map;
 
-import ui.activities.History;
+import ui.activities.ExpenseViewActivity;
+import ui.activities.HistoryActivity;
 
 /**
  * Created by Жамбыл on 21.06.2015.
@@ -42,7 +41,7 @@ public class HistorySecondLevelAdapter extends BaseExpandableListAdapter {
         }
 
         TextView group_text = (TextView) convertView.findViewById(R.id.history_second_layer_group_text);
-        group_text.setText((String) secondLevelList.get(groupPosition).secondLevelHeader.get(History.DAYS_NAME));
+        group_text.setText((String) secondLevelList.get(groupPosition).secondLevelHeader.get(HistoryActivity.DAYS_NAME));
 
         return convertView;
     }
@@ -55,6 +54,13 @@ public class HistorySecondLevelAdapter extends BaseExpandableListAdapter {
             LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.history_second_layer_child,null);
         }
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.startActivity(new Intent(context, ExpenseViewActivity.class));
+            }
+        });
 
         return convertView;
     }

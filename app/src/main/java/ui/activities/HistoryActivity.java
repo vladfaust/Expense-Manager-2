@@ -7,9 +7,7 @@ import android.widget.ExpandableListView;
 import com.cheesehole.expencemanager.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import ui.helpers.HistoryFirstLevel;
 import ui.helpers.HistorySecondLevel;
@@ -20,11 +18,11 @@ import ui.helpers.HistoryFirstLevelAdapter;
 /**
  * Created by Жамбыл on 21.06.2015.
  */
-public class History extends BaseActivity {
+public class HistoryActivity extends BaseActivity {
 
     ExpandableListView listView;
     Toolbar toolbar;
-    MyDrawer drawer;
+    MyDrawer drawerBuilder;
     int colorOfDrawer;
 
     // Flags
@@ -59,8 +57,9 @@ public class History extends BaseActivity {
     }
 
     private void initDrawer() {
-        drawer = new MyDrawer(this, toolbar,colorOfDrawer);
-        drawer.create();
+        drawerBuilder = new MyDrawer(this, toolbar,colorOfDrawer);
+        drawerBuilder.create();
+        drawerBuilder.getDrawer().setSelection(1);
     }
 
     private void initToolbar() {

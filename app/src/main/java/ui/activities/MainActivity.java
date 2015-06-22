@@ -33,7 +33,7 @@ public class MainActivity extends BaseActivity {
     private ExpandableListView listView;
     private RelativeLayout toolbarOverlay;
     private FloatingActionMenu fabMenu;
-    private MyDrawer draweBuilder;
+    private MyDrawer drawerBuilder;
 
     // Main color
     int primaryColor;
@@ -42,8 +42,6 @@ public class MainActivity extends BaseActivity {
     public static Typeface robotoLight;
     public static Typeface robotoRegular;
 
-    // Variables
-    private boolean runInvisibility = true;
 
 
     @Override
@@ -55,6 +53,11 @@ public class MainActivity extends BaseActivity {
         startUI();
     }
 
+    @Override
+    protected void onResume() {
+        drawerBuilder.getDrawer().setSelection(0);
+        super.onResume();
+    }
 
     @Override
     protected void startUI() {
@@ -116,9 +119,9 @@ public class MainActivity extends BaseActivity {
 
     // Add Drawer
     private void initDrawer() {
-        draweBuilder = new MyDrawer(this, toolbar,primaryColor);
-        draweBuilder.setFabMenu(fabMenu);
-        draweBuilder.create();
+        drawerBuilder = new MyDrawer(this, toolbar,primaryColor);
+        drawerBuilder.setFabMenu(fabMenu);
+        drawerBuilder.create();
     }
 
     // Add ExpandableListView
@@ -225,7 +228,7 @@ public class MainActivity extends BaseActivity {
      */
     @Override
     public void onBackPressed() {
-        if(draweBuilder.getDrawer() !=null && !draweBuilder.getDrawer().isDrawerOpen()) {
+        if(drawerBuilder.getDrawer() !=null && !drawerBuilder.getDrawer().isDrawerOpen()) {
             if (fabMenu != null && !fabMenu.isOpened()) {
                 super.onBackPressed();
             }
@@ -236,7 +239,7 @@ public class MainActivity extends BaseActivity {
         }
         // Close drawer if it's open.
         else {
-            draweBuilder.getDrawer().closeDrawer();
+            drawerBuilder.getDrawer().closeDrawer();
         }
     }
 
@@ -268,6 +271,8 @@ public class MainActivity extends BaseActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
 
 

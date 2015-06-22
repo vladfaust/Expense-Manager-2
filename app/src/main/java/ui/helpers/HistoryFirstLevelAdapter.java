@@ -12,7 +12,7 @@ import com.cheesehole.expencemanager.R;
 
 import java.util.ArrayList;
 
-import ui.activities.History;
+import ui.activities.HistoryActivity;
 
 /**
  * Created by Жамбыл on 21.06.2015.
@@ -39,12 +39,11 @@ public class HistoryFirstLevelAdapter extends BaseExpandableListAdapter {
             convertView = inflater.inflate(R.layout.history_first_layer,null);
         }
 
-
         TextView monthName = (TextView)convertView.findViewById(R.id.history_first_layer_month);
         TextView monthMoney = (TextView)convertView.findViewById(R.id.history_first_layer_money);
 
-        monthName.setText((String) firstLevelList.get(groupPosition).firstLevelHeader.get(History.MONTHS_NAME));
-        monthMoney.setText((String) firstLevelList.get(groupPosition).firstLevelHeader.get(History.MONTHS_MONEY));
+        monthName.setText((String) firstLevelList.get(groupPosition).firstLevelHeader.get(HistoryActivity.MONTHS_NAME));
+        monthMoney.setText((String) firstLevelList.get(groupPosition).firstLevelHeader.get(HistoryActivity.MONTHS_MONEY));
 
         return convertView;
     }
