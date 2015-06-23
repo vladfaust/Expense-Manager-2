@@ -42,22 +42,26 @@ public class HistoryFirstLevelAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
         listView = (ExpandableListView)parent;
+//
+//        if(convertView == null) {
+//            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//            convertView = inflater.inflate(R.layout.history_first_layer,null);
+//        }
+//        // Name of Month
+//        TextView monthName = (TextView)convertView.findViewById(R.id.history_first_layer_month);
+////        convertView.setMinimumHeight(150);
+//        // Money spent per month
+//        TextView monthMoney = (TextView)convertView.findViewById(R.id.history_first_layer_money);
+//
+//        // Getting stored data
+//        monthName.setText((String) firstLevelList.get(groupPosition).firstLevelHeader.get(HistoryActivity.MONTHS_NAME));
+//        monthMoney.setText((String) firstLevelList.get(groupPosition).firstLevelHeader.get(HistoryActivity.MONTHS_MONEY));
 
-        if(convertView == null) {
-            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.history_first_layer,null);
-        }
-        // Name of Month
-        TextView monthName = (TextView)convertView.findViewById(R.id.history_first_layer_month);
 
-        // Money spent per month
-        TextView monthMoney = (TextView)convertView.findViewById(R.id.history_first_layer_money);
-
-        // Getting stored data
-        monthName.setText((String) firstLevelList.get(groupPosition).firstLevelHeader.get(HistoryActivity.MONTHS_NAME));
-        monthMoney.setText((String) firstLevelList.get(groupPosition).firstLevelHeader.get(HistoryActivity.MONTHS_MONEY));
-
-        return convertView;
+        TextView textView = new TextView(context);
+        textView.setText("first level");
+        textView.setMinimumHeight(200);
+        return textView;
     }
 
     @Override
@@ -70,6 +74,8 @@ public class HistoryFirstLevelAdapter extends BaseExpandableListAdapter {
         SecondLevelexplv.setAdapter(new HistorySecondLevelAdapter(context,
                 firstLevelList.get(groupPosition).secondLevelList));
         SecondLevelexplv.setGroupIndicator(null);
+//        SecondLevelexplv.setMinimumHeight(2000);
+
         return SecondLevelexplv;
     }
     @Override

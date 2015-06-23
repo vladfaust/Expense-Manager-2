@@ -46,15 +46,18 @@ public class HistorySecondLevelAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
         listView = (ExpandableListView)parent;
-        if(convertView == null) {
-            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.history_second_layer_group,null);
-        }
+//        if(convertView == null) {
+//            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//            convertView = inflater.inflate(R.layout.history_second_layer_group,null);
+//        }
+////        convertView.setMinimumHeight(150);
+//
+//        TextView group_text = (TextView) convertView.findViewById(R.id.history_second_layer_group_text);
+//        group_text.setText((String) secondLevelList.get(groupPosition).secondLevelHeader.get(HistoryActivity.DAYS_NAME));
 
-        TextView group_text = (TextView) convertView.findViewById(R.id.history_second_layer_group_text);
-        group_text.setText((String) secondLevelList.get(groupPosition).secondLevelHeader.get(HistoryActivity.DAYS_NAME));
-
-        return convertView;
+        TextView textView = new TextView(context);
+        textView.setText("second level");
+        return textView;
     }
 
     @Override
@@ -65,6 +68,8 @@ public class HistorySecondLevelAdapter extends BaseExpandableListAdapter {
             LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.history_second_layer_child,null);
         }
+
+//        convertView.setMinimumHeight(150);
 
         // Showing expense data
         convertView.setOnClickListener(new View.OnClickListener() {

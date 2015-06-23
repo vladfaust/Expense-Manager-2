@@ -9,7 +9,6 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/finances_body"
-    android:layout_above="@+id/footer"
     android:orientation="vertical">
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbarExpense"

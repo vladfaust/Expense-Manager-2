@@ -1,6 +1,7 @@
 package ui.activities;
 
 import android.app.Activity;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -119,8 +120,30 @@ public class ExpenseActivity extends BaseActivity implements DatePickerDialog.On
         });
 
         // Setting adapter. It's important to set adapter AFTER adding header/footer
-        FinancesExpListViewAdapter adapter = new FinancesExpListViewAdapter(getApplicationContext(), groups, moneyAdapter);
+        final FinancesExpListViewAdapter adapter = new FinancesExpListViewAdapter(getApplicationContext(), groups, moneyAdapter);
         listView.setAdapter(adapter);
+
+//        listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+//            @Override
+//            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+//
+//                ColorDrawable cd = new ColorDrawable(getResources().getColor(R.color.FinancesColorPrimary));
+//                for(int i = 0; i < adapter.getGroupCount();i++) {
+//
+//                    for(int k = 0; k < adapter.getChildrenCount(i); k++) {
+//
+//                        if(i != groupPosition || k != childPosition) {
+//                            if (adapter.getChildView(i, k, false, null, listView).getBackground() != cd) {
+////                                adapter.getChildView(i, k, false, null, listView).setBackground(cd);
+//                            }
+//                        }
+//                    }
+//                }
+//                v.setBackgroundColor(getResources().getColor(R.color.FinancesColorPrimary));
+//
+//                return false;
+//            }
+//        });
 
     }
 

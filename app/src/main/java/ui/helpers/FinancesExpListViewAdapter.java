@@ -2,8 +2,10 @@ package ui.helpers;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +40,8 @@ public class FinancesExpListViewAdapter extends BaseExpandableListAdapter {
     ArrayList<ArrayList<String>> mGroups;
     int lastExpandedGroupPosition;
 
+    boolean isChosen = false;
+    int[]chosenId = new int[2];;
     /*
         Constructor
      */
@@ -104,14 +108,10 @@ public class FinancesExpListViewAdapter extends BaseExpandableListAdapter {
         // Parent's TextView
         TextView group = (TextView) convertView.findViewById(R.id.finances_textGroup);
         group.setTextSize(24);
-        group.setPadding(58,0,0,0);
+        group.setPadding(58, 0, 0, 0);
 
         // Setting font
         group.setTypeface(MainActivity.robotoRegular);
-
-        // Setting Parent' view height
-        group.getRootView().setMinimumHeight(280);
-
 
 
         switch (groupPosition){
@@ -132,6 +132,7 @@ public class FinancesExpListViewAdapter extends BaseExpandableListAdapter {
     public void onGroupExpanded(int groupPosition){
         // collapse the old expanded group, if not the same
         // as new group to expand
+
         if(groupPosition != lastExpandedGroupPosition) {
             listView.collapseGroup(lastExpandedGroupPosition);
         }
@@ -140,25 +141,30 @@ public class FinancesExpListViewAdapter extends BaseExpandableListAdapter {
         super.onGroupExpanded(groupPosition);
         lastExpandedGroupPosition = groupPosition;
     }
+
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
-                             View convertView, ViewGroup parent) {
+    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild,
+                             View convertView, final ViewGroup parent) {
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.finances_child_view, null);
         }
 
         // Child's TextView
-        TextView childName = (TextView) convertView.findViewById(R.id.finances_childName);
+        final TextView childName = (TextView) convertView.findViewById(R.id.finances_childName);
+        final View finalConvertView = convertView;
 
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         // Setting fonts
         childName.setTypeface(MainActivity.robotoRegular);
 
         childName.setTextSize(16);
-
-        // Setting Child's view height
-        childName.getRootView().setMinimumHeight(250);
-        childName.setPadding(58,0,0,0);
 
 
         switch (childPosition) {

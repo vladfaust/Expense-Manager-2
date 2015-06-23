@@ -157,18 +157,17 @@ public class MainActivity extends BaseActivity {
     private void initFAB() {
         // Fab-menu
         fabMenu = (FloatingActionMenu) findViewById(R.id.fab);
-
-        // Income FAB
-        FloatingActionButton incomeFab = new FloatingActionButton(this);
-        incomeFab.setButtonSize(FloatingActionButton.SIZE_MINI);
+        FloatingActionButton incomeFab = (FloatingActionButton)findViewById(R.id.incomeFab);
         incomeFab.setLabelText(getResources().getString(R.string.addIncome));
-        incomeFab.setColorNormal(getResources().getColor(R.color.FabColor));
+        incomeFab.setLabelVisibility(View.VISIBLE);
 
         // Expense FAB
         FloatingActionButton expenseFab = new FloatingActionButton(this);
         expenseFab.setButtonSize(FloatingActionButton.SIZE_MINI);
         expenseFab.setLabelText(getResources().getString(R.string.addExpense));
         expenseFab.setColorNormal(getResources().getColor(R.color.FabColor));
+        expenseFab.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
+
 
         // Setting OnClickListener
         expenseFab.setOnClickListener(new View.OnClickListener() {
@@ -180,7 +179,6 @@ public class MainActivity extends BaseActivity {
         });
 
         // Adding to Fab-menu
-        fabMenu.addMenuButton(incomeFab);
         fabMenu.addMenuButton(expenseFab);
 
         fabMenu.setMenuButtonColorNormal(getResources().getColor(R.color.FabColor));
@@ -204,7 +202,7 @@ public class MainActivity extends BaseActivity {
 
     public void setInvisibility(boolean isFabOpened) {
         AlphaAnimation alpha;
-        final int durationOfAnimation = 250;
+        final int durationOfAnimation = 150;
 
         if(isFabOpened) {
             alpha = new AlphaAnimation(1F, 0.1F);
@@ -225,7 +223,7 @@ public class MainActivity extends BaseActivity {
     }
 
     /*
-       BackPressed Button Handler
+        BackPressed Button Handler
      */
     @Override
     public void onBackPressed() {

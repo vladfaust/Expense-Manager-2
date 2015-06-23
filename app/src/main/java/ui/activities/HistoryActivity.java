@@ -101,10 +101,9 @@ public class HistoryActivity extends BaseActivity {
         listOfMoths.add("December");
         listOfMoths.add("January");
 
-        listOfDays1.add("09.11.2015");
-        listOfDays1.add("10.11.2015");
-        listOfDays1.add("11.11.2015");
-        listOfDays1.add("12.11.2015");
+        for(int i = 0; i<30; i++) {
+            listOfDays1.add(i<= 9? "0":"" + String.valueOf(i) + ".11.2015");
+        }
         listOfAllDays.add(listOfDays1);
 
         listOfDays2.add("09.12.2015");
@@ -137,6 +136,8 @@ public class HistoryActivity extends BaseActivity {
         listOfAllDay.add(listOfDay3);
 
         // endregion
+
+        // (Oh, dat feeling when the code below is so perfect you want to jerk to it)
 
         // Container
         ArrayList<HistoryFirstLevel> firstLevelList = new ArrayList<>();

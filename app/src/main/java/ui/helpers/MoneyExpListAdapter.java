@@ -152,15 +152,14 @@ public class MoneyExpListAdapter extends BaseExpandableListAdapter {
         moneyText.getRootView().setBackgroundColor(Color.WHITE);
         moneyText.setTextColor(convertView.getResources().getColor(R.color.Cafes));
 
-
-
         return convertView;
     }
     // Close calc
     public void close(){
         listView.collapseGroup(0);
     }
-    private void refreshMoneyText(){
+
+    public void refreshMoneyText(){
         moneyText.setText(currentText);
     }
 

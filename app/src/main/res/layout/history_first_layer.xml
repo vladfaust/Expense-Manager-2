@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="50dp">
+    android:layout_height="70dp">
 
     <TextView
         android:layout_centerVertical="true"
@@ -13,6 +13,7 @@
         android:id="@+id/history_first_layer_month"
         android:layout_gravity="center_horizontal" />
     <TextView
+        android:layout_marginLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/history_first_layer_month"
@@ -20,4 +21,5 @@
         android:layout_centerVertical="true"
         android:id="@+id/history_first_layer_money"
         android:layout_gravity="center_horizontal" />
+
 </RelativeLayout>
