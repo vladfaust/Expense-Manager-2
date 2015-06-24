@@ -45,10 +45,10 @@ public class MyDrawer {
         this.toolbar = toolbar;
         this.primaryColor = primaryColor;
     }
+
     /*
         Main method, which creates drawer
      */
-
     public void create(){
 
         drawer = new com.mikepenz.materialdrawer.DrawerBuilder()

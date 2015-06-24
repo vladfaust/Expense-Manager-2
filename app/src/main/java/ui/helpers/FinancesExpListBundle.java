@@ -15,6 +15,9 @@ public class FinancesExpListBundle {
 
     public ArrayList<String> groupData;
 
+    /*
+        Constructor
+     */
     public FinancesExpListBundle(View groupView, ArrayList<View> childViews, ArrayList<String> groupData) {
         this.childViews = childViews;
         this.groupData = groupData;

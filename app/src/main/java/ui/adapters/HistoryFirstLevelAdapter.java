@@ -36,9 +36,12 @@ public class HistoryFirstLevelAdapter extends BaseExpandableListAdapter {
             this.firstLevelList = firstLevel;
         }
 
+    /*
+        GroupView
+     */
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
-                             View convertView, ViewGroup parent) {
+                             View groupView, ViewGroup parent) {
         listView = (ExpandableListView)parent;
 //
 //        if(convertView == null) {
@@ -62,9 +65,12 @@ public class HistoryFirstLevelAdapter extends BaseExpandableListAdapter {
         return textView;
     }
 
+    /*
+        ChildView
+    */
     @Override
     public View getChildView(int groupPosition, int childPosition,
-                             boolean isLastChild, View convertView, ViewGroup parent) {
+                             boolean isLastChild, View childView, ViewGroup parent) {
         // Inner expandableListView
         CustExpListview SecondLevelexplv = new CustExpListview(context);
 
@@ -72,7 +78,6 @@ public class HistoryFirstLevelAdapter extends BaseExpandableListAdapter {
         SecondLevelexplv.setAdapter(new HistorySecondLevelAdapter(context,
                 firstLevelList.get(groupPosition).secondLevelList));
         SecondLevelexplv.setGroupIndicator(null);
-//        SecondLevelexplv.setMinimumHeight(2000);
 
         return SecondLevelexplv;
     }

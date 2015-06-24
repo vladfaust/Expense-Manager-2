@@ -40,19 +40,104 @@ public class FinancesExpListViewAdapter extends BaseExpandableListAdapter {
 
     boolean isChosen = false;
     int[]chosenId = new int[2];;
-
     ArrayList<FinancesExpListBundle> bundles;
-
-
 
     /*
         Constructor
      */
-
     public FinancesExpListViewAdapter(Context context, ArrayList<FinancesExpListBundle> bundles, MoneyExpListAdapter moneyAdapter) {
         mContext = context;
         this.bundles = bundles;
         this.moneyAdapter = moneyAdapter;
+    }
+
+    /*
+        GroupView
+     */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
+                             ViewGroup parent) {
+        listView = (ExpandableListView) parent;
+
+        convertView = (View) getGroup(groupPosition);
+        // Parent's TextView
+        TextView group = (TextView) convertView.findViewById(R.id.finances_textGroup);
+        group.setTextSize(24);
+        group.setPadding(58, 0, 0, 0);
+
+        // Setting font
+        group.setTypeface(MainActivity.robotoRegular);
+
+        switch (groupPosition){
+            case 0:
+                group.setText("Cafes");
+                group.setTextColor(convertView.getResources().getColor(R.color.Cafes));
+                break;
+            case 1:
+                group.setText("Grocery");
+                group.setTextColor(convertView.getResources().getColor(R.color.Grocery));
+                break;
+        }
+
+        return convertView;
+    }
+
+    /*
+        ChildView
+     */
+    @Override
+    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild,
+                             View childView, final ViewGroup parent) {
+        childView = (View) getChild(groupPosition,childPosition);
+
+        // Child's TextView
+        final TextView childName = (TextView) childView.findViewById(R.id.finances_childName);
+
+
+        // Setting fonts
+        childName.setTypeface(MainActivity.robotoRegular);
+
+        childName.setTextSize(16);
+
+        switch (childPosition) {
+            case 0:
+                childName.setText("Auchan");
+                break;
+            case 1:
+                childName.setText("Picnic");
+                break;
+            case 2:
+                childName.setText("A lot of cheese");
+                break;
+        }
+
+        childView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                for (int i = 0; i < getGroupCount(); i++) {
+                    for (int k = 0; k < getChildrenCount(i); k++) {
+                        View child = (View) getChild(i, k);
+                        // Change color it was chosen
+                        if (((ColorDrawable) child.getBackground()).getColor()
+                                == mContext.getResources().getColor(R.color.FinancesColorPrimary)) {
+                            child.setBackgroundColor(Color.WHITE);
+                            ((TextView) child.findViewById(R.id.finances_childName)).setTextColor(Color.BLACK);
+                            notifyDataSetChanged();
+                            break;
+                        }
+                    }
+                }
+
+                // Setting color to chosen
+                v.setBackgroundColor(mContext.getResources().getColor(R.color.FinancesColorPrimary));
+                ((TextView) v.findViewById(R.id.finances_childName)).setTextColor(Color.WHITE);
+                notifyDataSetChanged();
+            }
+        });
+
+        return childView;
     }
 
     @Override
@@ -90,36 +175,6 @@ public class FinancesExpListViewAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
-                             ViewGroup parent) {
-        listView = (ExpandableListView) parent;
-
-        convertView = (View) getGroup(groupPosition);
-        // Parent's TextView
-        TextView group = (TextView) convertView.findViewById(R.id.finances_textGroup);
-        group.setTextSize(24);
-        group.setPadding(58, 0, 0, 0);
-
-        // Setting font
-        group.setTypeface(MainActivity.robotoRegular);
-
-
-        switch (groupPosition){
-            case 0:
-                group.setText("Cafes");
-                group.setTextColor(convertView.getResources().getColor(R.color.Cafes));
-                break;
-            case 1:
-                group.setText("Grocery");
-                group.setTextColor(convertView.getResources().getColor(R.color.Grocery));
-                break;
-        }
-
-        return convertView;
-    }
-
     @Override
     public void onGroupExpanded(int groupPosition){
         // collapse the old expanded group, if not the same
@@ -132,61 +187,6 @@ public class FinancesExpListViewAdapter extends BaseExpandableListAdapter {
 
         super.onGroupExpanded(groupPosition);
         lastExpandedGroupPosition = groupPosition;
-    }
-
-    @Override
-    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild,
-                             View convertView, final ViewGroup parent) {
-        convertView = (View) getChild(groupPosition,childPosition);
-
-        // Child's TextView
-        final TextView childName = (TextView) convertView.findViewById(R.id.finances_childName);
-
-
-        // Setting fonts
-        childName.setTypeface(MainActivity.robotoRegular);
-
-        childName.setTextSize(16);
-
-
-        switch (childPosition) {
-            case 0:
-                childName.setText("Auchan");
-                break;
-            case 1:
-                childName.setText("Picnic");
-                break;
-            case 2:
-                childName.setText("A lot of cheese");
-                break;
-        }
-
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                for(int i = 0; i < getGroupCount();i++) {
-                    for(int k = 0; k < getChildrenCount(i); k++) {
-                        View child = (View)getChild(i,k);
-                        // Change color it was chosen
-                        if( ((ColorDrawable)child.getBackground()).getColor()
-                                == mContext.getResources().getColor(R.color.FinancesColorPrimary)) {
-                            child.setBackgroundColor(Color.WHITE);
-                            ((TextView) child.findViewById(R.id.finances_childName)).setTextColor(Color.BLACK);
-                            notifyDataSetChanged();
-                            break;
-                        }
-                    }
-                }
-
-                // Setting color to chosen
-                v.setBackgroundColor(mContext.getResources().getColor(R.color.FinancesColorPrimary));
-                ((TextView)v.findViewById(R.id.finances_childName)).setTextColor(Color.WHITE);
-                notifyDataSetChanged();
-            }
-        });
-
-        return convertView;
     }
 
     @Override

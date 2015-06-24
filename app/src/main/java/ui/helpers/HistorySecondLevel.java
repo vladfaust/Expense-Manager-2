@@ -13,6 +13,9 @@ public class HistorySecondLevel {
 
     public ArrayList<HistoryThirdLevel> thirdLevelList;
 
+    /*
+        Constructor
+     */
     public HistorySecondLevel() {
         this.secondLevelHeader = new HashMap<>();
         this.thirdLevelList = new ArrayList<>();

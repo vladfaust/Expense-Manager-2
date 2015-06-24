@@ -11,6 +11,9 @@ public class HistoryThirdLevel {
 
     public Map<String,Object> thirdLevel;
 
+    /*
+        Constructor
+     */
     public HistoryThirdLevel() {
         this.thirdLevel = new HashMap<>();
     }

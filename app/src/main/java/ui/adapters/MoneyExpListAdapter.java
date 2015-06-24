@@ -26,23 +26,103 @@ import ui.activities.MainActivity;
 public class MoneyExpListAdapter extends BaseExpandableListAdapter {
 
     // Views
-    private ArrayList<ArrayList<String>> mGroups;
-    private Context mContext;
-    private int lastExpandedGroupPosition;
-    private ExpandableListView listView;
-    private TextView moneyText;
-    private Button [] mathButtons;
-    private Button delete;
-    String currentText;
-    public static boolean isListExpanded = false;
+    Context mContext;
+    ExpandableListView listView;
+    TextView moneyText;
+    Button [] mathButtons;
+    Button delete;
     EditText mAddComment;
 
     // Values
+    String currentText;
+    public static boolean isListExpanded = false;
 
-    public MoneyExpListAdapter(Context context, ArrayList<ArrayList<String>> groups, EditText addComment) {
+    /*
+        Constructor
+     */
+    public MoneyExpListAdapter(Context context, EditText addComment) {
         mContext = context;
-        mGroups = groups;
         mAddComment = addComment;
+    }
+
+    /*
+        GroupView
+     */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded, View groupView,
+                             ViewGroup parent) {
+        listView = (ExpandableListView) parent;
+
+        if (groupView == null) {
+            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            groupView = inflater.inflate(R.layout.money_group_view, null);
+        }
+        isListExpanded = isExpanded;
+        if (isExpanded) {
+        } else {
+        }
+
+        delete = (Button)groupView.findViewById(R.id.money_delete);
+        delete.setFocusable(false);
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentText != null && currentText.length() > 0) {
+                    currentText = currentText.substring(0, currentText.length() - 1);
+                    refreshMoneyText();
+                }
+            }
+        });
+        delete.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                currentText = "";
+                refreshMoneyText();
+                return false;
+            }
+        });
+        // Parent's TextView
+        moneyText = (TextView) groupView.findViewById(R.id.moneyText);
+        moneyText.setTextSize(24);
+        refreshMoneyText();
+        // Setting font
+        moneyText.setTypeface(MainActivity.robotoRegular);
+        moneyText.getRootView().setBackgroundColor(Color.WHITE);
+        moneyText.setTextColor(groupView.getResources().getColor(R.color.Cafes));
+        return groupView;
+    }
+
+    /*
+        ChildView
+     */
+    @Override
+    public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
+                             View childView, ViewGroup parent) {
+        if (childView == null) {
+            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            childView = inflater.inflate(R.layout.money_child_view, null);
+        }
+
+        initButtons(childView);
+
+        for(Button button : mathButtons) {
+            button.setTypeface(MainActivity.robotoLight);
+            button.setTextSize(32);
+        }
+
+
+        return childView;
+    }
+
+    // Close calc
+    public void close(){
+        listView.collapseGroup(0);
+    }
+
+    public void refreshMoneyText(){
+        moneyText.setText(currentText);
     }
 
 
@@ -76,22 +156,22 @@ public class MoneyExpListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getGroupCount() {
-        return mGroups.size();
+        return 1;
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return mGroups.get(groupPosition).size();
+        return 1;
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return mGroups.get(groupPosition);
+        return groupPosition;
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return mGroups.get(groupPosition).get(childPosition);
+        return childPosition;
     }
 
     @Override
@@ -109,84 +189,10 @@ public class MoneyExpListAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
-                             ViewGroup parent) {
-        listView = (ExpandableListView) parent;
-
-        if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.money_group_view, null);
-        }
-        isListExpanded = isExpanded;
-        if (isExpanded) {
-        } else {
-        }
-
-        delete = (Button)convertView.findViewById(R.id.money_delete);
-        delete.setFocusable(false);
-
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentText != null && currentText.length() > 0) {
-                    currentText = currentText.substring(0, currentText.length() - 1);
-                    refreshMoneyText();
-                }
-            }
-        });
-        delete.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                currentText = "";
-                refreshMoneyText();
-                return false;
-            }
-        });
-        // Parent's TextView
-        moneyText = (TextView) convertView.findViewById(R.id.moneyText);
-        moneyText.setTextSize(24);
-        refreshMoneyText();
-        // Setting font
-        moneyText.setTypeface(MainActivity.robotoRegular);
-        moneyText.getRootView().setBackgroundColor(Color.WHITE);
-        moneyText.setTextColor(convertView.getResources().getColor(R.color.Cafes));
-        return convertView;
-    }
-    // Close calc
-    public void close(){
-        listView.collapseGroup(0);
-    }
-
-    public void refreshMoneyText(){
-        moneyText.setText(currentText);
-    }
-
-    @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
-                             View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.money_child_view, null);
-        }
-
-        initButtons(convertView);
-
-        for(Button button : mathButtons) {
-            button.setTypeface(MainActivity.robotoLight);
-            button.setTextSize(32);
-        }
-
-
-        return convertView;
-    }
-
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
-
 
     View.OnClickListener onMathButtonListener = new View.OnClickListener() {
         @Override
@@ -196,7 +202,7 @@ public class MoneyExpListAdapter extends BaseExpandableListAdapter {
             String[] dangValues = new String[6];
             dangValues[0] = "+";
             dangValues[1] = "-";
-            dangValues[2] = "x";
+            dangValues[2] = "X";
             dangValues[3] = "/";
             dangValues[4] = ".";
             dangValues[5] = "=";
@@ -219,7 +225,6 @@ public class MoneyExpListAdapter extends BaseExpandableListAdapter {
                 Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mAddComment.getWindowToken(), 0);
         mAddComment.setFocusableInTouchMode(false);
-//        mAddComment.setFocusable(false);
         super.onGroupExpanded(groupPosition);
     }
 
@@ -232,7 +237,7 @@ public class MoneyExpListAdapter extends BaseExpandableListAdapter {
     private boolean checkValue(String currentText, String[] dangValues, String value){
         boolean isDangValue = false;
 
-        // Checking is the value is dangerous
+        // Checking if the value is dangerous
         for(String notStart : dangValues) {
             if(value.equals(notStart)) {
                 isDangValue = true;

@@ -43,9 +43,12 @@ public class HistorySecondLevelAdapter extends BaseExpandableListAdapter {
         this.secondLevelList = secondLevelList;
     }
 
+    /*
+        GroupView
+     */
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
-                             View convertView, ViewGroup parent) {
+                             View groupView, ViewGroup parent) {
         listView = (ExpandableListView)parent;
 //        if(convertView == null) {
 //            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -61,34 +64,35 @@ public class HistorySecondLevelAdapter extends BaseExpandableListAdapter {
         return textView;
     }
 
+    /*
+        ChildView
+     */
     @Override
     public View getChildView(int groupPosition, int childPosition,
-                             boolean isLastChild, View convertView, ViewGroup parent) {
+                             boolean isLastChild, View childView, ViewGroup parent) {
 
-        if(convertView == null) {
+        if(childView == null) {
             LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.history_second_layer_child,null);
+            childView = inflater.inflate(R.layout.history_second_layer_child,null);
         }
 
-//        convertView.setMinimumHeight(150);
-
         // Showing expense data
-        convertView.setOnClickListener(new View.OnClickListener() {
+        childView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ExpenseViewActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString(HistoryActivity.DATE,"10.06.15");
-                bundle.putString(HistoryActivity.CATEGORY,"Grocery");
-                bundle.putString(HistoryActivity.SUBCATEGORY,"Auchan");
-                bundle.putString(HistoryActivity.COMMENT,"Hi");
-                bundle.putString(HistoryActivity.MONEY,"82.32");
+                bundle.putString(HistoryActivity.DATE, "10.06.15");
+                bundle.putString(HistoryActivity.CATEGORY, "Grocery");
+                bundle.putString(HistoryActivity.SUBCATEGORY, "Auchan");
+                bundle.putString(HistoryActivity.COMMENT, "Hi");
+                bundle.putString(HistoryActivity.MONEY, "82.32");
                 intent.putExtras(bundle);
                 context.startActivity(intent);
             }
         });
 
-        return convertView;
+        return childView;
     }
 
     @Override

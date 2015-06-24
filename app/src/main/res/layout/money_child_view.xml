@@ -178,7 +178,6 @@
                 android:layout_height="match_parent"
                 android:id="@+id/money_multiply"
                 android:background="@color/operations"
-
                 android:text="X"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"/>

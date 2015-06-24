@@ -74,17 +74,11 @@ public class ExpenseActivity extends BaseActivity implements DatePickerDialog.On
     }
 
     private void initMoneyView() {
-        ArrayList<ArrayList<String>> groups = new ArrayList<ArrayList<String>>();
-        ArrayList<String> children1 = new ArrayList<String>();
-        children1.add("Child_1");
-        groups.add(children1);
 
         ExpandableListView moneyList = (ExpandableListView)findViewById(R.id.moneyList);
-        moneyAdapter = new MoneyExpListAdapter(getApplicationContext(), groups,addComment);
+        moneyAdapter = new MoneyExpListAdapter(getApplicationContext(), addComment);
         moneyList.setAdapter(moneyAdapter);
 
-        moneyList.expandGroup(0);
-        moneyList.collapseGroup(0);
         moneyList.expandGroup(0);
     }
 
@@ -157,8 +151,6 @@ public class ExpenseActivity extends BaseActivity implements DatePickerDialog.On
 //        } else {
 //            listView.setIndicatorBoundsRelative(170, 200);
 //        }
-
-
     }
 
     private void initFooter() {
