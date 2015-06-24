@@ -74,12 +74,14 @@ public class ExpenseActivity extends BaseActivity implements DatePickerDialog.On
     }
 
     private void initMoneyView() {
-
         ExpandableListView moneyList = (ExpandableListView)findViewById(R.id.moneyList);
         moneyAdapter = new MoneyExpListAdapter(getApplicationContext(), addComment);
         moneyList.setAdapter(moneyAdapter);
 
         moneyList.expandGroup(0);
+
+        // for proper work moneyText should be initialised separately
+        moneyAdapter.initMoneyText();
     }
 
     private void initToolbar() {

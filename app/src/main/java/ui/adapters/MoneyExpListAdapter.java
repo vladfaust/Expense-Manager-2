@@ -20,19 +20,19 @@ import java.util.ArrayList;
 
 import ui.activities.MainActivity;
 
-/**
- * Created by Жамбыл on 17.06.2015.
-        */
+/*
+    Created by Жамбыл on 17.06.2015.
+  */
 public class MoneyExpListAdapter extends BaseExpandableListAdapter {
 
     // Views
     Context mContext;
     ExpandableListView listView;
-    TextView moneyText;
+    public TextView moneyText;
     Button [] mathButtons;
     Button delete;
     EditText mAddComment;
-
+    View groupView;
     // Values
     String currentText;
     public static boolean isListExpanded = false;
@@ -54,14 +54,9 @@ public class MoneyExpListAdapter extends BaseExpandableListAdapter {
                              ViewGroup parent) {
         listView = (ExpandableListView) parent;
 
-        if (groupView == null) {
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            groupView = inflater.inflate(R.layout.money_group_view, null);
-        }
+        groupView = this.groupView;
+
         isListExpanded = isExpanded;
-        if (isExpanded) {
-        } else {
-        }
 
         delete = (Button)groupView.findViewById(R.id.money_delete);
         delete.setFocusable(false);
@@ -83,14 +78,8 @@ public class MoneyExpListAdapter extends BaseExpandableListAdapter {
                 return false;
             }
         });
-        // Parent's TextView
-        moneyText = (TextView) groupView.findViewById(R.id.moneyText);
-        moneyText.setTextSize(24);
-        refreshMoneyText();
-        // Setting font
-        moneyText.setTypeface(MainActivity.robotoRegular);
-        moneyText.getRootView().setBackgroundColor(Color.WHITE);
-        moneyText.setTextColor(groupView.getResources().getColor(R.color.Cafes));
+
+
         return groupView;
     }
 
@@ -112,8 +101,21 @@ public class MoneyExpListAdapter extends BaseExpandableListAdapter {
             button.setTextSize(32);
         }
 
-
         return childView;
+    }
+
+    public void initMoneyText() {
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        groupView = inflater.inflate(R.layout.money_group_view, null);
+        moneyText = (TextView)groupView.findViewById(R.id.moneyText);
+
+        moneyText.setTextSize(24);
+        refreshMoneyText();
+
+        // Setting font
+        moneyText.setTypeface(MainActivity.robotoRegular);
+        moneyText.getRootView().setBackgroundColor(Color.WHITE);
+        moneyText.setTextColor(groupView.getResources().getColor(R.color.Cafes));
     }
 
     // Close calc
@@ -127,7 +129,7 @@ public class MoneyExpListAdapter extends BaseExpandableListAdapter {
 
 
     private void initButtons(View convertView) {
-        //Creating a massive
+        //Creating a massive of buttons
         mathButtons = new Button[16];
 
         // Adding buttons
