@@ -1,8 +1,10 @@
 package ui.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -16,7 +18,7 @@ import android.widget.TextView;
 import com.cheesehole.expencemanager.R;
 
 import bl.models.DatabaseInstrument;
-import ui.helpers.HomeExpListAdapter;
+import ui.adapters.HomeExpListAdapter;
 import ui.helpers.MyDrawer;
 
 import com.github.clans.fab.FloatingActionButton;
@@ -186,6 +188,8 @@ public class MainActivity extends BaseActivity {
         fabMenu.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
             @Override
             public void onMenuToggle(boolean b) {
+                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                v.vibrate(50);
                 setInvisibility(fabMenu.isOpened());
             }
         });

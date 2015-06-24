@@ -1,10 +1,11 @@
 package ui.activities;
 
-import android.app.Activity;
-import android.graphics.drawable.ColorDrawable;
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -21,8 +22,9 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import ui.helpers.FinancesExpListViewAdapter;
-import ui.helpers.MoneyExpListAdapter;
+import ui.adapters.FinancesExpListViewAdapter;
+import ui.adapters.MoneyExpListAdapter;
+import ui.helpers.FinancesExpListBundle;
 
 /**
  * Created by Жамбыл on 13.06.2015.
@@ -53,9 +55,14 @@ public class ExpenseActivity extends BaseActivity implements DatePickerDialog.On
         initDatePicker();
         initMoneyView();
         initExpandableListView();
+        setBodyHeight();
         setStatusBarColor();
     }
 
+    private void setBodyHeight() {
+        LinearLayout body = (LinearLayout)findViewById(R.id.finances_body);
+        body.setMinimumHeight(2000);
+    }
 
     private void setStatusBarColor() {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -75,6 +82,10 @@ public class ExpenseActivity extends BaseActivity implements DatePickerDialog.On
         ExpandableListView moneyList = (ExpandableListView)findViewById(R.id.moneyList);
         moneyAdapter = new MoneyExpListAdapter(getApplicationContext(), groups,addComment);
         moneyList.setAdapter(moneyAdapter);
+
+        moneyList.expandGroup(0);
+        moneyList.collapseGroup(0);
+        moneyList.expandGroup(0);
     }
 
     private void initToolbar() {
@@ -119,31 +130,34 @@ public class ExpenseActivity extends BaseActivity implements DatePickerDialog.On
             }
         });
 
+        // Data container
+        ArrayList<FinancesExpListBundle> bundles = new ArrayList<>();
+
+        // Filling container
+        for(int i = 0; i < groups.size(); i++) {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View groupView = inflater.inflate(R.layout.finances_group_view, null);
+
+            ArrayList<View> childViews = new ArrayList<>();
+            for(int k = 0; k < groups.get(i).size(); k++) {
+                View childView = inflater.inflate(R.layout.finances_child_view, null);
+                childViews.add(childView);
+            }
+            FinancesExpListBundle bundle = new FinancesExpListBundle(groupView,childViews,groups.get(i));
+            bundles.add(bundle);
+        }
+
         // Setting adapter. It's important to set adapter AFTER adding header/footer
-        final FinancesExpListViewAdapter adapter = new FinancesExpListViewAdapter(getApplicationContext(), groups, moneyAdapter);
+        final FinancesExpListViewAdapter adapter = new FinancesExpListViewAdapter(getApplicationContext(),bundles,moneyAdapter);
         listView.setAdapter(adapter);
 
-//        listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-//            @Override
-//            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-//
-//                ColorDrawable cd = new ColorDrawable(getResources().getColor(R.color.FinancesColorPrimary));
-//                for(int i = 0; i < adapter.getGroupCount();i++) {
-//
-//                    for(int k = 0; k < adapter.getChildrenCount(i); k++) {
-//
-//                        if(i != groupPosition || k != childPosition) {
-//                            if (adapter.getChildView(i, k, false, null, listView).getBackground() != cd) {
-////                                adapter.getChildView(i, k, false, null, listView).setBackground(cd);
-//                            }
-//                        }
-//                    }
-//                }
-//                v.setBackgroundColor(getResources().getColor(R.color.FinancesColorPrimary));
-//
-//                return false;
-//            }
-//        });
+//        if (android.os.Build.VERSION.SDK_INT <
+//                android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
+//            listView.setIndicatorBounds(170, 200);
+//        } else {
+//            listView.setIndicatorBoundsRelative(170, 200);
+//        }
+
 
     }
 

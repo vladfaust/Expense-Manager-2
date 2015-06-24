@@ -1,19 +1,17 @@
-package ui.helpers;
+package ui.adapters;
 
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.PaintDrawable;
 import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.cheesehole.expencemanager.R;
@@ -21,6 +19,7 @@ import com.cheesehole.expencemanager.R;
 import java.util.ArrayList;
 
 import ui.activities.MainActivity;
+import ui.helpers.FinancesExpListBundle;
 
 /**
  * Created by Жамбыл on 15.06.2015.
@@ -37,39 +36,43 @@ public class FinancesExpListViewAdapter extends BaseExpandableListAdapter {
     MoneyExpListAdapter moneyAdapter;
 
     // Variables
-    ArrayList<ArrayList<String>> mGroups;
     int lastExpandedGroupPosition;
 
     boolean isChosen = false;
     int[]chosenId = new int[2];;
+
+    ArrayList<FinancesExpListBundle> bundles;
+
+
+
     /*
         Constructor
      */
 
-    public FinancesExpListViewAdapter(Context context, ArrayList<ArrayList<String>> groups, MoneyExpListAdapter moneyAdapter) {
+    public FinancesExpListViewAdapter(Context context, ArrayList<FinancesExpListBundle> bundles, MoneyExpListAdapter moneyAdapter) {
         mContext = context;
-        mGroups = groups;
+        this.bundles = bundles;
         this.moneyAdapter = moneyAdapter;
     }
 
     @Override
     public int getGroupCount() {
-        return mGroups.size();
+        return bundles.size();
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return mGroups.get(groupPosition).size();
+        return bundles.get(groupPosition).childViews.size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return mGroups.get(groupPosition);
+        return bundles.get(groupPosition).groupView;
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return mGroups.get(groupPosition).get(childPosition);
+        return bundles.get(groupPosition).childViews.get(childPosition);
     }
 
     @Override
@@ -93,18 +96,7 @@ public class FinancesExpListViewAdapter extends BaseExpandableListAdapter {
                              ViewGroup parent) {
         listView = (ExpandableListView) parent;
 
-        if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.finances_group_view, null);
-        }
-
-        if (isExpanded){
-            //
-        }
-        else{
-            //
-        }
-
+        convertView = (View) getGroup(groupPosition);
         // Parent's TextView
         TextView group = (TextView) convertView.findViewById(R.id.finances_textGroup);
         group.setTextSize(24);
@@ -145,22 +137,12 @@ public class FinancesExpListViewAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild,
                              View convertView, final ViewGroup parent) {
-        if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.finances_child_view, null);
-        }
+        convertView = (View) getChild(groupPosition,childPosition);
 
         // Child's TextView
         final TextView childName = (TextView) convertView.findViewById(R.id.finances_childName);
-        final View finalConvertView = convertView;
 
 
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
         // Setting fonts
         childName.setTypeface(MainActivity.robotoRegular);
 
@@ -178,6 +160,31 @@ public class FinancesExpListViewAdapter extends BaseExpandableListAdapter {
                 childName.setText("A lot of cheese");
                 break;
         }
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                for(int i = 0; i < getGroupCount();i++) {
+                    for(int k = 0; k < getChildrenCount(i); k++) {
+                        View child = (View)getChild(i,k);
+                        // Change color it was chosen
+                        if( ((ColorDrawable)child.getBackground()).getColor()
+                                == mContext.getResources().getColor(R.color.FinancesColorPrimary)) {
+                            child.setBackgroundColor(Color.WHITE);
+                            ((TextView) child.findViewById(R.id.finances_childName)).setTextColor(Color.BLACK);
+                            notifyDataSetChanged();
+                            break;
+                        }
+                    }
+                }
+
+                // Setting color to chosen
+                v.setBackgroundColor(mContext.getResources().getColor(R.color.FinancesColorPrimary));
+                ((TextView)v.findViewById(R.id.finances_childName)).setTextColor(Color.WHITE);
+                notifyDataSetChanged();
+            }
+        });
 
         return convertView;
     }

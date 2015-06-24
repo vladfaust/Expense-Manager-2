@@ -1,4 +1,4 @@
-package ui.helpers;
+package ui.adapters;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -44,6 +44,7 @@ public class MoneyExpListAdapter extends BaseExpandableListAdapter {
         mGroups = groups;
         mAddComment = addComment;
     }
+
 
     private void initButtons(View convertView) {
         //Creating a massive
@@ -129,8 +130,8 @@ public class MoneyExpListAdapter extends BaseExpandableListAdapter {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentText!= null && currentText.length() > 0) {
-                    currentText = currentText.substring(0, currentText.length()-1);
+                if (currentText != null && currentText.length() > 0) {
+                    currentText = currentText.substring(0, currentText.length() - 1);
                     refreshMoneyText();
                 }
             }
@@ -151,7 +152,6 @@ public class MoneyExpListAdapter extends BaseExpandableListAdapter {
         moneyText.setTypeface(MainActivity.robotoRegular);
         moneyText.getRootView().setBackgroundColor(Color.WHITE);
         moneyText.setTextColor(convertView.getResources().getColor(R.color.Cafes));
-
         return convertView;
     }
     // Close calc
@@ -206,7 +206,9 @@ public class MoneyExpListAdapter extends BaseExpandableListAdapter {
             // Try to set value of the button
             if(!value.equals("=") && checkValue(currentText, dangValues, value)) {
                 currentText += value;
+                moneyText.setTextSize(24);
                 moneyText.setText(currentText);
+
             }
         }
     };

@@ -1,4 +1,4 @@
-package ui.helpers;
+package ui.adapters;
 
 import android.annotation.TargetApi;
 import android.content.Context;

@@ -13,7 +13,7 @@ import ui.helpers.HistoryFirstLevel;
 import ui.helpers.HistorySecondLevel;
 import ui.helpers.HistoryThirdLevel;
 import ui.helpers.MyDrawer;
-import ui.helpers.HistoryFirstLevelAdapter;
+import ui.adapters.HistoryFirstLevelAdapter;
 
 /**
  * Created by Жамбыл on 21.06.2015.
@@ -138,15 +138,14 @@ public class HistoryActivity extends BaseActivity {
         // endregion
 
         // (Oh, dat feeling when the code below is so perfect you want to jerk to it)
-
         // Container
         ArrayList<HistoryFirstLevel> firstLevelList = new ArrayList<>();
 
-        for(int i = 0; i < listOfMoths.size();i++) {
+        for(int i = 0; i < listOfMoths.size(); i++) {
             // First store month data (first level)
             HistoryFirstLevel firstLevel = new HistoryFirstLevel();
-            firstLevel.firstLevelHeader.put(MONTHS_NAME,listOfMoths.get(i));
-            firstLevel.firstLevelHeader.put(MONTHS_MONEY,"$8000");
+            firstLevel.firstLevelHeader. put(MONTHS_NAME, listOfMoths.get(i));
+            firstLevel.firstLevelHeader.put(MONTHS_MONEY, "$8000");
 
             for(int j =0; j < listOfAllDays.get(i).size(); j++) {
                 // Then store days data (second level)
@@ -154,7 +153,7 @@ public class HistoryActivity extends BaseActivity {
                 secondLevel.secondLevelHeader.put(DAYS_NAME, listOfAllDays.get(i).get(j) );
                 secondLevel.secondLevelHeader.put(DAYS_MONEY, "$45");
 
-                for (int k = 0; k < listOfAllDay.size(); k++) {
+                for(int k = 0; k < listOfAllDay.size(); k++) {
                     // Then store day data (third level)
                     HistoryThirdLevel day = new HistoryThirdLevel();
                     day.thirdLevel.put(DAY_CATEGORY, "Auchan");
