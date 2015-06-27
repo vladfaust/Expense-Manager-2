@@ -59,7 +59,8 @@ public class Category {
 
     public static Category getCategoryByString(String _cat){
         for (int i=0; i<categoryArrayList.size()-1; i++){
-            if (("'"+categoryArrayList.get(i).getName()+"'").equals(_cat)){
+            if (("'"+categoryArrayList.get(i).getName()+"'").equals(_cat) ||
+                     categoryArrayList.get(i).getName().equals(_cat)){
                 return categoryArrayList.get(i);
             }
         }
