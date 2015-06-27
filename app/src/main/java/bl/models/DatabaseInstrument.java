@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.text.method.TransformationMethod;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,11 +25,10 @@ public class DatabaseInstrument {
         DB = dbHelper.getWritableDatabase();
         createDB();
         instance=this;
-        User.balance= getBalanceFromDB();
-        changeBalanceBy(+193);
-        changeBalanceBy(-32);
+        setBalanceChangedBy(+193);
+        setBalanceChangedBy(-32);
 
-        User.refreshData();
+        User.linkToSingleton();
 
     }
 
@@ -93,7 +91,7 @@ public class DatabaseInstrument {
         DB.execSQL("INSERT INTO Category(Name, Type, ColorID) VALUES ('Salary', 'income', 3)");
         DB.execSQL("INSERT INTO User(Balance, MonthBudget) VALUES (0, 10000)");
 
-        Category.List = loadAllCategories();
+        Category.List = getAllCategories();
 
         // Testing transactions
         addTransaction("'test1'",1,Category.List.get(0),"'gift fo my ex'","'2015-06-11'");
@@ -115,9 +113,9 @@ public class DatabaseInstrument {
                 "(select MAX(TID) from Transactions))");
         if (Category.getCategoryByString(category)!=null){
             if (Category.getCategoryByString(category).getType().equals("income"))
-                changeBalanceBy(amount);
+                setBalanceChangedBy(amount);
             else
-                changeBalanceBy(-1 * amount);
+                setBalanceChangedBy(-1 * amount);
         }
     }
 
@@ -129,9 +127,9 @@ public class DatabaseInstrument {
                 "values((select CID from Category where Name='"+category.getName()+"'), " +
                 "(select MAX(TID) from Transactions))");
             if (category.getType().equals("income"))
-                changeBalanceBy(amount);
+                setBalanceChangedBy(amount);
             else
-                changeBalanceBy(-1 * amount);
+                setBalanceChangedBy(-1 * amount);
 
     }
 
@@ -142,17 +140,13 @@ public class DatabaseInstrument {
     }
 
     // Changing of transact category (by object)
-    public void changeTransactionCategory(Transaction transaction, Category category){
+    public void setTransactionCategory(Transaction transaction, Category category){
         DB.execSQL("update TransactionsCategory set CID="+category.getCid()+" where TID="+transaction.getId()+"");
+        transaction.category = category;
     }
 
-    // Changing of transact category (by id)
-    public void changeTransactionCategory(int cid, int tid){
-        DB.execSQL("update TransactionsCategory set CID="+cid+" where TID="+tid+"");
-    }
-
-    //Load all categories from database to string array list
-    public ArrayList<Category> loadAllCategories(){
+    // Load all categories from database to string array list
+    public ArrayList<Category> getAllCategories(){
         ArrayList<Category> list = new ArrayList<Category>();
 
 
@@ -181,7 +175,7 @@ public class DatabaseInstrument {
 
 
     // Load all transactions from database to array list
-    public ArrayList<Transaction> loadAllTransactions(){
+    public ArrayList<Transaction> getAllTransactions(){
         ArrayList<Transaction> list = new ArrayList<Transaction>();
 
 
@@ -298,21 +292,24 @@ public class DatabaseInstrument {
         return cursor.getInt(0);
     }
 
-    public void changeBalanceBy(int amount){
-        User.balance=User.balance+amount;
-        DB.execSQL("UPDATE User SET Balance="+User.balance+" where User.UID=1");
+    public void setBalanceChangedBy(int amount){
+        DB.execSQL("UPDATE User SET Balance="+amount+" where User.UID=1");
     }
 
-    public void changeBalanceTo(int amount){
-        User.balance=amount;
-        DB.execSQL("UPDATE User SET Balance="+User.balance+" where User.UID=1");
+    public void setBalanceTo(int amount){
+        DB.execSQL("UPDATE User SET Balance="+amount+" where User.UID=1");
     }
 
-    public int getBudgetFromDB(){
+    public int getBudget(){
         Cursor cursor = dbHelper.getReadableDatabase().rawQuery("SELECT MonthBudget FROM User where User.UID=1", null);
         cursor.moveToFirst();
         return cursor.getInt(0);
 
+    }
+
+    // Set month budget to
+    public void setBudget(int amount){
+        DB.execSQL("UPDATE User SET MonthBudget="+amount+" where User.UID=1");
     }
 
 //

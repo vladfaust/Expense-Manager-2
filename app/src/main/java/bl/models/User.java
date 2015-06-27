@@ -4,19 +4,41 @@ package bl.models;
  * Created by romanismagilov on 16.06.15.
  */
 public class User {
-    static public int balance=0;
-    static public int monthBudget=0;
-    static public int monthSpends=0;
-    static public String percentage;
+    static String percentage;
     // Shortened link to singleton instance
     static DatabaseInstrument dbi;
 
     // Loading data from Database
-    static public void refreshData(){
+    static public void linkToSingleton(){
         dbi = DatabaseInstrument.instance;
-        balance = dbi.getBalanceFromDB();
-        monthSpends = dbi.getAllSpendsFrom(dbi.getFinancialMonthTransactions());
-        monthBudget = dbi.getBudgetFromDB();
-        percentage = (100*(float)monthSpends / (float)monthBudget)+"%";
     }
+
+    public static int getBalance() {
+        return dbi.getBalanceFromDB();
+    }
+
+    public static void setBalance(int balance) {
+        dbi.setBalanceTo(balance);
+    }
+
+    public static void setBalanceChangedBy(int delta) {
+        dbi.setBalanceChangedBy(delta);
+    }
+
+    public static int getMonthBudget() {
+        return dbi.getBudget();
+    }
+
+    public static void setMonthBudget(int monthBudget) {
+        dbi.setBudget(monthBudget);
+    }
+
+    public static int getMonthSpends() {
+        return dbi.getAllSpendsFrom(dbi.getFinancialMonthTransactions());
+    }
+
+    public static String getPercentage(){
+        return (100*(float)getMonthSpends() / (float)getMonthBudget())+"%";
+    }
+
 }
