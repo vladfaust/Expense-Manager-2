@@ -1,15 +1,16 @@
 package ui.activities;
 
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.widget.ExpandableListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -17,17 +18,11 @@ import android.widget.TextView;
 import com.cheesehole.expencemanager.R;
 
 import bl.models.DatabaseInstrument;
-import bl.models.User;
-import ui.helpers.HomeExpListAdapter;
+import ui.adapters.HomeExpListAdapter;
+import ui.helpers.MyDrawer;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
-import com.mikepenz.materialdrawer.accountswitcher.AccountHeaderBuilder;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import java.util.ArrayList;
 
@@ -35,12 +30,12 @@ public class MainActivity extends BaseActivity {
 
     // Views
     private Toolbar toolbar;
-    Drawer drawer;
-    TextView money,balance,percentage,budget;
-    RelativeLayout spaceBelowToolbar;
-    ExpandableListView listView;
-    RelativeLayout toolbarOverlay;
-    FloatingActionMenu fabMenu;
+    private TextView money,balance,percentage,budget;
+    private RelativeLayout spaceBelowToolbar;
+    private ExpandableListView listView;
+    private RelativeLayout toolbarOverlay;
+    private FloatingActionMenu fabMenu;
+    private MyDrawer drawerBuilder;
 
     // Main color
     int primaryColor;
@@ -49,8 +44,6 @@ public class MainActivity extends BaseActivity {
     public static Typeface robotoLight;
     public static Typeface robotoRegular;
 
-    // Variables
-    private boolean runInvisibility = true;
 
 
     @Override
@@ -58,23 +51,27 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        // transact test
         DatabaseInstrument dbi = new DatabaseInstrument(this);
         startUI();
     }
 
+    @Override
+    protected void onResume() {
+        // For proper display
+        drawerBuilder.getDrawer().setSelection(0);
+        super.onResume();
+    }
 
     @Override
     protected void startUI() {
         // UI blocks
         getFonts();
         getColors();
+        initFAB();
         initToolbar();
         initDrawer();
         initExpandableListView();
-        initFAB();
     }
-
 
     // Setting Fonts
     private void getFonts() {
@@ -94,8 +91,15 @@ public class MainActivity extends BaseActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         setTitle(null);
+        // Toolbar
         toolbar = (Toolbar)findViewById(R.id.toolbar);
+        // SpaceBelowToolbar
+        spaceBelowToolbar = (RelativeLayout)findViewById(R.id.spaceBelowToolbar);
         initToolbarText();
+
+        // SettingOnclickListener to close fab is it's open
+        toolbar.setOnClickListener(closeFabWithoutAnim);
+        spaceBelowToolbar.setOnClickListener(closeFabWithoutAnim);
     }
 
 
@@ -112,46 +116,15 @@ public class MainActivity extends BaseActivity {
         percentage.setTypeface(robotoLight);
         budget.setTypeface(robotoRegular);
 
-        money.setText("$" + String.valueOf(User.balance));
-//        balance.setText(String.valueOf(User.));
+        money.setText("$850");
+//        money.setText("$" + String.valueOf(User.balance));
     }
 
     // Add Drawer
     private void initDrawer() {
-        ColorDrawable drawable = new ColorDrawable(primaryColor);
-        // Create the AccountHeader
-        AccountHeader headerResult = new AccountHeaderBuilder()
-                .withActivity(this)
-                .withTextColor(Color.BLACK)
-                .withHeaderBackground(drawable)
-
-                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
-                    @Override
-                    public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
-                        return false;
-                    }
-                })
-                .build();
-
-        drawer = new DrawerBuilder()
-                .withActivity(this)
-                .withToolbar(toolbar)
-                .withAccountHeader(headerResult)
-                .withActionBarDrawerToggleAnimated(true)
-                .withDisplayBelowStatusBar(true)
-                // Elements
-                .addDrawerItems(
-                        new PrimaryDrawerItem().withName("Summary June")
-                                .withIcon(getResources().getDrawable(R.drawable.home))
-                                .withSelectedTextColor(primaryColor),
-                        new PrimaryDrawerItem().withName("History")
-                                .withIcon(getResources().getDrawable(R.drawable.history))
-                                .withSelectedTextColor(primaryColor),
-                        new PrimaryDrawerItem().withName("Statistics")
-                                .withIcon(getResources().getDrawable(R.drawable.statistics))
-                                .withSelectedTextColor(primaryColor)
-                )
-                .build();
+        drawerBuilder = new MyDrawer(this, toolbar,primaryColor);
+        drawerBuilder.setFabMenu(fabMenu);
+        drawerBuilder.create();
     }
 
     // Add ExpandableListView
@@ -169,11 +142,10 @@ public class MainActivity extends BaseActivity {
         children2.add("Child_2");
         children2.add("Child_3");
         groups.add(children2);
-        groups.add(children2);
-        groups.add(children2);
+
 
         // Setting adapter
-        HomeExpListAdapter adapter = new HomeExpListAdapter(getApplicationContext(), groups);
+        HomeExpListAdapter adapter = new HomeExpListAdapter(getApplicationContext(), groups, toolbar,spaceBelowToolbar,fabMenu);
         listView.setAdapter(adapter);
 
         //todo why 0?
@@ -187,17 +159,17 @@ public class MainActivity extends BaseActivity {
     private void initFAB() {
         // Fab-menu
         fabMenu = (FloatingActionMenu) findViewById(R.id.fab);
-        // Income FAB
-        FloatingActionButton incomeFab = new FloatingActionButton(this);
-        incomeFab.setButtonSize(FloatingActionButton.SIZE_MINI);
+        FloatingActionButton incomeFab = (FloatingActionButton)findViewById(R.id.incomeFab);
         incomeFab.setLabelText(getResources().getString(R.string.addIncome));
-        incomeFab.setColorNormal(getResources().getColor(R.color.FabColor));
+        incomeFab.setLabelVisibility(View.VISIBLE);
 
         // Expense FAB
         FloatingActionButton expenseFab = new FloatingActionButton(this);
         expenseFab.setButtonSize(FloatingActionButton.SIZE_MINI);
         expenseFab.setLabelText(getResources().getString(R.string.addExpense));
         expenseFab.setColorNormal(getResources().getColor(R.color.FabColor));
+        expenseFab.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
+
 
         // Setting OnClickListener
         expenseFab.setOnClickListener(new View.OnClickListener() {
@@ -209,114 +181,79 @@ public class MainActivity extends BaseActivity {
         });
 
         // Adding to Fab-menu
-        fabMenu.addMenuButton(incomeFab);
         fabMenu.addMenuButton(expenseFab);
 
         fabMenu.setMenuButtonColorNormal(getResources().getColor(R.color.FabColor));
+
         fabMenu.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
             @Override
             public void onMenuToggle(boolean b) {
-                setInvisibility(!fabMenu.isOpened());
+                Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                v.vibrate(50);
+                setInvisibility(fabMenu.isOpened());
             }
         });
 
+        fabMenu.setClosedOnTouchOutside(true);
         // Showing Fab-menu
         fabMenu.showMenuButton(true);
     }
 
     private void closeFab() {
-        runInvisibility = false;
+        setInvisibility(true);
         fabMenu.close(true);
     }
 
-    private void setInvisibility(boolean Invisible) {
-        spaceBelowToolbar = (RelativeLayout)findViewById(R.id.spaceBelowToolbar);
+    public void setInvisibility(boolean isFabOpened) {
+        AlphaAnimation alpha;
+        final int durationOfAnimation = 150;
 
-        if(!Invisible) {
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    boolean sleeping = false;
-                    int animationDuration = 150;
-                    int currentTime = 0;
-                    float alphaWhite = 0.3f;
-                    while(currentTime<animationDuration) {
-                        setAlphaToViews(alphaWhite);
-                        while (!sleeping && runInvisibility) {
-                            try {
-                                Thread.sleep(50);
-                                sleeping = true;
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        sleeping = false;
-                        currentTime += 50;
-                        alphaWhite -= 0.1f;
-                    }
-                }
-            });
-            thread.start();
+        if(isFabOpened) {
+            alpha = new AlphaAnimation(1F, 0.1F);
         }
         else {
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    boolean sleeping = false;
-                    int animationDuration = 300;
-                    int currentTime = 0;
-                    float alphaNormal = 0.1f;
-                    while(currentTime < animationDuration) {
-                        setAlphaToViews(alphaNormal);
-                        while (!sleeping && runInvisibility) {
-                            try {
-                                Thread.sleep(50);
-                                sleeping = true;
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        sleeping = false;
-                        currentTime += 50;
-                        alphaNormal += 0.3f;
-                        if(currentTime == animationDuration)
-                            setAlphaToViews(100);
-                    }
-                }
-            });
-            thread.start();
+            alpha = new AlphaAnimation(0.1F, 1F);
         }
-    }
 
-    private void setAlphaToViews(float alpha) {
-        toolbar.setAlpha(alpha);
-        spaceBelowToolbar.setAlpha(alpha);
-        listView.setAlpha(alpha);
-    }
+        alpha.setDuration(durationOfAnimation); // 250ms
+        alpha.setFillAfter(true); // Tell it to persist after the animation ends
 
+        RelativeLayout listViewLayout = (RelativeLayout)findViewById(R.id.listViewLayout);
+
+        // And then on your layout
+        toolbar.startAnimation(alpha);
+        spaceBelowToolbar.startAnimation(alpha);
+        listViewLayout.startAnimation(alpha);
+    }
 
     /*
-       BackPressed Button Handler
+        BackPressed Button Handler
      */
     @Override
     public void onBackPressed() {
-
-        if(drawer!=null && !drawer.isDrawerOpen())
-            if(fabMenu!=null && !fabMenu.isOpened())
+        if(drawerBuilder.getDrawer() !=null && !drawerBuilder.getDrawer().isDrawerOpen()) {
+            if (fabMenu != null && !fabMenu.isOpened()) {
                 super.onBackPressed();
-            else
+            }
             // Close fabMenu if it's open.
+            else {
                 closeFab();
-        else
-            // Close drawer if it's open.
-            drawer.closeDrawer();
-
+            }
+        }
+        // Close drawer if it's open.
+        else {
+            drawerBuilder.getDrawer().closeDrawer();
+        }
     }
-    /*
-       Menu methods
-     */
 
-    @Override
+    View.OnClickListener closeFabWithoutAnim = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (fabMenu != null && fabMenu.isOpened()) {
+                fabMenu.close(false);
+            }
+        }
+    };
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -337,6 +274,8 @@ public class MainActivity extends BaseActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
 
 

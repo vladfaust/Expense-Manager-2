@@ -19,7 +19,7 @@
             android:layout_centerVertical="true"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="@dimen/marginLeftToListHome"
+            android:layout_marginLeft="82dp"
             android:text="asd"
             android:textColor="@android:color/black"
             />

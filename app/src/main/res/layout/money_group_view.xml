@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="80dp">
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="2.35"
+        android:layout_height="match_parent"
         android:id="@+id/moneyText"
-        android:gravity="center|right"
-        android:layout_marginRight="82dp"/>
+        android:text="asd"
+        android:gravity="right"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/money_delete"
+        android:layout_marginRight="12dp"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:height="80dp"
+        android:id="@+id/money_delete"
+        android:layout_marginRight="20dp"
+        android:text="DEL"
+        android:textColor="@color/md_black_1000"
+        android:background="@color/md_white_1000"
+        android:layout_alignParentRight="true"
+        />
+
+
 </RelativeLayout>

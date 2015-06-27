@@ -8,10 +8,17 @@ import com.cheesehole.expencemanager.R;
 /**
  * Created by Жамбыл on 13.06.2015.
  */
-public class IncomeActivity extends Activity {
+public class IncomeActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_income);
+
+        startUI();
+    }
+
+    @Override
+    protected void startUI() {
+
     }
 }
