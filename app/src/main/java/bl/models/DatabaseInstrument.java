@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 /**
  * Created by romanismagilov on 13.06.15.
@@ -15,20 +17,30 @@ public class DatabaseInstrument {
     // Private fields
     DBHelper dbHelper;
     SQLiteDatabase DB;
+    String startOfFinancialMonth = "01";
+    public static DatabaseInstrument instance;
     // Constructor
     public DatabaseInstrument(Context context){
         dbHelper = new DBHelper(context);
         DB = dbHelper.getWritableDatabase();
         createDB();
-
-        User.balance=readBalanceFromDB();
+        instance=this;
+        User.balance= getBalanceFromDB();
         changeBalanceBy(+193);
         changeBalanceBy(-32);
+
+        User.refreshData();
 
     }
 
     // Create DB table if not exists
     public void createDB(){
+        // Only for testing
+
+        DB.execSQL("DROP TABLE IF EXISTS Transactions");
+        DB.execSQL("DROP TABLE IF EXISTS TransactionsCategory");
+        DB.execSQL("DROP TABLE IF EXISTS Category");
+        DB.execSQL("DROP TABLE IF EXISTS User");
         // Transactions table
         DB.execSQL("CREATE TABLE IF NOT EXISTS Transactions" +
                 "(" +
@@ -51,17 +63,13 @@ public class DatabaseInstrument {
         DB.execSQL("CREATE TABLE IF NOT EXISTS User" +
                 "(" +
                 "UID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-                "Balance INTEGER"+
+                "Balance INTEGER,"+
+                "MonthBudget INTEGER"+
                 ")");
 
-        // Base categories
-        DB.execSQL("INSERT INTO Category(Name, Type, ColorID) VALUES ('Grocery', 'spends', 1)");
-        DB.execSQL("INSERT INTO Category(Name, Type, ColorID) VALUES ('Cafes', 'spends', 2)");
-        DB.execSQL("INSERT INTO Category(Name, Type, ColorID) VALUES ('Transport', 'spends', 1)");
-        DB.execSQL("INSERT INTO Category(Name, Type, ColorID) VALUES ('Salary', 'income', 1)");
-        DB.execSQL("INSERT INTO User(Balance) VALUES (0)");
 
-        Category.List = loadAllCategories();
+
+
 
         // Intermediate table to connect Categories and Transactions
         DB.execSQL("CREATE TABLE IF NOT EXISTS TransactionsCategory" +
@@ -70,10 +78,30 @@ public class DatabaseInstrument {
                 "TID INTEGER NOT NULL" +
                 ")");
 
+
+
+        // TESTING ONLY
+        DB.execSQL("DELETE FROM Transactions;");
+        DB.execSQL("DELETE FROM Category;");
+        DB.execSQL("DELETE FROM TransactionsCategory;");
+        DB.execSQL("DELETE FROM User;");
+
+        // Base categories
+        DB.execSQL("INSERT INTO Category(Name, Type, ColorID) VALUES ('Grocery', 'spends', 1)");
+        DB.execSQL("INSERT INTO Category(Name, Type, ColorID) VALUES ('Cafes', 'spends', 2)");
+        DB.execSQL("INSERT INTO Category(Name, Type, ColorID) VALUES ('Salary', 'income', 3)");
+        DB.execSQL("INSERT INTO User(Balance, MonthBudget) VALUES (0, 10000)");
+
+        Category.List = loadAllCategories();
+
         // Testing transactions
-        addTransaction("'test1'",1,"'Grocery'","'gift fo my ex'","'2015-06-11'");
-        addTransaction("'test2'",350,"'Transport'","'subway'","'2015-06-10'");
-        addTransaction("'test3'",10000,"'Salary'","'subway'","'2015-06-10'");
+        addTransaction("'test1'",1,Category.List.get(0),"'gift fo my ex'","'2015-06-11'");
+        addTransaction("'test3'",10000,Category.List.get(1),"'subway'","'2015-06-10'");
+        addTransaction("'test2'",350,Category.List.get(1),"'keka'","'2015-06-17'");
+        addTransaction("'test4'",3,Category.List.get(0),"'gift fo my ex'","'2015-06-14'");
+        addTransaction("'test5'",1030,Category.List.get(2),"'buhbhu'","'2015-06-15'");
+        addTransaction("'test6'",150,Category.List.get(1),"'keka'","'2015-06-16'");
+
 
     }
 
@@ -84,26 +112,41 @@ public class DatabaseInstrument {
         DB.execSQL("insert into TransactionsCategory (CID,TID) " +
                 "values((select CID from Category where Name="+category+"), " +
                 "(select MAX(TID) from Transactions))");
-        Category test = Category.getCategoryByString(category);
-        if (Category.getCategoryByString(category).getType().equals("income"))
-            changeBalanceBy(amount);
-        else
-            changeBalanceBy(-1 * amount);
+        if (Category.getCategoryByString(category)!=null){
+            if (Category.getCategoryByString(category).getType().equals("income"))
+                changeBalanceBy(amount);
+            else
+                changeBalanceBy(-1 * amount);
+        }
     }
 
-    // Adding new transaction (by object)
-    public void addTransaction(Transaction transaction, Category category){
+    // Adding new transaction (by values)
+    public void addTransaction(String comment, int amount, Category category, String subCategory, String date){
         DB.execSQL("INSERT INTO Transactions (Amount,Comment,SubCategory,Date)\n" +
-                "VALUES( "+transaction.getAmount()+","+transaction.getComment()+","+
-                transaction.getSubCategory()+","+transaction.getDate()+")");
+                "VALUES( "+amount+","+comment+","+subCategory+","+date+")");
         DB.execSQL("insert into TransactionsCategory (CID,TID) " +
-                "values((select CID from Category where Name="+category.getName()+"), " +
+                "values((select CID from Category where Name='"+category.getName()+"'), " +
                 "(select MAX(TID) from Transactions))");
-        if (category.getType().equals("income"))
-            changeBalanceBy(transaction.getAmount());
-        else
-            changeBalanceBy(-1 * transaction.getAmount());
+            if (category.getType().equals("income"))
+                changeBalanceBy(amount);
+            else
+                changeBalanceBy(-1 * amount);
+
     }
+//
+//    // Adding new transaction (by object)
+//    public void addTransaction(Transaction transaction, Category category){
+//        DB.execSQL("INSERT INTO Transactions (Amount,Comment,SubCategory,Date)\n" +
+//                "VALUES( "+transaction.getAmount()+","+transaction.getComment()+","+
+//                transaction.getSubCategory()+","+transaction.getDate()+")");
+//        DB.execSQL("insert into TransactionsCategory (CID,TID) " +
+//                "values((select CID from Category where Name="+category.getName()+"), " +
+//                "(select MAX(TID) from Transactions))");
+//        if (category.getType().equals("income"))
+//            changeBalanceBy(transaction.getAmount());
+//        else
+//            changeBalanceBy(-1 * transaction.getAmount());
+//    }
 
     // Editing of existing transaction without changing category (by id)
     public void editTransaction(int id, String comment, int amount, String subCategory){
@@ -137,6 +180,15 @@ public class DatabaseInstrument {
             category.setColorID(cursor.getInt(3));
             list.add(category);
         }
+        cursor.close();
+
+        Category category = new Category();
+        category.setCid(0);
+        category.setName("");
+        category.setType("");
+        category.setColorID(0);
+        list.add(category);
+
         return list;
     }
 
@@ -158,22 +210,67 @@ public class DatabaseInstrument {
             transaction.setDate(cursor.getString(4));
             list.add(transaction);
         }
+        cursor.close();
         return list;
     }
 
-    // Get current balance (using all transactions)
-//    public int currentBalance(ArrayList<Transaction> list){
-//        int balance=0;
-//        for (Transaction transaction: list){
-//            if (transaction.category.getType().equals("income"))
-//                balance+=transaction.getAmount();
-//            else
-//                balance-=transaction.getAmount();
-//        }
-//        return balance;
-//    }
+    // Get all spends from selected transaction list
+    public int getAllSpendsFrom(ArrayList<Transaction> list){
+        int spends=0;
+        for (Transaction transaction: list){
+            if (transaction.category.getType().equals("spends"))
+                spends+=transaction.getAmount();
+        }
+        return spends;
+    }
 
-    public int readBalanceFromDB(){
+
+    public ArrayList<Transaction> getFinancialMonthTransactions(){
+        ArrayList<Transaction> list = new ArrayList<Transaction>();
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+2:00"));
+
+        String startingMonth;
+        if (cal.get(Calendar.DAY_OF_MONTH)<Integer.parseInt(startOfFinancialMonth))
+            startingMonth = String.valueOf(cal.get(Calendar.MONTH));
+        else
+            startingMonth = String.valueOf(cal.get(Calendar.MONTH)+1);
+
+        if (startingMonth.length()==1)
+            startingMonth="0"+startingMonth;
+
+
+        String finishingYear;
+        String finishingMonth;
+        if (startingMonth.equals(String.valueOf(12))){
+            finishingYear = String.valueOf(cal.get(Calendar.YEAR)+1);
+            finishingMonth = "1";
+        }
+        else{
+            finishingYear = String.valueOf(cal.get(Calendar.YEAR));
+            finishingMonth = String.valueOf(Integer.parseInt(startingMonth)+1);
+        }
+
+        // select * from incoming WHERE([date] BETWEEN '30.10.2012' AND '30.10.2012');
+        String query = String.format("SELECT * FROM Transactions inner join TransactionsCategory on Transactions.TID = TransactionsCategory.TID "+
+        "WHERE([Date] BETWEEN '"+cal.get(Calendar.YEAR)+"-"+startingMonth+"-"+startOfFinancialMonth+"'" +
+                " AND '"+finishingYear+"-"+finishingMonth+"-"+startOfFinancialMonth+"')");
+        Cursor cursor  = dbHelper.getReadableDatabase().rawQuery(query, null);
+        while (cursor.moveToNext()) {
+            Transaction transaction = new Transaction();
+            transaction.setId(cursor.getInt(0));
+            transaction.setAmount(cursor.getInt(1));
+            transaction.setComment(cursor.getString(2));
+            transaction.setCategory(Category.getCategoryByID(cursor.getInt(5)));
+            transaction.setSubCategory(cursor.getString(3));
+            transaction.setDate(cursor.getString(4));
+            list.add(transaction);
+        }
+        cursor.close();
+
+        return list;
+    }
+
+    public int getBalanceFromDB(){
         Cursor cursor = dbHelper.getReadableDatabase().rawQuery("SELECT Balance FROM User where User.UID=1", null);
         cursor.moveToFirst();
         return cursor.getInt(0);
@@ -187,6 +284,13 @@ public class DatabaseInstrument {
     public void changeBalanceTo(int amount){
         User.balance=amount;
         DB.execSQL("UPDATE User SET Balance="+User.balance+" where User.UID=1");
+    }
+
+    public int getBudgetFromDB(){
+        Cursor cursor = dbHelper.getReadableDatabase().rawQuery("SELECT MonthBudget FROM User where User.UID=1", null);
+        cursor.moveToFirst();
+        return cursor.getInt(0);
+
     }
 
 //
