@@ -4,7 +4,6 @@ package bl.models;
  * Created by romanismagilov on 16.06.15.
  */
 public class User {
-    static String percentage;
     // Shortened link to singleton instance
     static DatabaseInstrument dbi;
 

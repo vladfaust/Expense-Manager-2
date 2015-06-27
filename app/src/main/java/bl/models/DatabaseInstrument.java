@@ -91,15 +91,15 @@ public class DatabaseInstrument {
         DB.execSQL("INSERT INTO Category(Name, Type, ColorID) VALUES ('Salary', 'income', 3)");
         DB.execSQL("INSERT INTO User(Balance, MonthBudget) VALUES (0, 10000)");
 
-        Category.List = getAllCategories();
+        Category.categoryArrayList = getAllCategories();
 
         // Testing transactions
-        addTransaction("'test1'",1,Category.List.get(0),"'gift fo my ex'","'2015-06-11'");
-        addTransaction("'test3'",10000,Category.List.get(1),"'subway'","'2015-06-10'");
-        addTransaction("'test2'",350,Category.List.get(1),"'keka'","'2015-06-17'");
-        addTransaction("'test4'",3,Category.List.get(0),"'gift fo my ex'","'2015-06-14'");
-        addTransaction("'test5'",1030,Category.List.get(2),"'buhbhu'","'2015-06-15'");
-        addTransaction("'test6'",150,Category.List.get(1),"'keka'","'2015-06-16'");
+        addTransaction("'test1'",1,Category.categoryArrayList.get(0),"'gift fo my ex'","'2015-06-11'");
+        addTransaction("'test3'",10000,Category.categoryArrayList.get(1),"'subway'","'2015-06-10'");
+        addTransaction("'test2'",350,Category.categoryArrayList.get(1),"'keka'","'2015-06-17'");
+        addTransaction("'test4'",3,Category.categoryArrayList.get(0),"'gift fo my ex'","'2015-06-14'");
+        addTransaction("'test5'",1030,Category.categoryArrayList.get(2),"'buhbhu'","'2015-06-15'");
+        addTransaction("'test6'",150,Category.categoryArrayList.get(1),"'keka'","'2015-06-16'");
 
 
     }
@@ -163,6 +163,14 @@ public class DatabaseInstrument {
         }
         cursor.close();
 
+        // Adding all subcategories
+
+        for (Transaction transaction: getAllTransactions())
+            for (Category cat: list)                 // not to be doubled
+                if (transaction.getCategory() == cat && cat.containsSelectedSubcategory(transaction.subCategory))
+                    cat.subCategoryList.add(transaction.subCategory);
+
+        // Adding empty category (needed.)
         Category category = new Category();
         category.setCid(0);
         category.setName("");
@@ -173,6 +181,14 @@ public class DatabaseInstrument {
         return list;
     }
 
+    public int getSummaryForSubcategoryInCurrentMonth(Category category, String subcategory){
+        return category.getSummaryForSubcategory(subcategory, getFinancialMonthTransactions());
+    }
+
+    public int getSummaryForSelectedPeriod(Category category, String subcategory, int year1, int month1, int day1, int year2,
+                                           int month2, int day2){
+        return category.getSummaryForSubcategory(subcategory, getTransactions(year1, month1, day1, year2, month2, day2));
+    }
 
     // Load all transactions from database to array list
     public ArrayList<Transaction> getAllTransactions(){
