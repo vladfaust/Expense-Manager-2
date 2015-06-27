@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.method.TransformationMethod;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -133,20 +134,6 @@ public class DatabaseInstrument {
                 changeBalanceBy(-1 * amount);
 
     }
-//
-//    // Adding new transaction (by object)
-//    public void addTransaction(Transaction transaction, Category category){
-//        DB.execSQL("INSERT INTO Transactions (Amount,Comment,SubCategory,Date)\n" +
-//                "VALUES( "+transaction.getAmount()+","+transaction.getComment()+","+
-//                transaction.getSubCategory()+","+transaction.getDate()+")");
-//        DB.execSQL("insert into TransactionsCategory (CID,TID) " +
-//                "values((select CID from Category where Name="+category.getName()+"), " +
-//                "(select MAX(TID) from Transactions))");
-//        if (category.getType().equals("income"))
-//            changeBalanceBy(transaction.getAmount());
-//        else
-//            changeBalanceBy(-1 * transaction.getAmount());
-//    }
 
     // Editing of existing transaction without changing category (by id)
     public void editTransaction(int id, String comment, int amount, String subCategory){
@@ -224,7 +211,42 @@ public class DatabaseInstrument {
         return spends;
     }
 
+    // Return all spends during selected transaction list in selected category
+    public int getAllSpendsFrom(ArrayList<Transaction> list, Category category){
+        int spends=0;
+        for (Transaction transaction: list){
+            if (transaction.category.getType().equals("spends")
+                    &&transaction.category == category)
+                spends+=transaction.getAmount();
+        }
+        return spends;
+    }
 
+    // loads transactions between date 1 and date 2
+    public ArrayList<Transaction> getTransactions(int year1, int month1, int day1, int year2,
+                                                  int month2, int day2){
+        ArrayList<Transaction> list = new ArrayList<Transaction>();
+
+        String query = String.format("SELECT * FROM Transactions inner join TransactionsCategory on Transactions.TID = TransactionsCategory.TID "+
+                "WHERE([Date] BETWEEN '"+year1+"-"+month1+"-"+day1+"'" +
+                " AND '"+year2+"-"+month2+"-"+day2+"')");
+        Cursor cursor  = dbHelper.getReadableDatabase().rawQuery(query, null);
+        while (cursor.moveToNext()) {
+            Transaction transaction = new Transaction();
+            transaction.setId(cursor.getInt(0));
+            transaction.setAmount(cursor.getInt(1));
+            transaction.setComment(cursor.getString(2));
+            transaction.setCategory(Category.getCategoryByID(cursor.getInt(5)));
+            transaction.setSubCategory(cursor.getString(3));
+            transaction.setDate(cursor.getString(4));
+            list.add(transaction);
+        }
+        cursor.close();
+
+        return list;
+    }
+
+    // Return all transactions during current financial month
     public ArrayList<Transaction> getFinancialMonthTransactions(){
         ArrayList<Transaction> list = new ArrayList<Transaction>();
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+2:00"));

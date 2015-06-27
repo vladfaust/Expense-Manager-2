@@ -18,6 +18,5 @@ public class User {
         monthSpends = dbi.getAllSpendsFrom(dbi.getFinancialMonthTransactions());
         monthBudget = dbi.getBudgetFromDB();
         percentage = (100*(float)monthSpends / (float)monthBudget)+"%";
-
     }
 }
