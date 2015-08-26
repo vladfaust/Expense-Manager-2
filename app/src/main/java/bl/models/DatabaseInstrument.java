@@ -49,7 +49,7 @@ public class DatabaseInstrument {
         DB.execSQL("CREATE TABLE IF NOT EXISTS Transactions" +
                 "(" +
                 "TID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-                "Amount INTEGER NOT NULL," +
+                "Amount REAL NOT NULL," +
                 "Comment varchar(255)," +
                 "SubCategory varchar(255)," +
                 "Date datetime"+
@@ -139,7 +139,8 @@ public class DatabaseInstrument {
 
         for (Transaction transaction: getAllTransactions())
             for (Category cat: list)                 // not to be doubled
-                if (transaction.getCategory() == cat && cat.containsSelectedSubcategory(transaction.subCategory))
+                if (transaction.getCategory().getName().equals(cat.getName())
+                        && !cat.containsSelectedSubcategory(transaction.subCategory))
                     cat.subCategoryList.add(transaction.subCategory);
 
         // Adding empty category (needed.)
@@ -317,7 +318,7 @@ public class DatabaseInstrument {
     }
 
     // Adding new transaction (by values)
-    public void addTransaction(String comment, int amount, Category category, String subCategory, String date){
+    public void addTransaction(String comment, float amount, Category category, String subCategory, String date){
         DB.execSQL("INSERT INTO Transactions (Amount,Comment,SubCategory,Date)\n" +
                 "VALUES( "+amount+","+comment+","+subCategory+","+date+")");
         DB.execSQL("insert into TransactionsCategory (CID,TID) " +
@@ -327,6 +328,7 @@ public class DatabaseInstrument {
             setBalanceChangedBy(amount);
         else
             setBalanceChangedBy(-1 * amount);
+       // Category.getCategoryByString(category.getName()).subCategoryList.add(subCategory);
 
     }
 
@@ -340,11 +342,11 @@ public class DatabaseInstrument {
         return cursor.getInt(0);
     }
 
-    public void setBalanceChangedBy(int amount){
+    public void setBalanceChangedBy(float amount){
         DB.execSQL("UPDATE User SET Balance="+amount+" where User.UID=1");
     }
 
-    public void setBalanceTo(int amount){
+    public void setBalanceTo(float amount){
         DB.execSQL("UPDATE User SET Balance="+amount+" where User.UID=1");
     }
     //endregion

@@ -1,6 +1,7 @@
 package ui.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cheesehole.expencemanager.R;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -22,6 +24,10 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import bl.models.Calculator;
+import bl.models.Category;
+import bl.models.DatabaseInstrument;
+import bl.models.Selection;
 import ui.adapters.FinancesExpListViewAdapter;
 import ui.adapters.MoneyExpListAdapter;
 import ui.helpers.FinancesExpListBundle;
@@ -39,11 +45,11 @@ public class ExpenseActivity extends BaseActivity implements DatePickerDialog.On
     private EditText addComment;
     private Button datePicker;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expense);
-
         startUI();
     }
 
@@ -92,11 +98,26 @@ public class ExpenseActivity extends BaseActivity implements DatePickerDialog.On
         ImageButton ok = (ImageButton)findViewById(R.id.finances_ok);
         TextView label = (TextView)findViewById(R.id.finances_label);
 
+        // Link to activity
+        final ExpenseActivity context = this;
+
         // Setting onClickListener
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String comment = "'"+((EditText)findViewById(R.id.addComment)).getText().toString()+"'";
+                float sum = Calculator.eval(((TextView) findViewById(R.id.moneyText)).getText().toString());
+
+                DatabaseInstrument.instance.addTransaction(comment, sum, Selection.selectedCategory,
+                        "'"+Selection.selectedSubCategory+"'", "'"+Selection.selectedDate+"'");
+                Toast.makeText(getApplicationContext(), "Expence added", Toast.LENGTH_SHORT).show();
+                context.finish();
             }
         });
 
@@ -106,15 +127,14 @@ public class ExpenseActivity extends BaseActivity implements DatePickerDialog.On
 
         // Filling listView
         ArrayList<ArrayList<String>> groups = new ArrayList<ArrayList<String>>();
-        ArrayList<String> children1 = new ArrayList<String>();
-        ArrayList<String> children2 = new ArrayList<String>();
-        children1.add("Child_1");
-        children1.add("Child_2");
-        groups.add(children1);
-        children2.add("Child_1");
-        children2.add("Child_2");
-        children2.add("Child_3");
-        groups.add(children2);
+        ArrayList<Category> allCategories = DatabaseInstrument.instance.getAllCategories();
+        for (Category category : allCategories){
+            ArrayList<String> children = new ArrayList<>();
+            for (String subCategory : category.subCategoryList){
+                children.add(subCategory);
+            }
+            groups.add(children);
+        }
 
         // Adding Views below ExpandedListView
         listView.addFooterView(footer);
@@ -135,9 +155,14 @@ public class ExpenseActivity extends BaseActivity implements DatePickerDialog.On
             View groupView = inflater.inflate(R.layout.finances_group_view, null);
 
             ArrayList<View> childViews = new ArrayList<>();
+
+            final int catId = i;
             for(int k = 0; k < groups.get(i).size(); k++) {
-                View childView = inflater.inflate(R.layout.finances_child_view, null);
+                final String subCat = groups.get(i).get(k);
+                final View childView = inflater.inflate(R.layout.finances_child_view, null);
+
                 childViews.add(childView);
+
             }
             FinancesExpListBundle bundle = new FinancesExpListBundle(groupView,childViews,groups.get(i));
             bundles.add(bundle);
@@ -214,6 +239,12 @@ public class ExpenseActivity extends BaseActivity implements DatePickerDialog.On
                         now.get(Calendar.MONTH),
                         now.get(Calendar.DAY_OF_MONTH)
                 );
+                dpd.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePickerDialog datePickerDialog, int i, int i1, int i2) {
+                        Selection.selectedDate = i + "-" + i1 + "-" + i2;
+                    }
+                });
                 dpd.show(getFragmentManager(), "Datepickerdialog");
             }
         });

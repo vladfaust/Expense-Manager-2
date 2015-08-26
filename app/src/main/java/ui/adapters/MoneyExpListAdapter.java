@@ -204,7 +204,7 @@ public class MoneyExpListAdapter extends BaseExpandableListAdapter {
             String[] dangValues = new String[6];
             dangValues[0] = "+";
             dangValues[1] = "-";
-            dangValues[2] = "X";
+            dangValues[2] = "*";
             dangValues[3] = "/";
             dangValues[4] = ".";
             dangValues[5] = "=";

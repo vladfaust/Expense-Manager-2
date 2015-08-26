@@ -18,6 +18,10 @@ import com.cheesehole.expencemanager.R;
 
 import java.util.ArrayList;
 
+import bl.models.Category;
+import bl.models.DatabaseInstrument;
+import bl.models.Selection;
+import ui.activities.ExpenseActivity;
 import ui.activities.MainActivity;
 import ui.helpers.FinancesExpListBundle;
 
@@ -39,7 +43,8 @@ public class FinancesExpListViewAdapter extends BaseExpandableListAdapter {
     int lastExpandedGroupPosition;
 
     boolean isChosen = false;
-    int[]chosenId = new int[2];;
+    int[] chosenId = new int[2];
+    ;
     ArrayList<FinancesExpListBundle> bundles;
 
     /*
@@ -69,16 +74,10 @@ public class FinancesExpListViewAdapter extends BaseExpandableListAdapter {
         // Setting font
         group.setTypeface(MainActivity.robotoRegular);
 
-        switch (groupPosition){
-            case 0:
-                group.setText("Cafes");
-                group.setTextColor(convertView.getResources().getColor(R.color.Cafes));
-                break;
-            case 1:
-                group.setText("Grocery");
-                group.setTextColor(convertView.getResources().getColor(R.color.Grocery));
-                break;
-        }
+        group.setText(DatabaseInstrument.instance.getAllCategories().get(groupPosition).getName());
+        // temporary color.
+        group.setTextColor(convertView.getResources().getColor(R.color.Cafes));
+
 
         return convertView;
     }
@@ -89,7 +88,7 @@ public class FinancesExpListViewAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild,
                              View childView, final ViewGroup parent) {
-        childView = (View) getChild(groupPosition,childPosition);
+        childView = (View) getChild(groupPosition, childPosition);
 
         // Child's TextView
         final TextView childName = (TextView) childView.findViewById(R.id.finances_childName);
@@ -100,17 +99,20 @@ public class FinancesExpListViewAdapter extends BaseExpandableListAdapter {
 
         childName.setTextSize(16);
 
-        switch (childPosition) {
-            case 0:
-                childName.setText("Auchan");
-                break;
-            case 1:
-                childName.setText("Picnic");
-                break;
-            case 2:
-                childName.setText("A lot of cheese");
-                break;
-        }
+        childName.setText(DatabaseInstrument.instance.getAllCategories().get(groupPosition).subCategoryList.get(childPosition));
+
+
+//        switch (childPosition) {
+//            case 0:
+//                childName.setText("Auchan");
+//                break;
+//            case 1:
+//                childName.setText("Picnic");
+//                break;
+//            case 2:
+//                childName.setText("A lot of cheese");
+//                break;
+//        }
 
         childView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,6 +136,11 @@ public class FinancesExpListViewAdapter extends BaseExpandableListAdapter {
                 v.setBackgroundColor(mContext.getResources().getColor(R.color.FinancesColorPrimary));
                 ((TextView) v.findViewById(R.id.finances_childName)).setTextColor(Color.WHITE);
                 notifyDataSetChanged();
+
+                // Updating selection. Better refactor onClickListener to Activity
+                Selection.selectedSubCategory = DatabaseInstrument.instance.getAllCategories().get(groupPosition).subCategoryList.get(childPosition);
+                Selection.selectedCategory = DatabaseInstrument.instance.getAllCategories().get(groupPosition);
+
             }
         });
 
@@ -176,11 +183,11 @@ public class FinancesExpListViewAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public void onGroupExpanded(int groupPosition){
+    public void onGroupExpanded(int groupPosition) {
         // collapse the old expanded group, if not the same
         // as new group to expand
 
-        if(groupPosition != lastExpandedGroupPosition) {
+        if (groupPosition != lastExpandedGroupPosition) {
             listView.collapseGroup(lastExpandedGroupPosition);
         }
         moneyAdapter.close();
