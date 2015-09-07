@@ -1,6 +1,8 @@
 package ui.helpers;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -20,9 +22,9 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
-import ui.activities.HistoryActivity;
+
 import ui.activities.MainActivity;
-import ui.test.ListViewDraggingAnimation;
+import ui.fragments.HistoryFragment;
 import ui.test2.DynamicListActivity;
 
 /**
@@ -39,6 +41,8 @@ public class MyDrawer {
     boolean isFabMenuSet = false;
     Activities activityType;
 
+    FragmentManager fragmentManager;
+
     public enum Activities {
         Home,
         History,
@@ -54,6 +58,8 @@ public class MyDrawer {
         this.toolbar = toolbar;
         this.primaryColor = primaryColor;
         this.activityType = activityType;
+
+        fragmentManager = activity.getFragmentManager();
     }
 
     /*
@@ -114,16 +120,18 @@ public class MyDrawer {
                         switch (i) {
                             // This Month
                             case 0:
-                                if (activityType != Activities.Home) {
-                                    activity.startActivity(new Intent(activity.getApplicationContext(), MainActivity.class));
-                                }
+                                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                                MainActivity.makeToolbarInvisible();
                                 break;
 
                             // History
                             case 1:
-                                if (activityType != Activities.History) {
-                                    activity.startActivity(new Intent(activity.getApplicationContext(), HistoryActivity.class));
-                                }
+                                FragmentTransaction fragmentTransaction1 = fragmentManager.beginTransaction();
+                                HistoryFragment historyFragment = new HistoryFragment();
+                                fragmentTransaction1.add(R.id.fragment_container, historyFragment);
+                                fragmentTransaction1.addToBackStack(null);
+                                fragmentTransaction1.commit();
+                                MainActivity.setToolbarText("History");
                                 break;
 
                             // Budget

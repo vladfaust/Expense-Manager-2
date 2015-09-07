@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import com.cheesehole.expencemanager.R;
 
+import ui.fragments.HistoryFragment;
+
 /**
  * Created by Жамбыл on 22.06.2015.
  */
@@ -31,11 +33,11 @@ public class ExpenseViewActivity extends BaseActivity {
 
     private void getStoredData() {
         Bundle bundle = getIntent().getExtras();
-        date = bundle.getString(HistoryActivity.DATE);
-        category = bundle.getString(HistoryActivity.CATEGORY);
-        subcategory = bundle.getString(HistoryActivity.SUBCATEGORY);
-        comment = bundle.getString(HistoryActivity.COMMENT);
-        money = bundle.getString(HistoryActivity.MONEY);
+        date = bundle.getString(HistoryFragment.DATE);
+        category = bundle.getString(HistoryFragment.CATEGORY);
+        subcategory = bundle.getString(HistoryFragment.SUBCATEGORY);
+        comment = bundle.getString(HistoryFragment.COMMENT);
+        money = bundle.getString(HistoryFragment.MONEY);
     }
 
     @Override

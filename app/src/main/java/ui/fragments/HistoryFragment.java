@@ -1,7 +1,15 @@
-package ui.activities;
+package ui.fragments;
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
 import com.cheesehole.expencemanager.R;
@@ -9,21 +17,26 @@ import com.cheesehole.expencemanager.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import ui.adapters.HistoryFirstLevelAdapter;
 import ui.helpers.HistoryFirstLevel;
 import ui.helpers.HistorySecondLevel;
 import ui.helpers.HistoryThirdLevel;
 import ui.helpers.MyDrawer;
-import ui.adapters.HistoryFirstLevelAdapter;
 
 /**
- * Created by Жамбыл on 21.06.2015.
+ * Created by Жамбыл on 07.09.2015.
  */
-public class HistoryActivity extends BaseActivity {
+public class HistoryFragment extends Fragment {
 
     ExpandableListView listView;
     Toolbar toolbar;
     MyDrawer drawerBuilder;
     int colorOfDrawer;
+
+    private static FragmentManager fragmentManager;
+    private static FragmentTransaction fragmentTransaction;
+    static HistoryFragment historyFragment;
+
 
     // Flags
     public final static String DAY_CATEGORY = "DAY_CATEGORY";
@@ -42,40 +55,27 @@ public class HistoryActivity extends BaseActivity {
     public final static String COMMENT = "COMMENT";
     public final static String MONEY = "MONEY";
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.activity_history,null);
 
-        startUI();
+        startUI(v);
+        return v;
     }
 
-    @Override
-    protected void startUI() {
+    protected void startUI(View v) {
         // UI blocks
         getColors();
-        initToolbar();
-        initDrawer();
-        initExpListView();
+        initExpListView(v);
     }
-
     private void getColors() {
         colorOfDrawer = getResources().getColor(R.color.HomeColorPrimary);
     }
 
-    private void initDrawer() {
-        drawerBuilder = new MyDrawer(this, toolbar,colorOfDrawer, MyDrawer.Activities.History);
-        drawerBuilder.create();
-        // for proper display
-        drawerBuilder.getDrawer().setSelection(1);
-    }
 
-    private void initToolbar() {
-        toolbar = (Toolbar)findViewById(R.id.toolbarHistory);
-    }
-
-    private void initExpListView() {
-        listView = (ExpandableListView)findViewById(R.id.history_list);
+    private void initExpListView(View v) {
+        listView = (ExpandableListView) v.findViewById(R.id.history_list);
 
         // region content init
         List<String> listOfMoths = new ArrayList<>();
@@ -137,7 +137,6 @@ public class HistoryActivity extends BaseActivity {
 
         // endregion
 
-        // (Oh, dat feeling when the code below is so perfect you want to jerk to it)
         // Container
         ArrayList<HistoryFirstLevel> firstLevelList = new ArrayList<>();
 
@@ -170,18 +169,10 @@ public class HistoryActivity extends BaseActivity {
             firstLevelList.add(firstLevel);
         }
         // Put container to adapter
-        HistoryFirstLevelAdapter adapter = new HistoryFirstLevelAdapter(this,firstLevelList);
+        HistoryFirstLevelAdapter adapter = new HistoryFirstLevelAdapter(v.getContext(),firstLevelList);
         listView.setAdapter(adapter);
     }
 
-    @Override
-    public void onBackPressed() {
-        // Close drawer if it's open
-        if(drawerBuilder.getDrawer()!=null && drawerBuilder.getDrawer().isDrawerOpen()) {
-            drawerBuilder.getDrawer().closeDrawer();
-        }
-        else {
-            super.onBackPressed();
-        }
-    }
+
+
 }

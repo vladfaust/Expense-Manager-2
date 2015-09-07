@@ -14,9 +14,8 @@ import com.cheesehole.expencemanager.R;
 
 import java.util.ArrayList;
 
-import ui.activities.ExpenseActivity;
 import ui.activities.ExpenseViewActivity;
-import ui.activities.HistoryActivity;
+import ui.fragments.HistoryFragment;
 import ui.helpers.HistorySecondLevel;
 
 /**
@@ -82,11 +81,11 @@ public class HistorySecondLevelAdapter extends BaseExpandableListAdapter {
             public void onClick(View v) {
                 Intent intent = new Intent(context, ExpenseViewActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString(HistoryActivity.DATE, "10.06.15");
-                bundle.putString(HistoryActivity.CATEGORY, "Grocery");
-                bundle.putString(HistoryActivity.SUBCATEGORY, "Auchan");
-                bundle.putString(HistoryActivity.COMMENT, "Hi");
-                bundle.putString(HistoryActivity.MONEY, "82.32");
+                bundle.putString(HistoryFragment.DATE, "10.06.15");
+                bundle.putString(HistoryFragment.CATEGORY, "Grocery");
+                bundle.putString(HistoryFragment.SUBCATEGORY, "Auchan");
+                bundle.putString(HistoryFragment.COMMENT, "Hi");
+                bundle.putString(HistoryFragment.MONEY, "82.32");
                 intent.putExtras(bundle);
                 context.startActivity(intent);
             }

@@ -32,6 +32,7 @@ public class MainActivity extends BaseActivity {
     // Views
     private Toolbar toolbar;
     private TextView money,balance,percentage,budget;
+    private static TextView toolbarText;
     private RelativeLayout spaceBelowToolbar;
     private ExpandableListView listView;
     private RelativeLayout toolbarOverlay;
@@ -110,15 +111,28 @@ public class MainActivity extends BaseActivity {
         balance = (TextView)findViewById(R.id.Balance);
         percentage = (TextView)findViewById(R.id.PercentageValue);
         budget = (TextView)findViewById(R.id.Budget);
+        toolbarText = (TextView)findViewById(R.id.toolbarText);
 
         // Setting fonts
         money.setTypeface(robotoLight);
         balance.setTypeface(robotoRegular);
         percentage.setTypeface(robotoLight);
         budget.setTypeface(robotoRegular);
+        toolbarText.setTypeface(robotoRegular);
+
+        toolbarText.setTextSize(25);
+        toolbarText.setVisibility(View.GONE);
 
 //        money.setText("$850");
         money.setText("$" + String.valueOf(User.getBalance()));
+    }
+    public static void setToolbarText(String text) {
+        toolbarText.setVisibility(View.VISIBLE);
+        toolbarText.setText(text);
+    }
+    public static void makeToolbarInvisible() {
+        toolbarText.setText("");
+        toolbarText.setVisibility(View.GONE);
     }
 
     // Add Drawer
@@ -234,6 +248,7 @@ public class MainActivity extends BaseActivity {
      */
     @Override
     public void onBackPressed() {
+
         if(drawerBuilder.getDrawer() !=null && !drawerBuilder.getDrawer().isDrawerOpen()) {
             if (fabMenu != null && !fabMenu.isOpened()) {
                 super.onBackPressed();
