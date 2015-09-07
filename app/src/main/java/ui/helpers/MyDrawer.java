@@ -21,6 +21,9 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import ui.activities.HistoryActivity;
+import ui.activities.MainActivity;
+import ui.test.ListViewDraggingAnimation;
+import ui.test2.DynamicListActivity;
 
 /**
  * Created by Жамбыл on 21.06.2015.
@@ -34,16 +37,23 @@ public class MyDrawer {
     FloatingActionMenu fabMenu;
     int primaryColor;
     boolean isFabMenuSet = false;
+    Activities activityType;
 
-
-
+    public enum Activities {
+        Home,
+        History,
+        Budget,
+        Statistics,
+        Settings
+    }
     /*
         Constructor
      */
-    public MyDrawer(Activity activity, Toolbar toolbar, int primaryColor) {
+    public MyDrawer(Activity activity, Toolbar toolbar, int primaryColor, Activities activityType) {
         this.activity = activity;
         this.toolbar = toolbar;
         this.primaryColor = primaryColor;
+        this.activityType = activityType;
     }
 
     /*
@@ -65,7 +75,7 @@ public class MyDrawer {
                                 fabMenu.close(false);
                             }
                         } else {
-                            Log.e("Drawer","FabMenu is not set!");
+                            Log.e("Drawer", "FabMenu is not set!");
                         }
                     }
 
@@ -104,23 +114,38 @@ public class MyDrawer {
                         switch (i) {
                             // This Month
                             case 0:
+                                if (activityType != Activities.Home) {
+                                    activity.startActivity(new Intent(activity.getApplicationContext(), MainActivity.class));
+                                }
                                 break;
 
                             // History
                             case 1:
-                                activity.startActivity(new Intent(activity.getApplicationContext(), HistoryActivity.class));
+                                if (activityType != Activities.History) {
+                                    activity.startActivity(new Intent(activity.getApplicationContext(), HistoryActivity.class));
+                                }
                                 break;
 
                             // Budget
                             case 2:
+                                if (activityType != Activities.Budget) {
+                                    activity.startActivity(
+                                            new Intent(activity.getApplicationContext(), DynamicListActivity.class));
+                                }
                                 break;
 
-                            //Statistics
+                            // Statistics
                             case 3:
+                                if (activityType != Activities.Statistics) {
+
+                                }
                                 break;
 
                             // Settings
                             case 4:
+                                if (activityType != Activities.Settings) {
+
+                                }
                                 break;
                         }
 

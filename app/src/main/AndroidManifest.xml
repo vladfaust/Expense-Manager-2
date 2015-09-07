@@ -29,6 +29,14 @@
             android:name="ui.activities.ExpenseViewActivity"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name="ui.test.ListViewDraggingAnimation"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="ui.test2.DynamicListActivity"
+            android:label="@string/app_name" >
+        </activity>
 
     </application>
 

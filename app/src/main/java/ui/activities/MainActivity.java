@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.cheesehole.expencemanager.R;
 
 import bl.models.DatabaseInstrument;
+import bl.models.User;
 import ui.adapters.HomeExpListAdapter;
 import ui.helpers.MyDrawer;
 
@@ -116,13 +117,13 @@ public class MainActivity extends BaseActivity {
         percentage.setTypeface(robotoLight);
         budget.setTypeface(robotoRegular);
 
-        money.setText("$850");
-//        money.setText("$" + String.valueOf(User.balance));
+//        money.setText("$850");
+        money.setText("$" + String.valueOf(User.getBalance()));
     }
 
     // Add Drawer
     private void initDrawer() {
-        drawerBuilder = new MyDrawer(this, toolbar,primaryColor);
+        drawerBuilder = new MyDrawer(this, toolbar,primaryColor, MyDrawer.Activities.Home);
         drawerBuilder.setFabMenu(fabMenu);
         drawerBuilder.create();
     }
@@ -178,6 +179,7 @@ public class MainActivity extends BaseActivity {
                 closeFab();
                 startActivity(new Intent(MainActivity.this, ExpenseActivity.class));
             }
+
         });
 
         // Adding to Fab-menu
@@ -193,6 +195,7 @@ public class MainActivity extends BaseActivity {
                 setInvisibility(fabMenu.isOpened());
             }
         });
+
 
         fabMenu.setClosedOnTouchOutside(true);
         // Showing Fab-menu

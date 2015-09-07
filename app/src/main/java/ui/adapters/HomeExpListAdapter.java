@@ -53,6 +53,12 @@ public class HomeExpListAdapter extends BaseExpandableListAdapter {
         mFabMenu = fabMenu;
     }
 
+    public HomeExpListAdapter(Context context, ArrayList<ArrayList<String>> groups) {
+        mContext = context;
+        mGroups = groups;
+
+    }
+
     /*
         GroupView
      */

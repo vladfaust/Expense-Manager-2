@@ -64,7 +64,7 @@ public class HistoryActivity extends BaseActivity {
     }
 
     private void initDrawer() {
-        drawerBuilder = new MyDrawer(this, toolbar,colorOfDrawer);
+        drawerBuilder = new MyDrawer(this, toolbar,colorOfDrawer, MyDrawer.Activities.History);
         drawerBuilder.create();
         // for proper display
         drawerBuilder.getDrawer().setSelection(1);
