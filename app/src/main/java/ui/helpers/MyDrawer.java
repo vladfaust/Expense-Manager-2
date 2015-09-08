@@ -25,7 +25,8 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import ui.activities.MainActivity;
 import ui.fragments.HistoryFragment;
-import ui.test2.DynamicListActivity;
+import ui.fragments.StatisticsFragment;
+import ui.fragments.StatisticsLineFragment;
 
 /**
  * Created by Жамбыл on 21.06.2015.
@@ -105,7 +106,10 @@ public class MyDrawer {
                         new PrimaryDrawerItem().withName("Budget")
                                 .withIcon(activity.getResources().getDrawable(R.drawable.statistics))
                                 .withSelectedTextColor(primaryColor),
-                        new PrimaryDrawerItem().withName("Statistics")
+                        new PrimaryDrawerItem().withName("Statistics (Pie Chart Demo)")
+                                .withIcon(activity.getResources().getDrawable(R.drawable.statistics))
+                                .withSelectedTextColor(primaryColor),
+                        new PrimaryDrawerItem().withName("Statistics (Line Chart Demo)")
                                 .withIcon(activity.getResources().getDrawable(R.drawable.statistics))
                                 .withSelectedTextColor(primaryColor)
                         ,
@@ -136,24 +140,30 @@ public class MyDrawer {
 
                             // Budget
                             case 2:
-                                if (activityType != Activities.Budget) {
-                                    activity.startActivity(
-                                            new Intent(activity.getApplicationContext(), DynamicListActivity.class));
-                                }
+//                                if (activityType != Activities.Budget) {
+//                                    activity.startActivity(
+//                                            new Intent(activity.getApplicationContext(), DynamicListActivity.class));
+//                                }
                                 break;
 
                             // Statistics
                             case 3:
-                                if (activityType != Activities.Statistics) {
-
-                                }
+                                FragmentTransaction fragmentTransaction2 = fragmentManager.beginTransaction();
+                                StatisticsFragment statisticsFragment = new StatisticsFragment();
+                                fragmentTransaction2.add(R.id.fragment_container, statisticsFragment);
+                                fragmentTransaction2.addToBackStack(null);
+                                fragmentTransaction2.commit();
+                                MainActivity.setToolbarText("Statistics");
                                 break;
 
                             // Settings
                             case 4:
-                                if (activityType != Activities.Settings) {
-
-                                }
+                                FragmentTransaction fragmentTransaction3 = fragmentManager.beginTransaction();
+                                StatisticsLineFragment statisticsLineFragment = new StatisticsLineFragment();
+                                fragmentTransaction3.add(R.id.fragment_container, statisticsLineFragment);
+                                fragmentTransaction3.addToBackStack(null);
+                                fragmentTransaction3.commit();
+                                MainActivity.setToolbarText("Statistics");
                                 break;
                         }
 

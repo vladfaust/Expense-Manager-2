@@ -1,6 +1,5 @@
 package ui.fragments;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -17,6 +16,8 @@ import com.cheesehole.expencemanager.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import ui.activities.BaseActivity;
+import ui.activities.BaseFragment;
 import ui.adapters.HistoryFirstLevelAdapter;
 import ui.helpers.HistoryFirstLevel;
 import ui.helpers.HistorySecondLevel;
@@ -26,7 +27,7 @@ import ui.helpers.MyDrawer;
 /**
  * Created by Жамбыл on 07.09.2015.
  */
-public class HistoryFragment extends Fragment {
+public class HistoryFragment extends BaseFragment {
 
     ExpandableListView listView;
     Toolbar toolbar;
@@ -58,17 +59,19 @@ public class HistoryFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_history,null);
+        View v = inflater.inflate(R.layout.fragment_history,null);
 
         startUI(v);
         return v;
     }
 
+    @Override
     protected void startUI(View v) {
         // UI blocks
         getColors();
         initExpListView(v);
     }
+
     private void getColors() {
         colorOfDrawer = getResources().getColor(R.color.HomeColorPrimary);
     }
@@ -172,7 +175,6 @@ public class HistoryFragment extends Fragment {
         HistoryFirstLevelAdapter adapter = new HistoryFirstLevelAdapter(v.getContext(),firstLevelList);
         listView.setAdapter(adapter);
     }
-
 
 
 }
