@@ -120,7 +120,7 @@ public class MainActivity extends BaseActivity {
         budget.setTypeface(robotoRegular);
         toolbarText.setTypeface(robotoRegular);
 
-        toolbarText.setTextSize(25);
+        toolbarText.setTextSize(20);
         toolbarText.setVisibility(View.GONE);
         toolbarText.setTypeface(robotoRegular);
 

@@ -27,8 +27,7 @@ import java.util.List;
  * Created by Жамбыл on 09.09.2015.
  */
 
-public class StatisticsLineFragment extends BaseFragment implements
-        OnChartValueSelectedListener {
+public class StatisticsLineFragment extends BaseFragment implements OnChartValueSelectedListener {
 
     LineChart lineChart;
 
@@ -46,19 +45,12 @@ public class StatisticsLineFragment extends BaseFragment implements
     @Override
     protected void startUI(View v) {
         initLineChart(v);
-
-
+        setData(10, 60);
     }
 
     private void initLineChart(View v) {
-//        mainLayout = (LinearLayout)v.findViewById(R.id.statistics_line_chart_main_layout);
-//        lineChart = new LineChart(v.getContext());
-//
-//        mainLayout.addView(lineChart);
-//        lineChart.setMinimumHeight(800);
 
-
-        lineChart = (LineChart) v.findViewById(R.id.chart1);
+        lineChart = (LineChart) v.findViewById(R.id.line_chart);
         lineChart.setOnChartValueSelectedListener(this);
 
         // no description text
@@ -69,91 +61,65 @@ public class StatisticsLineFragment extends BaseFragment implements
         lineChart.setHighlightEnabled(true);
 
         // enable touch gestures
-        lineChart.setTouchEnabled(true);
+        lineChart.setTouchEnabled(false);
 
         lineChart.setDragDecelerationFrictionCoef(0.9f);
 
         // enable scaling and dragging
-        lineChart.setDragEnabled(true);
-        lineChart.setScaleEnabled(true);
-        lineChart.setDrawGridBackground(true);
-        lineChart.setHighlightPerDragEnabled(true);
+        lineChart.setDragEnabled(false);
+        lineChart.setScaleEnabled(false);
+        lineChart.setDrawGridBackground(false);
+        lineChart.setHighlightPerDragEnabled(false);
 
         // if disabled, scaling can be done on x- and y-axis separately
-        lineChart.setPinchZoom(true);
+        lineChart.setPinchZoom(false);
 
         // set an alternative background color
         lineChart.setBackgroundColor(Color.WHITE);
+        lineChart.setGridBackgroundColor(ColorTemplate.getHoloBlue());
 
-
-
-
-        // add data
-        setData(40, 60);
-
-        lineChart.animateX(2500);
-
-
-        // get the legend (only possible after setting data)
-        Legend l = lineChart.getLegend();
-
-        // modify the legend ...
-        // l.setPosition(LegendPosition.LEFT_OF_CHART);
-        l.setForm(Legend.LegendForm.LINE);
-//        l.setTypeface(tf);
-        l.setTextSize(11f);
-        l.setTextColor(Color.BLACK);
-        l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
-//        l.setYOffset(11f);
-
-        List<String> listOfxValues = new ArrayList<>();
-        listOfxValues.add("January");
-        listOfxValues.add("February");
-        listOfxValues.add("March");
-        listOfxValues.add("April");
-        listOfxValues.add("May");
+        // Animation speed
+        lineChart.animateX(5000);
 
         XAxis xAxis = lineChart.getXAxis();
 //        xAxis.setTypeface(tf);
         xAxis.setTextSize(12f);
         xAxis.setTextColor(Color.BLACK);
-        xAxis.setDrawGridLines(false);
+        xAxis.setDrawGridLines(true);
         xAxis.setDrawAxisLine(false);
-        xAxis.setSpaceBetweenLabels(1);
-
-
+        xAxis.setSpaceBetweenLabels(0);
 
         YAxis leftAxis = lineChart.getAxisLeft();
+        leftAxis.setDrawAxisLine(true);
 //        leftAxis.setTypeface(tf);
-        leftAxis.setTextColor(ColorTemplate.getHoloBlue());
         leftAxis.setAxisMaxValue(200f);
-        leftAxis.setDrawGridLines(false);
+        leftAxis.setDrawGridLines(true);
 
-//        YAxis rightAxis = lineChart.getAxisRight();
-////        rightAxis.setTypeface(tf);
-//        rightAxis.setTextColor(Color.RED);
-//        rightAxis.setAxisMaxValue(900);
-//        rightAxis.setStartAtZero(false);
-//        rightAxis.setAxisMinValue(-200);
-//        rightAxis.setDrawGridLines(false);
+        YAxis rightAxis = lineChart.getAxisRight();
+        rightAxis.setTextColor(Color.TRANSPARENT);
+        rightAxis.setDrawGridLines(false);
     }
 
-
-
     private void setData(int count, float range) {
-
+        // HorizontalValues
         ArrayList<String> xVals = new ArrayList<String>();
-        for (int i = 0; i < count; i++) {
-            xVals.add((i) + "");
-        }
+        xVals.add("Jan");
+        xVals.add("Feb");
+        xVals.add("Mar");
+        xVals.add("Apr");
+        xVals.add("May");
+        xVals.add("Jun");
+        xVals.add("Jul");
+        xVals.add("Aug");
+        xVals.add("Sep");
+        xVals.add("Oct");
 
+        // Vertical Values
         ArrayList<Entry> yVals1 = new ArrayList<Entry>();
 
         for (int i = 0; i < count; i++) {
             float mult = range / 2f;
-            float val = (float) (Math.random() * mult) + 50;// + (float)
-            // ((mult *
-            // 0.1) / 10);
+            float val = (float) (Math.random() * mult) + 50;
             yVals1.add(new Entry(val, i));
         }
 
@@ -161,9 +127,10 @@ public class StatisticsLineFragment extends BaseFragment implements
         LineDataSet set1 = new LineDataSet(yVals1, "");
         set1.setAxisDependency(YAxis.AxisDependency.LEFT);
         set1.setColor(ColorTemplate.getHoloBlue());
-        set1.setCircleColor(Color.WHITE);
-        set1.setLineWidth(3f);
-        set1.setCircleSize(3f);
+        set1.setCircleColor(ColorTemplate.getHoloBlue());
+        set1.setLineWidth(2f);
+        set1.setCircleSize(6f);
+        set1.setCircleColorHole(Color.WHITE);
         set1.setFillAlpha(65);
         set1.setFillColor(ColorTemplate.getHoloBlue());
         set1.setHighLightColor(Color.rgb(244, 117, 117));
@@ -172,27 +139,13 @@ public class StatisticsLineFragment extends BaseFragment implements
 //        set1.setVisible(false);
 //        set1.setCircleHoleColor(Color.WHITE);
 
-        ArrayList<Entry> yVals2 = new ArrayList<Entry>();
-
-        for (int i = 0; i < count; i++) {
-            float mult = range;
-            float val = (float) (Math.random() * mult) + 450;// + (float)
-            // ((mult *
-            // 0.1) / 10);
-            yVals2.add(new Entry(val, i));
-        }
-
-
         ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
-//        dataSets.add(set2);
-        dataSets.add(set1); // add the datasets
+        dataSets.add(set1);
 
         // create a data object with the datasets
         LineData data = new LineData(xVals, dataSets);
         data.setValueTextColor(Color.TRANSPARENT);
         data.setValueTextSize(9f);
-
-
 
         // set data
         lineChart.setData(data);

@@ -26,11 +26,12 @@ import java.util.ArrayList;
  */
 public class StatisticsPieFragment extends BaseFragment {
 
+    // Views
     PieChart pieChart;
     LinearLayout mainLayout;
 
     float[] yData = {10,46,57,7.2f};
-    String[] xData = {"Apple", "Samsung","LG", "Huawey", "Sony"};
+    String[] xData = {"Jan", "Dec","Mar", "Arp", "May"};
 
 
     @Nullable
@@ -46,12 +47,11 @@ public class StatisticsPieFragment extends BaseFragment {
 
     @Override
     protected void startUI(View v) {
-
         initPieChart(v);
+        addData();
     }
 
     private void initPieChart(final View v) {
-
         mainLayout = (LinearLayout)v.findViewById(R.id.statistics_main_layout);
         pieChart = new PieChart(v.getContext());
         mainLayout.addView(pieChart);
@@ -59,16 +59,16 @@ public class StatisticsPieFragment extends BaseFragment {
         mainLayout.setBackgroundColor(Color.WHITE);
 
         pieChart.setUsePercentValues(true);
-        pieChart.setDescription("Phones");
+        pieChart.setDescription("");
 
-        pieChart.setMinimumHeight(800);
+        pieChart.setMinimumHeight(1000);
         pieChart.setDrawHoleEnabled(true);
         pieChart.setHoleColorTransparent(true);
         pieChart.setHoleRadius(0);
         pieChart.setTransparentCircleRadius(100);
 
         pieChart.setRotationAngle(0);
-        pieChart.setRotationEnabled(true);
+        pieChart.setRotationEnabled(false);
 
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
@@ -85,15 +85,6 @@ public class StatisticsPieFragment extends BaseFragment {
 
             }
         });
-
-        addData();
-
-//        Legend l = pieChart.getLegend();
-//        l.setPosition(Legend.LegendPosition.RIGHT_OF_CHART);
-//        l.setXEntrySpace(7);
-//        l.setYEntrySpace(5);
-
-
     }
 
     private void addData() {
@@ -108,7 +99,7 @@ public class StatisticsPieFragment extends BaseFragment {
             xVals.add(xData[i]);
         }
 
-        PieDataSet dataSet = new PieDataSet(yVals, "Market Share");
+        PieDataSet dataSet = new PieDataSet(yVals, "");
         dataSet.setSliceSpace(3);
         dataSet.setSelectionShift(5);
 

@@ -27,14 +27,7 @@ import ui.helpers.MyDrawer;
 public class HistoryFragment extends BaseFragment {
 
     ExpandableListView listView;
-    Toolbar toolbar;
-    MyDrawer drawerBuilder;
     int colorOfDrawer;
-
-    private static FragmentManager fragmentManager;
-    private static FragmentTransaction fragmentTransaction;
-    static HistoryFragment historyFragment;
-
 
     // Flags
     public final static String DAY_CATEGORY = "DAY_CATEGORY";

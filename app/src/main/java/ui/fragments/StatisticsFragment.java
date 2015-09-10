@@ -18,10 +18,13 @@ import ui.helpers.SlidingTabLayout;
  */
 public class StatisticsFragment extends BaseFragment {
 
-    int NumbOfTabs = 2;
+    // Views
     ViewPager pager;
     TabViewPagerAdapter adapter;
     SlidingTabLayout tabs;
+
+    // Tabs
+    int NumbOfTabs = 2;
     CharSequence Titles[]={"Pie Chart","Line Chart"};
 
     @Nullable
@@ -37,12 +40,7 @@ public class StatisticsFragment extends BaseFragment {
 
     @Override
     protected void startUI(View v) {
-        initTabs(v);
-    }
-
-
-
-    private void initTabs(View v) {
+        // Getting tabs
         adapter =  new TabViewPagerAdapter(getFragmentManager(),Titles, NumbOfTabs);
         pager = (ViewPager) v.findViewById(R.id.statistics_pager);
         pager.setAdapter(adapter);
@@ -55,7 +53,7 @@ public class StatisticsFragment extends BaseFragment {
         tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
             @Override
             public int getIndicatorColor(int position) {
-                return Color.GRAY;
+                return getResources().getColor(R.color.HomeColorPrimaryDark);
             }
         });
     }
