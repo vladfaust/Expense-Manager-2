@@ -1,6 +1,5 @@
 package ui.fragments;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -16,8 +15,6 @@ import com.cheesehole.expencemanager.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import ui.activities.BaseActivity;
-import ui.activities.BaseFragment;
 import ui.adapters.HistoryFirstLevelAdapter;
 import ui.helpers.HistoryFirstLevel;
 import ui.helpers.HistorySecondLevel;

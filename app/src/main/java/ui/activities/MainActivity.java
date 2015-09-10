@@ -122,6 +122,7 @@ public class MainActivity extends BaseActivity {
 
         toolbarText.setTextSize(25);
         toolbarText.setVisibility(View.GONE);
+        toolbarText.setTypeface(robotoRegular);
 
 //        money.setText("$850");
         money.setText("$" + String.valueOf(User.getBalance()));
@@ -137,7 +138,7 @@ public class MainActivity extends BaseActivity {
 
     // Add Drawer
     private void initDrawer() {
-        drawerBuilder = new MyDrawer(this, toolbar,primaryColor, MyDrawer.Activities.Home);
+        drawerBuilder = new MyDrawer(this, toolbar,primaryColor);
         drawerBuilder.setFabMenu(fabMenu);
         drawerBuilder.create();
     }

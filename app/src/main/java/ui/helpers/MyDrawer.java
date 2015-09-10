@@ -1,11 +1,12 @@
 package ui.helpers;
 
 import android.app.Activity;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -22,11 +23,9 @@ import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
-
 import ui.activities.MainActivity;
 import ui.fragments.HistoryFragment;
 import ui.fragments.StatisticsFragment;
-import ui.fragments.StatisticsLineFragment;
 
 /**
  * Created by Жамбыл on 21.06.2015.
@@ -40,27 +39,18 @@ public class MyDrawer {
     FloatingActionMenu fabMenu;
     int primaryColor;
     boolean isFabMenuSet = false;
-    Activities activityType;
 
     FragmentManager fragmentManager;
 
-    public enum Activities {
-        Home,
-        History,
-        Budget,
-        Statistics,
-        Settings
-    }
+
     /*
         Constructor
      */
-    public MyDrawer(Activity activity, Toolbar toolbar, int primaryColor, Activities activityType) {
+    public MyDrawer(FragmentActivity activity, Toolbar toolbar, int primaryColor) {
         this.activity = activity;
         this.toolbar = toolbar;
         this.primaryColor = primaryColor;
-        this.activityType = activityType;
-
-        fragmentManager = activity.getFragmentManager();
+        fragmentManager = activity.getSupportFragmentManager();
     }
 
     /*
@@ -106,10 +96,7 @@ public class MyDrawer {
                         new PrimaryDrawerItem().withName("Budget")
                                 .withIcon(activity.getResources().getDrawable(R.drawable.statistics))
                                 .withSelectedTextColor(primaryColor),
-                        new PrimaryDrawerItem().withName("Statistics (Pie Chart Demo)")
-                                .withIcon(activity.getResources().getDrawable(R.drawable.statistics))
-                                .withSelectedTextColor(primaryColor),
-                        new PrimaryDrawerItem().withName("Statistics (Line Chart Demo)")
+                        new PrimaryDrawerItem().withName("Statistics")
                                 .withIcon(activity.getResources().getDrawable(R.drawable.statistics))
                                 .withSelectedTextColor(primaryColor)
                         ,
@@ -130,40 +117,20 @@ public class MyDrawer {
 
                             // History
                             case 1:
-                                FragmentTransaction fragmentTransaction1 = fragmentManager.beginTransaction();
-                                HistoryFragment historyFragment = new HistoryFragment();
-                                fragmentTransaction1.add(R.id.fragment_container, historyFragment);
-                                fragmentTransaction1.addToBackStack(null);
-                                fragmentTransaction1.commit();
-                                MainActivity.setToolbarText("History");
+                                startFragment(new HistoryFragment(), "History");
                                 break;
 
                             // Budget
                             case 2:
-//                                if (activityType != Activities.Budget) {
-//                                    activity.startActivity(
-//                                            new Intent(activity.getApplicationContext(), DynamicListActivity.class));
-//                                }
                                 break;
 
                             // Statistics
                             case 3:
-                                FragmentTransaction fragmentTransaction2 = fragmentManager.beginTransaction();
-                                StatisticsFragment statisticsFragment = new StatisticsFragment();
-                                fragmentTransaction2.add(R.id.fragment_container, statisticsFragment);
-                                fragmentTransaction2.addToBackStack(null);
-                                fragmentTransaction2.commit();
-                                MainActivity.setToolbarText("Statistics");
+                                startFragment(new StatisticsFragment(), "Statistics");
                                 break;
 
                             // Settings
                             case 4:
-                                FragmentTransaction fragmentTransaction3 = fragmentManager.beginTransaction();
-                                StatisticsLineFragment statisticsLineFragment = new StatisticsLineFragment();
-                                fragmentTransaction3.add(R.id.fragment_container, statisticsLineFragment);
-                                fragmentTransaction3.addToBackStack(null);
-                                fragmentTransaction3.commit();
-                                MainActivity.setToolbarText("Statistics");
                                 break;
                         }
 
@@ -171,6 +138,14 @@ public class MyDrawer {
                     }
                 })
                 .build();
+    }
+
+    private void startFragment(Fragment fragment, String text) {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.fragment_container, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+        MainActivity.setToolbarText(text);
     }
 
     private AccountHeader getHeader() {

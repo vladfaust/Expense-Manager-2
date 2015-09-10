@@ -1,16 +1,12 @@
 package ui.fragments;
 
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.SeekBar;
-import android.widget.TextView;
 
 import com.cheesehole.expencemanager.R;
 import com.github.mikephil.charting.charts.LineChart;
@@ -25,20 +21,16 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
-
-import ui.activities.BaseFragment;
+import java.util.List;
 
 /**
  * Created by Жамбыл on 09.09.2015.
  */
-public class StatisticsLineFragment extends BaseFragment implements SeekBar.OnSeekBarChangeListener,
+
+public class StatisticsLineFragment extends BaseFragment implements
         OnChartValueSelectedListener {
 
-    LinearLayout mainLayout;
     LineChart lineChart;
-
-    private SeekBar mSeekBarX, mSeekBarY;
-    private TextView tvX, tvY;
 
     @Nullable
     @Override
@@ -65,16 +57,6 @@ public class StatisticsLineFragment extends BaseFragment implements SeekBar.OnSe
 //        mainLayout.addView(lineChart);
 //        lineChart.setMinimumHeight(800);
 
-        tvX = (TextView) v.findViewById(R.id.tvXMax);
-        tvY = (TextView) v.findViewById(R.id.tvYMax);
-        mSeekBarX = (SeekBar) v.findViewById(R.id.seekBar1);
-        mSeekBarY = (SeekBar) v.findViewById(R.id.seekBar2);
-
-        mSeekBarX.setProgress(45);
-        mSeekBarY.setProgress(100);
-
-        mSeekBarY.setOnSeekBarChangeListener(this);
-        mSeekBarX.setOnSeekBarChangeListener(this);
 
         lineChart = (LineChart) v.findViewById(R.id.chart1);
         lineChart.setOnChartValueSelectedListener(this);
@@ -94,17 +76,20 @@ public class StatisticsLineFragment extends BaseFragment implements SeekBar.OnSe
         // enable scaling and dragging
         lineChart.setDragEnabled(true);
         lineChart.setScaleEnabled(true);
-        lineChart.setDrawGridBackground(false);
+        lineChart.setDrawGridBackground(true);
         lineChart.setHighlightPerDragEnabled(true);
 
         // if disabled, scaling can be done on x- and y-axis separately
         lineChart.setPinchZoom(true);
 
         // set an alternative background color
-        lineChart.setBackgroundColor(Color.LTGRAY);
+        lineChart.setBackgroundColor(Color.WHITE);
+
+
+
 
         // add data
-        setData(20, 30);
+        setData(40, 60);
 
         lineChart.animateX(2500);
 
@@ -117,44 +102,43 @@ public class StatisticsLineFragment extends BaseFragment implements SeekBar.OnSe
         l.setForm(Legend.LegendForm.LINE);
 //        l.setTypeface(tf);
         l.setTextSize(11f);
-        l.setTextColor(Color.WHITE);
+        l.setTextColor(Color.BLACK);
         l.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
 //        l.setYOffset(11f);
+
+        List<String> listOfxValues = new ArrayList<>();
+        listOfxValues.add("January");
+        listOfxValues.add("February");
+        listOfxValues.add("March");
+        listOfxValues.add("April");
+        listOfxValues.add("May");
 
         XAxis xAxis = lineChart.getXAxis();
 //        xAxis.setTypeface(tf);
         xAxis.setTextSize(12f);
-        xAxis.setTextColor(Color.WHITE);
+        xAxis.setTextColor(Color.BLACK);
         xAxis.setDrawGridLines(false);
         xAxis.setDrawAxisLine(false);
         xAxis.setSpaceBetweenLabels(1);
+
+
 
         YAxis leftAxis = lineChart.getAxisLeft();
 //        leftAxis.setTypeface(tf);
         leftAxis.setTextColor(ColorTemplate.getHoloBlue());
         leftAxis.setAxisMaxValue(200f);
-        leftAxis.setDrawGridLines(true);
+        leftAxis.setDrawGridLines(false);
 
-        YAxis rightAxis = lineChart.getAxisRight();
-//        rightAxis.setTypeface(tf);
-        rightAxis.setTextColor(Color.RED);
-        rightAxis.setAxisMaxValue(900);
-        rightAxis.setStartAtZero(false);
-        rightAxis.setAxisMinValue(-200);
-        rightAxis.setDrawGridLines(false);
+//        YAxis rightAxis = lineChart.getAxisRight();
+////        rightAxis.setTypeface(tf);
+//        rightAxis.setTextColor(Color.RED);
+//        rightAxis.setAxisMaxValue(900);
+//        rightAxis.setStartAtZero(false);
+//        rightAxis.setAxisMinValue(-200);
+//        rightAxis.setDrawGridLines(false);
     }
 
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-        tvX.setText("" + (mSeekBarX.getProgress() + 1));
-        tvY.setText("" + (mSeekBarY.getProgress()));
-
-        setData(mSeekBarX.getProgress() + 1, mSeekBarY.getProgress());
-
-        // redraw
-        lineChart.invalidate();
-    }
 
     private void setData(int count, float range) {
 
@@ -174,16 +158,16 @@ public class StatisticsLineFragment extends BaseFragment implements SeekBar.OnSe
         }
 
         // create a dataset and give it a type
-        LineDataSet set1 = new LineDataSet(yVals1, "DataSet 1");
+        LineDataSet set1 = new LineDataSet(yVals1, "");
         set1.setAxisDependency(YAxis.AxisDependency.LEFT);
         set1.setColor(ColorTemplate.getHoloBlue());
         set1.setCircleColor(Color.WHITE);
-        set1.setLineWidth(2f);
+        set1.setLineWidth(3f);
         set1.setCircleSize(3f);
         set1.setFillAlpha(65);
         set1.setFillColor(ColorTemplate.getHoloBlue());
         set1.setHighLightColor(Color.rgb(244, 117, 117));
-        set1.setDrawCircleHole(false);
+        set1.setDrawCircleHole(true);
 //        set1.setDrawHorizontalHighlightIndicator(false);
 //        set1.setVisible(false);
 //        set1.setCircleHoleColor(Color.WHITE);
@@ -198,26 +182,17 @@ public class StatisticsLineFragment extends BaseFragment implements SeekBar.OnSe
             yVals2.add(new Entry(val, i));
         }
 
-        // create a dataset and give it a type
-        LineDataSet set2 = new LineDataSet(yVals2, "DataSet 2");
-        set2.setAxisDependency(YAxis.AxisDependency.RIGHT);
-        set2.setColor(Color.RED);
-        set2.setCircleColor(Color.WHITE);
-        set2.setLineWidth(2f);
-        set2.setCircleSize(3f);
-        set2.setFillAlpha(65);
-        set2.setFillColor(Color.RED);
-        set2.setDrawCircleHole(false);
-        set2.setHighLightColor(Color.rgb(244, 117, 117));
 
         ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
-        dataSets.add(set2);
+//        dataSets.add(set2);
         dataSets.add(set1); // add the datasets
 
         // create a data object with the datasets
         LineData data = new LineData(xVals, dataSets);
-        data.setValueTextColor(Color.WHITE);
+        data.setValueTextColor(Color.TRANSPARENT);
         data.setValueTextSize(9f);
+
+
 
         // set data
         lineChart.setData(data);
@@ -233,15 +208,5 @@ public class StatisticsLineFragment extends BaseFragment implements SeekBar.OnSe
         Log.i("Nothing selected", "Nothing selected.");
     }
 
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
 
-    }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-        // TODO Auto-generated method stub
-
-    }
 }
