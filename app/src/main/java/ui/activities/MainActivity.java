@@ -20,7 +20,7 @@ import com.cheesehole.expencemanager.R;
 import bl.models.DatabaseInstrument;
 import bl.models.User;
 import ui.adapters.HomeExpListAdapter;
-import ui.helpers.MyDrawer;
+import ui.helpers.DrawerView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -37,7 +37,7 @@ public class MainActivity extends BaseActivity {
     private ExpandableListView listView;
     private RelativeLayout toolbarOverlay;
     private FloatingActionMenu fabMenu;
-    private MyDrawer drawerBuilder;
+    private DrawerView drawerBuilder;
 
     // Main color
     int primaryColor;
@@ -138,7 +138,7 @@ public class MainActivity extends BaseActivity {
 
     // Add Drawer
     private void initDrawer() {
-        drawerBuilder = new MyDrawer(this, toolbar,primaryColor);
+        drawerBuilder = new DrawerView(this, toolbar,primaryColor);
         drawerBuilder.setFabMenu(fabMenu);
         drawerBuilder.create();
     }

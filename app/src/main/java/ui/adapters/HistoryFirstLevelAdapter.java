@@ -1,14 +1,19 @@
 package ui.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
+import com.cheesehole.expencemanager.R;
+
 import java.util.ArrayList;
 
+import ui.fragments.HistoryFragment;
 import ui.helpers.CustExpListview;
 import ui.helpers.HistoryFirstLevel;
 
@@ -43,26 +48,23 @@ public class HistoryFirstLevelAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View groupView, ViewGroup parent) {
         listView = (ExpandableListView)parent;
-//
-//        if(convertView == null) {
-//            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//            convertView = inflater.inflate(R.layout.history_first_layer,null);
-//        }
-//        // Name of Month
-//        TextView monthName = (TextView)convertView.findViewById(R.id.history_first_layer_month);
-////        convertView.setMinimumHeight(150);
-//        // Money spent per month
-//        TextView monthMoney = (TextView)convertView.findViewById(R.id.history_first_layer_money);
-//
-//        // Getting stored data
-//        monthName.setText((String) firstLevelList.get(groupPosition).firstLevelHeader.get(HistoryActivity.MONTHS_NAME));
-//        monthMoney.setText((String) firstLevelList.get(groupPosition).firstLevelHeader.get(HistoryActivity.MONTHS_MONEY));
 
+        if(groupView == null) {
+            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            groupView = inflater.inflate(R.layout.history_first_layer,null);
+        }
+        // Name of Month
+        TextView monthName = (TextView)groupView.findViewById(R.id.history_first_layer_month);
+        groupView.setMinimumHeight(150);
 
-        TextView textView = new TextView(context);
-        textView.setText("first level");
-        textView.setMinimumHeight(200);
-        return textView;
+        // Money spent per month
+        TextView monthMoney = (TextView)groupView.findViewById(R.id.history_first_layer_money);
+
+        // Getting stored data
+        monthName.setText((String) firstLevelList.get(groupPosition).firstLevelHeader.get(HistoryFragment.MONTHS_NAME));
+        monthMoney.setText((String) firstLevelList.get(groupPosition).firstLevelHeader.get(HistoryFragment.MONTHS_MONEY));
+
+        return groupView;
     }
 
     /*

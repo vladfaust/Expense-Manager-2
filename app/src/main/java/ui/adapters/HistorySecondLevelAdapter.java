@@ -2,12 +2,17 @@ package ui.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsoluteLayout;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.cheesehole.expencemanager.R;
@@ -46,21 +51,36 @@ public class HistorySecondLevelAdapter extends BaseExpandableListAdapter {
         GroupView
      */
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded,
+    public View getGroupView(final int groupPosition, boolean isExpanded,
                              View groupView, ViewGroup parent) {
         listView = (ExpandableListView)parent;
-//        if(convertView == null) {
-//            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//            convertView = inflater.inflate(R.layout.history_second_layer_group,null);
-//        }
-////        convertView.setMinimumHeight(150);
-//
-//        TextView group_text = (TextView) convertView.findViewById(R.id.history_second_layer_group_text);
-//        group_text.setText((String) secondLevelList.get(groupPosition).secondLevelHeader.get(HistoryActivity.DAYS_NAME));
+        if(groupView == null) {
+            LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            groupView = inflater.inflate(R.layout.history_second_layer_group,null);
+        }
+        groupView.setMinimumHeight(150);
 
-        TextView textView = new TextView(context);
-        textView.setText("second level");
-        return textView;
+        TextView group_text = (TextView) groupView.findViewById(R.id.history_second_layer_group_text);
+        group_text.setText((String) secondLevelList.get(groupPosition).secondLevelHeader.get(HistoryFragment.DAYS_NAME));
+
+//        groupView.getRootView().setBackgroundColor(Color.GREEN);
+
+
+
+        // setting expand/collapse action to hole rootView of groupView
+//        groupView.getRootView().setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(listView.isGroupExpanded(groupPosition)) {
+//                    listView.collapseGroup(groupPosition);
+//                }
+//                else {
+//                    listView.expandGroup(groupPosition);
+//                }
+//            }
+//        });
+
+        return groupView;
     }
 
     /*
@@ -74,6 +94,24 @@ public class HistorySecondLevelAdapter extends BaseExpandableListAdapter {
             LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             childView = inflater.inflate(R.layout.history_second_layer_child,null);
         }
+
+        TextView name = (TextView) childView.findViewById(R.id.history_childName);
+        TextView category = (TextView) childView.findViewById(R.id.history_childDate);
+        TextView price = (TextView) childView.findViewById(R.id.history_childPrice);
+
+        name.setText("Train");
+        category.setText("Transport");
+        price.setText("$81.32");
+
+        childView.setMinimumHeight(250);
+
+        // setting color to hole view
+        int color = Color.TRANSPARENT;
+        Drawable background = childView.getBackground();
+        if(background instanceof ColorDrawable) {
+            color = ((ColorDrawable) background).getColor();
+        }
+        childView.getRootView().setBackgroundColor(color);
 
         // Showing expense data
         childView.setOnClickListener(new View.OnClickListener() {

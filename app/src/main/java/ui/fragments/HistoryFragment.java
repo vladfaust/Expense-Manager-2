@@ -1,10 +1,7 @@
 package ui.fragments;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +16,6 @@ import ui.adapters.HistoryFirstLevelAdapter;
 import ui.helpers.HistoryFirstLevel;
 import ui.helpers.HistorySecondLevel;
 import ui.helpers.HistoryThirdLevel;
-import ui.helpers.MyDrawer;
 
 /**
  * Created by Жамбыл on 07.09.2015.
@@ -95,7 +91,7 @@ public class HistoryFragment extends BaseFragment {
         listOfMoths.add("January");
 
         for(int i = 0; i<30; i++) {
-            listOfDays1.add(i<= 9? "0":"" + String.valueOf(i) + ".11.2015");
+            listOfDays1.add(i<= 9? "0" + i + ".11.2014" : i + ".11.2014");
         }
         listOfAllDays.add(listOfDays1);
 
@@ -130,8 +126,8 @@ public class HistoryFragment extends BaseFragment {
 
         // endregion
 
-        // Container
-        ArrayList<HistoryFirstLevel> firstLevelList = new ArrayList<>();
+        // Container of data
+        ArrayList<HistoryFirstLevel> historyData = new ArrayList<>();
 
         for(int i = 0; i < listOfMoths.size(); i++) {
             // First store month data (first level)
@@ -159,10 +155,10 @@ public class HistoryFragment extends BaseFragment {
                 firstLevel.secondLevelList.add(secondLevel);
             }
             // Add first level to container
-            firstLevelList.add(firstLevel);
+            historyData.add(firstLevel);
         }
-        // Put container to adapter
-        HistoryFirstLevelAdapter adapter = new HistoryFirstLevelAdapter(v.getContext(),firstLevelList);
+        // Puting container to adapter
+        HistoryFirstLevelAdapter adapter = new HistoryFirstLevelAdapter(v.getContext(),historyData);
         listView.setAdapter(adapter);
     }
 

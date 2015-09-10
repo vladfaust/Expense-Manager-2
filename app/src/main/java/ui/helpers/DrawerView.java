@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 
 import com.cheesehole.expencemanager.R;
 import com.github.clans.fab.FloatingActionMenu;
-import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.accountswitcher.AccountHeader;
 import com.mikepenz.materialdrawer.accountswitcher.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
@@ -30,7 +29,7 @@ import ui.fragments.StatisticsFragment;
 /**
  * Created by Жамбыл on 21.06.2015.
  */
-public class MyDrawer {
+public class DrawerView {
 
     private com.mikepenz.materialdrawer.Drawer drawer;
 
@@ -46,7 +45,7 @@ public class MyDrawer {
     /*
         Constructor
      */
-    public MyDrawer(FragmentActivity activity, Toolbar toolbar, int primaryColor) {
+    public DrawerView(FragmentActivity activity, Toolbar toolbar, int primaryColor) {
         this.activity = activity;
         this.toolbar = toolbar;
         this.primaryColor = primaryColor;
@@ -172,7 +171,7 @@ public class MyDrawer {
         this.fabMenu = fabMenu;
         isFabMenuSet = true;
     }
-    public Drawer getDrawer(){
+    public com.mikepenz.materialdrawer.Drawer getDrawer(){
         return drawer;
     }
 }
