@@ -90,13 +90,13 @@ public class HistoryFragment extends BaseFragment {
         listOfMoths.add("December");
         listOfMoths.add("January");
 
-        for(int i = 0; i<30; i++) {
+        for(int i = 1; i<=30; i++) {
             listOfDays1.add(i<= 9? "0" + i + ".11.2014" : i + ".11.2014");
         }
         listOfAllDays.add(listOfDays1);
 
-        listOfDays2.add("09.12.2015");
-        listOfDays2.add("10.12.2015");
+        listOfDays2.add("09.12.2014");
+        listOfDays2.add("10.12.2014");
         listOfAllDays.add(listOfDays2);
 
         listOfDays3.add("09.01.2015");
