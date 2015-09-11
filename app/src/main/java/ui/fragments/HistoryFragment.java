@@ -12,6 +12,7 @@ import com.cheesehole.expencemanager.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import bl.models.DatabaseInstrument;
 import ui.adapters.HistoryFirstLevelAdapter;
 import ui.helpers.HistoryFirstLevel;
 import ui.helpers.HistorySecondLevel;
@@ -67,78 +68,79 @@ public class HistoryFragment extends BaseFragment {
         listView = (ExpandableListView) v.findViewById(R.id.history_list);
 
         // region content init
-        List<String> listOfMoths = new ArrayList<>();
+        List<String> listOfMonths = new ArrayList<>();
 
-        List<List<String>> listOfAllDays = new ArrayList<>();
+        List<List<String>> monthDaysList = new ArrayList<>();
         List<List<String>> listOfAllDay = new ArrayList<>();
+//
+//        List<String> listOfDays1= new ArrayList<>();
+//        List<String> listOfDays2= new ArrayList<>();
+//        List<String> listOfDays3= new ArrayList<>();
+//
+//        List<String> listOfDay1= new ArrayList<>();
+//        List<String> listOfDay2= new ArrayList<>();
+//        List<String> listOfDay3= new ArrayList<>();
+//        List<String> listOfDay4= new ArrayList<>();
+//        List<String> listOfDay5= new ArrayList<>();
+//        List<String> listOfDay6= new ArrayList<>();
+//        List<String> listOfDay7= new ArrayList<>();
+//        List<String> listOfDay8= new ArrayList<>();
+//        List<String> listOfDay9= new ArrayList<>();
+//
+//        listOfMonths.add("November");
+//        listOfMonths.add("December");
+//        listOfMonths.add("January");
 
-        List<String> listOfDays1= new ArrayList<>();
-        List<String> listOfDays2= new ArrayList<>();
-        List<String> listOfDays3= new ArrayList<>();
-
-        List<String> listOfDay1= new ArrayList<>();
-        List<String> listOfDay2= new ArrayList<>();
-        List<String> listOfDay3= new ArrayList<>();
-        List<String> listOfDay4= new ArrayList<>();
-        List<String> listOfDay5= new ArrayList<>();
-        List<String> listOfDay6= new ArrayList<>();
-        List<String> listOfDay7= new ArrayList<>();
-        List<String> listOfDay8= new ArrayList<>();
-        List<String> listOfDay9= new ArrayList<>();
-
-        listOfMoths.add("November");
-        listOfMoths.add("December");
-        listOfMoths.add("January");
-
-        for(int i = 1; i<=30; i++) {
-            listOfDays1.add(i<= 9? "0" + i + ".11.2014" : i + ".11.2014");
-        }
-        listOfAllDays.add(listOfDays1);
-
-        listOfDays2.add("09.12.2014");
-        listOfDays2.add("10.12.2014");
-        listOfAllDays.add(listOfDays2);
-
-        listOfDays3.add("09.01.2015");
-        listOfDays3.add("10.01.2015");
-        listOfDays3.add("11.01.2015");
-        listOfDays3.add("12.01.2015");
-        listOfDays3.add("13.01.2015");
-        listOfDays3.add("14.01.2015");
-        listOfAllDays.add(listOfDays3);
-
-        // to make triple layer of  day
-
-        listOfDay1.add("23");
-        listOfDay2.add("23");
-        listOfDay3.add("23");
-        listOfDay4.add("23");
-        listOfDay5.add("23");
-        listOfDay6.add("23");
-        listOfDay7.add("23");
-        listOfDay8.add("23");
-        listOfDay9.add("23");
-
-
-        listOfAllDay.add(listOfDay1);
-        listOfAllDay.add(listOfDay2);
-        listOfAllDay.add(listOfDay3);
+//        for(int i = 1; i<=30; i++) {
+//            listOfDays1.add(i<= 9? "0" + i + ".11.2014" : i + ".11.2014");
+//        }
+        DatabaseInstrument.instance.getAllMonths(listOfMonths, monthDaysList, listOfAllDay);
+//        monthDaysList.add(listOfDays1);
+//
+//        listOfDays2.add("09.12.2014");
+//        listOfDays2.add("10.12.2014");
+//        monthDaysList.add(listOfDays2);
+//
+//        listOfDays3.add("09.01.2015");
+//        listOfDays3.add("10.01.2015");
+//        listOfDays3.add("11.01.2015");
+//        listOfDays3.add("12.01.2015");
+//        listOfDays3.add("13.01.2015");
+//        listOfDays3.add("14.01.2015");
+//        monthDaysList.add(listOfDays3);
+//
+//        // to make triple layer of  day
+//
+//        listOfDay1.add("23");
+//        listOfDay2.add("23");
+//        listOfDay3.add("23");
+//        listOfDay4.add("23");
+//        listOfDay5.add("23");
+//        listOfDay6.add("23");
+//        listOfDay7.add("23");
+//        listOfDay8.add("23");
+//        listOfDay9.add("23");
+//
+//
+//        listOfAllDay.add(listOfDay1);
+//        listOfAllDay.add(listOfDay2);
+//        listOfAllDay.add(listOfDay3);
 
         // endregion
 
         // Container of data
         ArrayList<HistoryFirstLevel> historyData = new ArrayList<>();
 
-        for(int i = 0; i < listOfMoths.size(); i++) {
+        for(int i = 0; i < listOfMonths.size(); i++) {
             // First store month data (first level)
             HistoryFirstLevel firstLevel = new HistoryFirstLevel();
-            firstLevel.firstLevelHeader. put(MONTHS_NAME, listOfMoths.get(i));
+            firstLevel.firstLevelHeader.put(MONTHS_NAME, listOfMonths.get(i));
             firstLevel.firstLevelHeader.put(MONTHS_MONEY, "$8000");
 
-            for(int j =0; j < listOfAllDays.get(i).size(); j++) {
+            for(int j =0; j < monthDaysList.get(i).size(); j++) {
                 // Then store days data (second level)
                 HistorySecondLevel secondLevel= new HistorySecondLevel();
-                secondLevel.secondLevelHeader.put(DAYS_NAME, listOfAllDays.get(i).get(j) );
+                secondLevel.secondLevelHeader.put(DAYS_NAME, monthDaysList.get(i).get(j) );
                 secondLevel.secondLevelHeader.put(DAYS_MONEY, "$45");
 
                 for(int k = 0; k < listOfAllDay.size(); k++) {
