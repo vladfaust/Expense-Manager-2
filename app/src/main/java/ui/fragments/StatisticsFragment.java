@@ -53,7 +53,7 @@ public class StatisticsFragment extends BaseFragment {
         tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
             @Override
             public int getIndicatorColor(int position) {
-                return getResources().getColor(R.color.HomeColorPrimaryDark);
+                return getResources().getColor(R.color.ChildBG);
             }
         });
     }

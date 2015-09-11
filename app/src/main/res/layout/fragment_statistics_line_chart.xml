@@ -7,7 +7,10 @@
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/line_chart"
-        android:layout_width="match_parent"
-        android:layout_height="250dp" />
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        />
 
 </RelativeLayout>

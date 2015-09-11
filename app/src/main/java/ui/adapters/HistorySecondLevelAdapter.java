@@ -58,7 +58,6 @@ public class HistorySecondLevelAdapter extends BaseExpandableListAdapter {
             LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             groupView = inflater.inflate(R.layout.history_second_layer_group,null);
         }
-        groupView.setMinimumHeight(150);
 
         TextView group_text = (TextView) groupView.findViewById(R.id.history_second_layer_group_text);
         group_text.setText((String) secondLevelList.get(groupPosition).secondLevelHeader.get(HistoryFragment.DAYS_NAME));
@@ -103,7 +102,6 @@ public class HistorySecondLevelAdapter extends BaseExpandableListAdapter {
         category.setText("Transport");
         price.setText("$81.32");
 
-        childView.setMinimumHeight(250);
 
         // setting color to hole view
         int color = Color.TRANSPARENT;

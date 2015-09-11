@@ -55,7 +55,6 @@ public class HistoryFirstLevelAdapter extends BaseExpandableListAdapter {
         }
         // Name of Month
         TextView monthName = (TextView)groupView.findViewById(R.id.history_first_layer_month);
-        groupView.setMinimumHeight(150);
 
         // Money spent per month
         TextView monthMoney = (TextView)groupView.findViewById(R.id.history_first_layer_money);

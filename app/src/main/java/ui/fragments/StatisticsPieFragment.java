@@ -1,5 +1,6 @@
 package ui.fragments;
 
+import android.app.ActionBar;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -53,15 +54,13 @@ public class StatisticsPieFragment extends BaseFragment {
 
     private void initPieChart(final View v) {
         mainLayout = (LinearLayout)v.findViewById(R.id.statistics_main_layout);
-        pieChart = new PieChart(v.getContext());
-        mainLayout.addView(pieChart);
+        pieChart = ((PieChart)v.findViewById(R.id.pie_chart));
 
         mainLayout.setBackgroundColor(Color.WHITE);
 
         pieChart.setUsePercentValues(true);
         pieChart.setDescription("");
 
-        pieChart.setMinimumHeight(1000);
         pieChart.setDrawHoleEnabled(true);
         pieChart.setHoleColorTransparent(true);
         pieChart.setHoleRadius(0);
