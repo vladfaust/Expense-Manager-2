@@ -1,6 +1,7 @@
 package ui.fragments;
 
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -79,7 +80,7 @@ public class StatisticsLineFragment extends BaseFragment implements OnChartValue
         lineChart.setGridBackgroundColor(ColorTemplate.getHoloBlue());
 
         // Animation speed
-        lineChart.animateX(5000);
+        //lineChart.animateX(5000);
 
         XAxis xAxis = lineChart.getXAxis();
 //        xAxis.setTypeface(tf);
@@ -160,6 +161,5 @@ public class StatisticsLineFragment extends BaseFragment implements OnChartValue
     public void onNothingSelected() {
         Log.i("Nothing selected", "Nothing selected.");
     }
-
 
 }
