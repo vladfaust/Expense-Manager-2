@@ -47,6 +47,7 @@ public class HistoryFragment extends BaseFragment {
     public final static String COMMENT = "COMMENT";
     public final static String MONEY = "MONEY";
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -154,17 +155,21 @@ public class HistoryFragment extends BaseFragment {
                 secondLevel.secondLevelHeader.put(DAYS_NAME, monthDaysList.get(i).get(j) );
                 secondLevel.secondLevelHeader.put(DAYS_MONEY, "$45");
 
-                for(int k = 0; k < listOfAllDay.size(); k++) {
+                for(int k = 0; k < listOfAllDay.get(0).size(); k++) {
                     // Then store day data (third level)
-                    HistoryThirdLevel day = new HistoryThirdLevel();
-                    day.thirdLevel.put(DAY_DATE, "Auchan");
-                    day.thirdLevel.put(DAY_CATEGORY, "Auchan");
-                    day.thirdLevel.put(DAY_SUBCATEGORY, "Auchan");
-                    day.thirdLevel.put(DAY_COMMENT, "Auchan");
-                    day.thirdLevel.put(DAY_MONEY, listOfAllDay.get(k).get(0));
+                    ArrayList<Transaction> trs = DatabaseInstrument.instance.getTransactionsByOneDay(listOfAllDay.get(0).get(k));
+                    for (Transaction tr : trs){
+                        HistoryThirdLevel transaction = new HistoryThirdLevel();
+                        transaction.thirdLevel.put(DAY_DATE, tr.getDate());
+                        transaction.thirdLevel.put(DAY_CATEGORY, tr.getCategory());
+                        transaction.thirdLevel.put(DAY_SUBCATEGORY, tr.getSubCategory());
+                        transaction.thirdLevel.put(DAY_COMMENT, tr.getComment());
+                        transaction.thirdLevel.put(DAY_MONEY, tr.getAmount());
 
-                    // Add third level to second level
-                    secondLevel.thirdLevelList.add(day);
+                        // Add third level to second level
+                        secondLevel.thirdLevelList.add(transaction);
+                    }
+
                 }
                 // Add second level to first level
                 firstLevel.secondLevelList.add(secondLevel);

@@ -19,6 +19,7 @@ import com.cheesehole.expencemanager.R;
 
 import java.util.ArrayList;
 
+import bl.models.Category;
 import ui.activities.ExpenseViewActivity;
 import ui.fragments.HistoryFragment;
 import ui.helpers.HistorySecondLevel;
@@ -98,9 +99,10 @@ public class HistorySecondLevelAdapter extends BaseExpandableListAdapter {
         TextView category = (TextView) childView.findViewById(R.id.history_childDate);
         TextView price = (TextView) childView.findViewById(R.id.history_childPrice);
 
-        name.setText("Train");
-        category.setText("Transport");
-        price.setText("$81.32");
+        name.setText(String.valueOf(secondLevelList.get(groupPosition).thirdLevelList.get(childPosition).thirdLevel.get(HistoryFragment.DAY_DATE)));
+        category.setText(((Category)secondLevelList.get(groupPosition).thirdLevelList.get(childPosition).thirdLevel.get(HistoryFragment.DAY_CATEGORY)).getName());
+        price.setText(String.valueOf(secondLevelList.get(groupPosition).thirdLevelList.get(childPosition).thirdLevel.get(HistoryFragment.DAY_MONEY)));
+
 
 
         // setting color to hole view

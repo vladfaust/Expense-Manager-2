@@ -139,6 +139,35 @@ public class DatabaseInstrument {
         }
     }
 
+    public ArrayList<Transaction> getTransactionsByOneDay(String day){
+        //11 June 2015 to 2015-06-11
+
+        String monthStr;
+        if (getNumByMonth(day.split(" ")[1])<10)
+            monthStr = "0"+getNumByMonth(day.split(" ")[1]);
+        else
+            monthStr = String.valueOf(getNumByMonth(day.split(" ")[1]));
+
+        ArrayList<Transaction> list = new ArrayList<Transaction>();
+        day = day.split(" ")[2]+"-"+monthStr+"-"+day.split(" ")[0];
+        String query = String.format("SELECT * FROM Transactions inner join TransactionsCategory on Transactions.TID = TransactionsCategory.TID " +
+                "WHERE([Date] = '"+day+"')");
+        Cursor cursor = dbHelper.getReadableDatabase().rawQuery(query, null);
+        while (cursor.moveToNext()) {
+            Transaction transaction = new Transaction();
+            transaction.setId(cursor.getInt(0));
+            transaction.setAmount(cursor.getInt(1));
+            transaction.setComment(cursor.getString(2));
+            transaction.setCategory(Category.getCategoryByID(cursor.getInt(5)));
+            transaction.setSubCategory(cursor.getString(3));
+            transaction.setDate(cursor.getString(4));
+            list.add(transaction);
+        }
+        cursor.close();
+
+        return list;
+    }
+
     String getMonthByNum(String val) {
         switch (val) {
             case "01":
