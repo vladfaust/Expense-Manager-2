@@ -188,6 +188,37 @@ public class DatabaseInstrument {
         }
     }
 
+    public int getNumByMonth(String val) {
+        switch (val) {
+            case "January":
+                return 1;
+            case "February":
+                return 2;
+            case "March":
+                return 3;
+            case "April":
+                return 4;
+            case "May":
+                return 5;
+            case "June":
+                return 6;
+            case "July":
+                return 7;
+            case "August":
+                return 8;
+            case "September":
+                return 9;
+            case "October":
+                return 10;
+            case "November":
+                return 11;
+            case "December":
+                return 12;
+            default:
+                return 0;
+        }
+    }
+
     //region Categories
     // Load all categories from database to string array list
     public ArrayList<Category> getAllCategories() {
@@ -296,9 +327,21 @@ public class DatabaseInstrument {
                                                   int month2, int day2) {
         ArrayList<Transaction> list = new ArrayList<Transaction>();
 
+        String month1Str;
+        if (month1<10)
+            month1Str = "0"+month1;
+        else
+            month1Str = String.valueOf(month1);
+
+        String month2Str;
+        if (month2<10)
+            month2Str = "0"+month2;
+        else
+            month2Str = String.valueOf(month2);
+
         String query = String.format("SELECT * FROM Transactions inner join TransactionsCategory on Transactions.TID = TransactionsCategory.TID " +
-                "WHERE([Date] BETWEEN '" + year1 + "-" + month1 + "-" + day1 + "'" +
-                " AND '" + year2 + "-" + month2 + "-" + day2 + "')");
+                "WHERE([Date] BETWEEN '" + year1 + "-" + month1Str + "-" + day1 + "'" +
+                " AND '" + year2 + "-" + month2Str + "-" + day2 + "')");
         Cursor cursor = dbHelper.getReadableDatabase().rawQuery(query, null);
         while (cursor.moveToNext()) {
             Transaction transaction = new Transaction();

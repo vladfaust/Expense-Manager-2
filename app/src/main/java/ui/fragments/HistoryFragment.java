@@ -1,5 +1,6 @@
 package ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bl.models.DatabaseInstrument;
+import bl.models.Transaction;
 import ui.adapters.HistoryFirstLevelAdapter;
 import ui.helpers.HistoryFirstLevel;
 import ui.helpers.HistorySecondLevel;
@@ -137,7 +139,14 @@ public class HistoryFragment extends BaseFragment {
             // First store month data (first level)
             HistoryFirstLevel firstLevel = new HistoryFirstLevel();
             firstLevel.firstLevelHeader.put(MONTHS_NAME, listOfMonths.get(i));
-            firstLevel.firstLevelHeader.put(MONTHS_MONEY, "$8000");
+
+            int year = Integer.parseInt(listOfMonths.get(i).split(" ")[1]);
+            int month = DatabaseInstrument.instance.getNumByMonth(listOfMonths.get(i).split(" ")[0]);
+
+            ArrayList<Transaction> selectedMonthTransacts = DatabaseInstrument.instance.getTransactions(
+                    year, month, 1, year, month, 31
+            );
+            firstLevel.firstLevelHeader.put(MONTHS_MONEY, "$"+DatabaseInstrument.instance.getAllSpendsFrom(selectedMonthTransacts));
 
             for(int j =0; j < monthDaysList.get(i).size(); j++) {
                 // Then store days data (second level)
