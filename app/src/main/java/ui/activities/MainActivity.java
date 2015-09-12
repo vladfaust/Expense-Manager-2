@@ -20,7 +20,7 @@ import com.cheesehole.expencemanager.R;
 import bl.models.DatabaseInstrument;
 import bl.models.User;
 import ui.adapters.HomeExpListAdapter;
-import ui.helpers.DrawerView;
+import ui.views.DrawerView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;

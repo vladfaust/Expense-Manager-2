@@ -1,7 +1,6 @@
 package ui.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import com.cheesehole.expencemanager.R;
 import java.util.ArrayList;
 
 import ui.fragments.HistoryFragment;
-import ui.helpers.CustExpListview;
+import ui.views.CustExpListview;
 import ui.helpers.HistoryFirstLevel;
 
 /**

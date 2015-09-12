@@ -1,4 +1,4 @@
-package ui.helpers;
+package ui.views;
 
 import android.content.Context;
 import android.widget.ExpandableListView;

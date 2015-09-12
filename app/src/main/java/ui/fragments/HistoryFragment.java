@@ -30,6 +30,8 @@ public class HistoryFragment extends BaseFragment {
     public final static String DAY_CATEGORY = "DAY_CATEGORY";
     public final static String DAY_COMMENT = "DAY_COMMENT";
     public final static String DAY_MONEY = "DAY_MONEY";
+    public final static String DAY_DATE = "DAY_MONEY";
+    public final static String DAY_SUBCATEGORY = "DAY_MONEY";
 
     public final static String DAYS_NAME = "DAYS_NAME";
     public final static String DAYS_MONEY = "DAYS_MONEY";
@@ -146,7 +148,9 @@ public class HistoryFragment extends BaseFragment {
                 for(int k = 0; k < listOfAllDay.size(); k++) {
                     // Then store day data (third level)
                     HistoryThirdLevel day = new HistoryThirdLevel();
+                    day.thirdLevel.put(DAY_DATE, "Auchan");
                     day.thirdLevel.put(DAY_CATEGORY, "Auchan");
+                    day.thirdLevel.put(DAY_SUBCATEGORY, "Auchan");
                     day.thirdLevel.put(DAY_COMMENT, "Auchan");
                     day.thirdLevel.put(DAY_MONEY, listOfAllDay.get(k).get(0));
 

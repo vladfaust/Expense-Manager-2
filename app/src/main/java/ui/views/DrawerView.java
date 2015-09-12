@@ -1,4 +1,4 @@
-package ui.helpers;
+package ui.views;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -23,6 +23,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import ui.activities.MainActivity;
+import ui.fragments.EditCategoriesFragment;
 import ui.fragments.HistoryFragment;
 import ui.fragments.StatisticsFragment;
 
@@ -97,6 +98,9 @@ public class DrawerView {
                                 .withSelectedTextColor(primaryColor),
                         new PrimaryDrawerItem().withName("Statistics")
                                 .withIcon(activity.getResources().getDrawable(R.drawable.statistics))
+                                .withSelectedTextColor(primaryColor),
+                        new PrimaryDrawerItem().withName("Edit Categories")
+                                .withIcon(activity.getResources().getDrawable(R.drawable.statistics))
                                 .withSelectedTextColor(primaryColor)
                         ,
                         new DividerDrawerItem(),
@@ -130,6 +134,7 @@ public class DrawerView {
 
                             // Settings
                             case 4:
+                                startFragment(new EditCategoriesFragment(), "Edit Categories");
                                 break;
                         }
 

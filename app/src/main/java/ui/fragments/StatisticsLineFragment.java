@@ -79,6 +79,9 @@ public class StatisticsLineFragment extends BaseFragment implements OnChartValue
         lineChart.setBackgroundColor(Color.WHITE);
         lineChart.setGridBackgroundColor(ColorTemplate.getHoloBlue());
 
+        Legend legend = lineChart.getLegend();
+        legend.setEnabled(false);
+
         // Animation speed
         //lineChart.animateX(5000);
 
@@ -89,12 +92,16 @@ public class StatisticsLineFragment extends BaseFragment implements OnChartValue
         xAxis.setDrawGridLines(true);
         xAxis.setDrawAxisLine(false);
         xAxis.setSpaceBetweenLabels(0);
+        xAxis.setGridLineWidth(2);
+        xAxis.setGridColor(Color.GRAY);
 
         YAxis leftAxis = lineChart.getAxisLeft();
         leftAxis.setDrawAxisLine(true);
 //        leftAxis.setTypeface(tf);
         leftAxis.setAxisMaxValue(200f);
         leftAxis.setDrawGridLines(true);
+        leftAxis.setGridLineWidth(2);
+        leftAxis.setGridColor(Color.GRAY);
 
         YAxis rightAxis = lineChart.getAxisRight();
         rightAxis.setTextColor(Color.TRANSPARENT);

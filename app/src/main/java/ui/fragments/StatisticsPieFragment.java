@@ -63,7 +63,7 @@ public class StatisticsPieFragment extends BaseFragment {
 
         pieChart.setDrawHoleEnabled(true);
         pieChart.setHoleColorTransparent(true);
-        pieChart.setHoleRadius(0);
+        pieChart.setHoleRadius(50);
         pieChart.setTransparentCircleRadius(100);
 
         pieChart.setRotationAngle(0);
