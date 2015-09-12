@@ -32,8 +32,8 @@ public class HistoryFragment extends BaseFragment {
     public final static String DAY_CATEGORY = "DAY_CATEGORY";
     public final static String DAY_COMMENT = "DAY_COMMENT";
     public final static String DAY_MONEY = "DAY_MONEY";
-    public final static String DAY_DATE = "DAY_MONEY";
-    public final static String DAY_SUBCATEGORY = "DAY_MONEY";
+    public final static String DAY_DATE = "DAY_DATE";
+    public final static String DAY_SUBCATEGORY = "DAY_SUBCATEGORY";
 
     public final static String DAYS_NAME = "DAYS_NAME";
     public final static String DAYS_MONEY = "DAYS_MONEY";
@@ -155,9 +155,9 @@ public class HistoryFragment extends BaseFragment {
                 secondLevel.secondLevelHeader.put(DAYS_NAME, monthDaysList.get(i).get(j) );
                 secondLevel.secondLevelHeader.put(DAYS_MONEY, "$45");
 
-                for(int k = 0; k < listOfAllDay.get(0).size(); k++) {
+                for(int k = 0; k < listOfAllDay.size(); k++) {
                     // Then store day data (third level)
-                    ArrayList<Transaction> trs = DatabaseInstrument.instance.getTransactionsByOneDay(listOfAllDay.get(0).get(k));
+                    ArrayList<Transaction> trs = DatabaseInstrument.instance.getTransactionsByOneDay(listOfAllDay.get(0).get(j));
                     for (Transaction tr : trs){
                         HistoryThirdLevel transaction = new HistoryThirdLevel();
                         transaction.thirdLevel.put(DAY_DATE, tr.getDate());
@@ -165,7 +165,6 @@ public class HistoryFragment extends BaseFragment {
                         transaction.thirdLevel.put(DAY_SUBCATEGORY, tr.getSubCategory());
                         transaction.thirdLevel.put(DAY_COMMENT, tr.getComment());
                         transaction.thirdLevel.put(DAY_MONEY, tr.getAmount());
-
                         // Add third level to second level
                         secondLevel.thirdLevelList.add(transaction);
                     }
