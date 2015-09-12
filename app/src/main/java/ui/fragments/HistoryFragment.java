@@ -1,5 +1,6 @@
 package ui.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bl.models.DatabaseInstrument;
+import bl.models.Transaction;
 import ui.adapters.HistoryFirstLevelAdapter;
 import ui.helpers.HistoryFirstLevel;
 import ui.helpers.HistorySecondLevel;
@@ -30,8 +32,8 @@ public class HistoryFragment extends BaseFragment {
     public final static String DAY_CATEGORY = "DAY_CATEGORY";
     public final static String DAY_COMMENT = "DAY_COMMENT";
     public final static String DAY_MONEY = "DAY_MONEY";
-    public final static String DAY_DATE = "DAY_MONEY";
-    public final static String DAY_SUBCATEGORY = "DAY_MONEY";
+    public final static String DAY_DATE = "DAY_DATE";
+    public final static String DAY_SUBCATEGORY = "DAY_SUBCATEGORY";
 
     public final static String DAYS_NAME = "DAYS_NAME";
     public final static String DAYS_MONEY = "DAYS_MONEY";
@@ -44,6 +46,7 @@ public class HistoryFragment extends BaseFragment {
     public final static String SUBCATEGORY = "SUBCATEGORY";
     public final static String COMMENT = "COMMENT";
     public final static String MONEY = "MONEY";
+
 
     @Nullable
     @Override
@@ -137,7 +140,14 @@ public class HistoryFragment extends BaseFragment {
             // First store month data (first level)
             HistoryFirstLevel firstLevel = new HistoryFirstLevel();
             firstLevel.firstLevelHeader.put(MONTHS_NAME, listOfMonths.get(i));
-            firstLevel.firstLevelHeader.put(MONTHS_MONEY, "$8000");
+
+            int year = Integer.parseInt(listOfMonths.get(i).split(" ")[1]);
+            int month = DatabaseInstrument.instance.getNumByMonth(listOfMonths.get(i).split(" ")[0]);
+
+            ArrayList<Transaction> selectedMonthTransacts = DatabaseInstrument.instance.getTransactions(
+                    year, month, 1, year, month, 31
+            );
+            firstLevel.firstLevelHeader.put(MONTHS_MONEY, "$"+DatabaseInstrument.instance.getAllSpendsFrom(selectedMonthTransacts));
 
             for(int j =0; j < monthDaysList.get(i).size(); j++) {
                 // Then store days data (second level)
@@ -147,15 +157,18 @@ public class HistoryFragment extends BaseFragment {
 
                 for(int k = 0; k < listOfAllDay.size(); k++) {
                     // Then store day data (third level)
-                    HistoryThirdLevel day = new HistoryThirdLevel();
-                    day.thirdLevel.put(DAY_DATE, "Auchan");
-                    day.thirdLevel.put(DAY_CATEGORY, "Auchan");
-                    day.thirdLevel.put(DAY_SUBCATEGORY, "Auchan");
-                    day.thirdLevel.put(DAY_COMMENT, "Auchan");
-                    day.thirdLevel.put(DAY_MONEY, listOfAllDay.get(k).get(0));
+                    ArrayList<Transaction> trs = DatabaseInstrument.instance.getTransactionsByOneDay(listOfAllDay.get(0).get(j));
+                    for (Transaction tr : trs){
+                        HistoryThirdLevel transaction = new HistoryThirdLevel();
+                        transaction.thirdLevel.put(DAY_DATE, tr.getDate());
+                        transaction.thirdLevel.put(DAY_CATEGORY, tr.getCategory());
+                        transaction.thirdLevel.put(DAY_SUBCATEGORY, tr.getSubCategory());
+                        transaction.thirdLevel.put(DAY_COMMENT, tr.getComment());
+                        transaction.thirdLevel.put(DAY_MONEY, tr.getAmount());
+                        // Add third level to second level
+                        secondLevel.thirdLevelList.add(transaction);
+                    }
 
-                    // Add third level to second level
-                    secondLevel.thirdLevelList.add(day);
                 }
                 // Add second level to first level
                 firstLevel.secondLevelList.add(secondLevel);

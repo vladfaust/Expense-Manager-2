@@ -139,6 +139,35 @@ public class DatabaseInstrument {
         }
     }
 
+    public ArrayList<Transaction> getTransactionsByOneDay(String day){
+        //11 June 2015 to 2015-06-11
+
+        String monthStr;
+        if (getNumByMonth(day.split(" ")[1])<10)
+            monthStr = "0"+getNumByMonth(day.split(" ")[1]);
+        else
+            monthStr = String.valueOf(getNumByMonth(day.split(" ")[1]));
+
+        ArrayList<Transaction> list = new ArrayList<Transaction>();
+        day = day.split(" ")[2]+"-"+monthStr+"-"+day.split(" ")[0];
+        String query = String.format("SELECT * FROM Transactions inner join TransactionsCategory on Transactions.TID = TransactionsCategory.TID " +
+                "WHERE([Date] = '"+day+"')");
+        Cursor cursor = dbHelper.getReadableDatabase().rawQuery(query, null);
+        while (cursor.moveToNext()) {
+            Transaction transaction = new Transaction();
+            transaction.setId(cursor.getInt(0));
+            transaction.setAmount(cursor.getInt(1));
+            transaction.setComment(cursor.getString(2));
+            transaction.setCategory(Category.getCategoryByID(cursor.getInt(5)));
+            transaction.setSubCategory(cursor.getString(3));
+            transaction.setDate(cursor.getString(4));
+            list.add(transaction);
+        }
+        cursor.close();
+
+        return list;
+    }
+
     String getMonthByNum(String val) {
         switch (val) {
             case "01":
@@ -185,6 +214,37 @@ public class DatabaseInstrument {
                 return "December";
             default:
                 return "Unknown";
+        }
+    }
+
+    public int getNumByMonth(String val) {
+        switch (val) {
+            case "January":
+                return 1;
+            case "February":
+                return 2;
+            case "March":
+                return 3;
+            case "April":
+                return 4;
+            case "May":
+                return 5;
+            case "June":
+                return 6;
+            case "July":
+                return 7;
+            case "August":
+                return 8;
+            case "September":
+                return 9;
+            case "October":
+                return 10;
+            case "November":
+                return 11;
+            case "December":
+                return 12;
+            default:
+                return 0;
         }
     }
 
@@ -296,9 +356,21 @@ public class DatabaseInstrument {
                                                   int month2, int day2) {
         ArrayList<Transaction> list = new ArrayList<Transaction>();
 
+        String month1Str;
+        if (month1<10)
+            month1Str = "0"+month1;
+        else
+            month1Str = String.valueOf(month1);
+
+        String month2Str;
+        if (month2<10)
+            month2Str = "0"+month2;
+        else
+            month2Str = String.valueOf(month2);
+
         String query = String.format("SELECT * FROM Transactions inner join TransactionsCategory on Transactions.TID = TransactionsCategory.TID " +
-                "WHERE([Date] BETWEEN '" + year1 + "-" + month1 + "-" + day1 + "'" +
-                " AND '" + year2 + "-" + month2 + "-" + day2 + "')");
+                "WHERE([Date] BETWEEN '" + year1 + "-" + month1Str + "-" + day1 + "'" +
+                " AND '" + year2 + "-" + month2Str + "-" + day2 + "')");
         Cursor cursor = dbHelper.getReadableDatabase().rawQuery(query, null);
         while (cursor.moveToNext()) {
             Transaction transaction = new Transaction();

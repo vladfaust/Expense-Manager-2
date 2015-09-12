@@ -19,6 +19,7 @@ import com.cheesehole.expencemanager.R;
 
 import java.util.ArrayList;
 
+import bl.models.Category;
 import ui.activities.ExpenseViewActivity;
 import ui.fragments.HistoryFragment;
 import ui.helpers.HistorySecondLevel;
@@ -62,23 +63,6 @@ public class HistorySecondLevelAdapter extends BaseExpandableListAdapter {
         TextView group_text = (TextView) groupView.findViewById(R.id.history_second_layer_group_text);
         group_text.setText((String) secondLevelList.get(groupPosition).secondLevelHeader.get(HistoryFragment.DAYS_NAME));
 
-//        groupView.getRootView().setBackgroundColor(Color.GREEN);
-
-
-
-        // setting expand/collapse action to hole rootView of groupView
-//        groupView.getRootView().setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(listView.isGroupExpanded(groupPosition)) {
-//                    listView.collapseGroup(groupPosition);
-//                }
-//                else {
-//                    listView.expandGroup(groupPosition);
-//                }
-//            }
-//        });
-
         return groupView;
     }
 
@@ -89,6 +73,8 @@ public class HistorySecondLevelAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, int childPosition,
                              boolean isLastChild, View childView, ViewGroup parent) {
 
+        final int childIndex = childPosition;
+        final int groupIndex = groupPosition;
         if(childView == null) {
             LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             childView = inflater.inflate(R.layout.history_second_layer_child,null);
@@ -98,9 +84,10 @@ public class HistorySecondLevelAdapter extends BaseExpandableListAdapter {
         TextView category = (TextView) childView.findViewById(R.id.history_childDate);
         TextView price = (TextView) childView.findViewById(R.id.history_childPrice);
 
-        name.setText("Train");
-        category.setText("Transport");
-        price.setText("$81.32");
+        name.setText(String.valueOf(secondLevelList.get(groupPosition).thirdLevelList.get(childPosition).thirdLevel.get(HistoryFragment.DAY_COMMENT)));
+        category.setText(((Category)secondLevelList.get(groupPosition).thirdLevelList.get(childPosition).thirdLevel.get(HistoryFragment.DAY_CATEGORY)).getName());
+        price.setText(String.valueOf(secondLevelList.get(groupPosition).thirdLevelList.get(childPosition).thirdLevel.get(HistoryFragment.DAY_MONEY)));
+
 
 
         // setting color to hole view
@@ -117,11 +104,16 @@ public class HistorySecondLevelAdapter extends BaseExpandableListAdapter {
             public void onClick(View v) {
                 Intent intent = new Intent(context, ExpenseViewActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString(HistoryFragment.DATE, "10.06.15");
-                bundle.putString(HistoryFragment.CATEGORY, "Grocery");
-                bundle.putString(HistoryFragment.SUBCATEGORY, "Auchan");
-                bundle.putString(HistoryFragment.COMMENT, "Hi");
-                bundle.putString(HistoryFragment.MONEY, "82.32");
+                String date = (String)(secondLevelList.get(groupIndex).thirdLevelList.get(childIndex).thirdLevel.get(HistoryFragment.DAY_DATE));
+                bundle.putString(HistoryFragment.DATE, date);
+                String category = String.valueOf(((Category)secondLevelList.get(groupIndex).thirdLevelList.get(childIndex).thirdLevel.get(HistoryFragment.DAY_CATEGORY)).getName());
+                bundle.putString(HistoryFragment.CATEGORY, category);
+                String subcat = (String.valueOf(secondLevelList.get(groupIndex).thirdLevelList.get(childIndex).thirdLevel.get(HistoryFragment.DAY_SUBCATEGORY)));
+                bundle.putString(HistoryFragment.SUBCATEGORY, subcat);
+                String comment = (String.valueOf(secondLevelList.get(groupIndex).thirdLevelList.get(childIndex).thirdLevel.get(HistoryFragment.DAY_COMMENT)));
+                bundle.putString(HistoryFragment.COMMENT, comment);
+                String money = (String.valueOf(secondLevelList.get(groupIndex).thirdLevelList.get(childIndex).thirdLevel.get(HistoryFragment.DAY_MONEY)));
+                bundle.putString(HistoryFragment.MONEY, money);
                 intent.putExtras(bundle);
                 context.startActivity(intent);
             }
