@@ -16,4 +16,5 @@
     <color name="mdtp_accent_color_dark">#c44264</color>
     <color name="numbers">#434343</color>
     <color name="operations">#636363</color>
+    <color name="cardBackground">#e0e0e0</color>
 </resources>

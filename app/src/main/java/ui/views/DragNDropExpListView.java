@@ -4,10 +4,12 @@ package ui.views;
  * Created by Жамбыл on 13.09.2015.
  */
 
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.os.Handler;
+import android.text.style.TtsSpan;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.cheesehole.expencemanager.R;
@@ -24,8 +27,7 @@ import com.cheesehole.expencemanager.R;
 import ui.adapters.DragNDropAdapter;
 import ui.helpers.DragNDropListeners;
 
-public class DragNDropExpListView  extends ExpandableListView {
-
+public class DragNDropExpListView   extends ExpandableListView{
     private static final String TAG = "DragNDropListView";
     private boolean mDragMode;
     private boolean limitHorizontalDrag = true;
@@ -46,12 +48,16 @@ public class DragNDropExpListView  extends ExpandableListView {
     private boolean pressedItem;
     private Handler handler = new Handler();
 
+    ImageView im;
+
     public DragNDropExpListView(Context context, AttributeSet attrs) {
         super(context, attrs);
         WindowManager wm = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         screenHeight = display.getHeight();
+        im = (ImageView)findViewById(R.id.move_icon_customizer_item);
+
     }
 
     public void setSelectedBackgroud(int color) {
@@ -70,7 +76,18 @@ public class DragNDropExpListView  extends ExpandableListView {
         if (prevY < 0) {
             prevY = y;
         }
-        Log.d(TAG, "Motion event " + event.getAction());
+        if(action == MotionEvent.ACTION_CANCEL) {
+            Log.d(TAG, "Motion event canceled");
+        }
+        else if(action ==MotionEvent.ACTION_MOVE) {
+//            Log.d(TAG, "Motion event Move");
+        }
+        else if(action ==MotionEvent.ACTION_DOWN) {
+//            Log.d(TAG, "Motion event Down");
+        }
+        else if(action ==MotionEvent.ACTION_UP) {
+//            Log.d(TAG, "Motion event UP");
+        }
         int flatPosition = pointToPosition(x, y);
         dragRatio = getHeight() / screenHeight;
         long packagedPosition = getExpandableListPosition(flatPosition);
@@ -82,16 +99,25 @@ public class DragNDropExpListView  extends ExpandableListView {
                     mDragMode = true;
                     pressedItem = false;
                 } else {
-                    pressedItem = true;
-                    Runnable r = new Runnable() {
+
+                    findViewById(R.id.move_icon_customizer_item).setOnClickListener(new OnClickListener() {
                         @Override
-                        public void run() {
-                            // y coordinate is changing for no reason ??
+                        public void onClick(View v) {
                             event.setLocation(x, y);
                             touchHandler(event);
                         }
-                    };
-                    handler.postDelayed(r, 200);
+                    });
+//                    pressedItem = true;
+//                    final Runnable r = new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            // y coordinate is changing for no reason ??
+//                            event.setLocation(x, y);
+//                            touchHandler(event);
+//                        }
+//                    };
+//                        handler.postDelayed(r, 0);
+
                     return true;
                 }
             } else if (x < dragOffset) {
@@ -110,6 +136,7 @@ public class DragNDropExpListView  extends ExpandableListView {
         }
         switch (action) {
             case MotionEvent.ACTION_DOWN:
+                Log.d(TAG, "Motion event Down");
                 mStartFlatPosition = flatPosition;
                 mStartPosition[0] = getPackedPositionGroup(packagedPosition);
                 mStartPosition[1] = getPackedPositionChild(packagedPosition);
@@ -126,6 +153,7 @@ public class DragNDropExpListView  extends ExpandableListView {
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
+                Log.d(TAG, "Motion event Move");
                 int speed = (int) ((y - prevY) * dragRatio);
                 if (getLastVisiblePosition() < getCount() && speed > 0) {
                     smoothScrollBy(speed, 1);
@@ -141,7 +169,7 @@ public class DragNDropExpListView  extends ExpandableListView {
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
             default:
-
+                Log.d(TAG, "Motion event Up");
                 mDragMode = false;
                 if (getPackedPositionType(packagedPosition) == 0) {
                     mEndPosition[0] = getPackedPositionGroup(packagedPosition);
@@ -268,6 +296,7 @@ public class DragNDropExpListView  extends ExpandableListView {
      */
 
     private void stopDrag(int itemIndex) {
+        Log.d(TAG, "Stop Drag");
         int firstPosition = getFirstVisiblePosition() - getHeaderViewsCount();
         int wantedChild = itemIndex - firstPosition;
         if (mDragView != null) {

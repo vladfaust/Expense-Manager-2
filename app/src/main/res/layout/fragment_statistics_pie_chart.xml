@@ -3,13 +3,23 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/statistics_main_layout"
-    android:padding="20dp">
+    android:padding="10dp"
+    android:background="@color/cardBackground">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/statistics_main_layout"
+        android:background="@drawable/card_rounded"
+        >
     <com.github.mikephil.charting.charts.PieChart
+
         android:id="@+id/pie_chart"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
+        android:elevation="10dp"
+        android:background="@drawable/card_rounded"
         />
+    </LinearLayout>
 </LinearLayout>
