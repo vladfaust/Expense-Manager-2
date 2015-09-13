@@ -22,7 +22,10 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
+import bl.models.DatabaseInstrument;
 
 /**
  * Created by Жамбыл on 09.09.2015.
@@ -98,7 +101,7 @@ public class StatisticsLineFragment extends BaseFragment implements OnChartValue
         YAxis leftAxis = lineChart.getAxisLeft();
         leftAxis.setDrawAxisLine(true);
 //        leftAxis.setTypeface(tf);
-        leftAxis.setAxisMaxValue(200f);
+        //leftAxis.setAxisMaxValue(200f);
         leftAxis.setDrawGridLines(true);
         leftAxis.setGridLineWidth(2);
         leftAxis.setGridColor(Color.GRAY);
@@ -127,7 +130,8 @@ public class StatisticsLineFragment extends BaseFragment implements OnChartValue
 
         for (int i = 0; i < count; i++) {
             float mult = range / 2f;
-            float val = (float) (Math.random() * mult) + 50;
+            float val = DatabaseInstrument.instance.getSpendsForMonth(DatabaseInstrument.instance.getNumByMonth(xVals.get(i)),
+                    Calendar.getInstance().get(Calendar.YEAR));
             yVals1.add(new Entry(val, i));
         }
 
