@@ -7,7 +7,8 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/card_rounded">
+    android:background="@drawable/card_rounded"
+    >
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/line_chart"
         android:layout_width="fill_parent"
