@@ -155,9 +155,9 @@ public class HistoryFragment extends BaseFragment {
                 secondLevel.secondLevelHeader.put(DAYS_NAME, monthDaysList.get(i).get(j) );
                 secondLevel.secondLevelHeader.put(DAYS_MONEY, "$45");
 
-                for(int k = 0; k < listOfAllDay.size(); k++) {
+                for(int k = 0; k < listOfAllDay.get(i).size(); k++) {
                     // Then store day data (third level)
-                    ArrayList<Transaction> trs = DatabaseInstrument.instance.getTransactionsByOneDay(listOfAllDay.get(0).get(j));
+                    ArrayList<Transaction> trs = DatabaseInstrument.instance.getTransactionsByOneDay(listOfAllDay.get(i).get(k));
                     for (Transaction tr : trs){
                         HistoryThirdLevel transaction = new HistoryThirdLevel();
                         transaction.thirdLevel.put(DAY_DATE, tr.getDate());
