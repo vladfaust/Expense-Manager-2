@@ -21,6 +21,9 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.PercentFormatter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
+import bl.models.DatabaseInstrument;
 
 /**
  * Created by Жамбыл on 09.09.2015.
@@ -31,8 +34,10 @@ public class StatisticsPieFragment extends BaseFragment {
     PieChart pieChart;
     LinearLayout mainLayout;
 
-    float[] yData = {10,46,57,7.2f};
-    String[] xData = {"Jan", "Dec","Mar", "Arp", "May"};
+
+
+    Float[] yData;// = {10,46,57,7.2f};
+    String[] xData;// = {"Jan", "Dec","Mar", "Arp", "May"};
 
 
     @Nullable
@@ -48,10 +53,22 @@ public class StatisticsPieFragment extends BaseFragment {
 
     @Override
     protected void startUI(View v) {
+        loadDataFromDB();
         initPieChart(v);
         addData();
     }
 
+
+    void loadDataFromDB(){
+        ArrayList<String> months = new ArrayList<>();
+        ArrayList<Float> vals = new ArrayList<>();
+        months = DatabaseInstrument.instance.getAllMonthsForThisYear(months);
+        DatabaseInstrument.instance.getAllMonthSpendsForThisYear(months, vals);
+        xData = months.toArray(new String[months.size()]);
+        yData = vals.toArray(new Float[vals.size()]);
+    }
+
+    Toast mToast;
     private void initPieChart(final View v) {
         mainLayout = (LinearLayout)v.findViewById(R.id.statistics_main_layout);
         pieChart = ((PieChart)v.findViewById(R.id.pie_chart));
@@ -76,7 +93,9 @@ public class StatisticsPieFragment extends BaseFragment {
                     return;
                 }
 
-                Toast.makeText(v.getContext(), xData[e.getXIndex()] + " = " + e.getVal() + "%", Toast.LENGTH_SHORT).show();
+                if (mToast!=null) mToast.cancel();
+                mToast = Toast.makeText(v.getContext(), xData[e.getXIndex()] + " = $" + e.getVal(), Toast.LENGTH_SHORT);
+                mToast.show();
             }
 
             @Override

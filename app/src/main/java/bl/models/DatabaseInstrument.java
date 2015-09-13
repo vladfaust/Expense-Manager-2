@@ -110,6 +110,10 @@ public class DatabaseInstrument {
             addTransaction("'test4'", 3, Category.categoryArrayList.get(0), "'gift fo my ex'", "'2015-06-14'");
             addTransaction("'test5'", 1030, Category.categoryArrayList.get(2), "'buhbhu'", "'2015-06-15'");
             addTransaction("'test6'", 150, Category.categoryArrayList.get(1), "'keka'", "'2015-06-16'");
+            addTransaction("'test6'", 3450, Category.categoryArrayList.get(1), "'keka'", "'2015-04-16'");
+            addTransaction("'test6'", 3450, Category.categoryArrayList.get(1), "'keka'", "'2015-08-16'");
+            addTransaction("'test6'", 1450, Category.categoryArrayList.get(1), "'keka'", "'2015-07-16'");
+            addTransaction("'test6'", 1450, Category.categoryArrayList.get(1), "'keka'", "'2015-05-16'");
         }
 
     }
@@ -139,6 +143,30 @@ public class DatabaseInstrument {
         }
     }
 
+    public ArrayList<String> getAllMonthsForThisYear(ArrayList<String> listOfMonths) {
+        int test = Calendar.getInstance().get(Calendar.YEAR);
+        ArrayList<Transaction> transactions = getAllTransactions();
+        ArrayList<String> tempMonthList = new ArrayList<String>();
+        for (Transaction transaction : transactions) {
+            String[] temp = transaction.getDate().split("-");
+            if (temp[0].equals(String.valueOf(test))){
+                tempMonthList.add(getMonthByNum(temp[1]));
+            }
+        }
+        listOfMonths = new ArrayList<String>(new HashSet<String>(tempMonthList));
+        return listOfMonths;
+    }
+
+    public void getAllMonthSpendsForThisYear(List<String> months, List<Float> vals){
+        int test = Calendar.getInstance().get(Calendar.YEAR);
+        for (String month : months)
+            vals.add(getSpendsForMonth(getNumByMonth(month), test));
+    }
+
+    public float getSpendsForMonth(int month, int year){
+        return (float)getAllSpendsFrom(getTransactions(year, month, 1, year, month, 31));
+    }
+
     public ArrayList<Transaction> getTransactionsByOneDay(String day){
         //11 June 2015 to 2015-06-11
 
@@ -149,7 +177,7 @@ public class DatabaseInstrument {
             monthStr = String.valueOf(getNumByMonth(day.split(" ")[1]));
 
         ArrayList<Transaction> list = new ArrayList<Transaction>();
-        day = day.split(" ")[2]+"-"+monthStr+"-"+day.split(" ")[0];
+        day = day.split(" ")[2]+"-" + monthStr + "-" + day.split(" ")[0];
         String query = String.format("SELECT * FROM Transactions inner join TransactionsCategory on Transactions.TID = TransactionsCategory.TID " +
                 "WHERE([Date] = '"+day+"')");
         Cursor cursor = dbHelper.getReadableDatabase().rawQuery(query, null);
@@ -242,6 +270,28 @@ public class DatabaseInstrument {
             case "November":
                 return 11;
             case "December":
+                return 12;
+            case "Jan":
+                return 1;
+            case "Feb":
+                return 2;
+            case "Mar":
+                return 3;
+            case "Apr":
+                return 4;
+            case "Jun":
+                return 6;
+            case "Jul":
+                return 7;
+            case "Aug":
+                return 8;
+            case "Sep":
+                return 9;
+            case "Oct":
+                return 10;
+            case "Nov":
+                return 11;
+            case "Dec":
                 return 12;
             default:
                 return 0;
